@@ -50,7 +50,7 @@ class App extends Component {
         // EQUIV shortand: return Object.extend({}, todo, { completed: true})
         else return {
           ...todo,
-          completed: !item.completed //TODO change to T/F and toggle with !
+          completed: !item.completed 
         };
       })
     })
@@ -80,11 +80,8 @@ class App extends Component {
   }
 
   delete = (todo) => {
-    console.log(todo.text)
     const newList = this.state.todoList.filter((item) => item.text !== todo.text)
-    console.log(newList)
-    this.setState({todoList:[]});
-    console.log(this.state.todoList)
+    this.setState({todoList:newList});
   }
 
   showAll = () => {
