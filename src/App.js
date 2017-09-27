@@ -4,6 +4,7 @@ import './App.css';
 import Input from './components/input.js';
 import TodoList from './components/todo_list.js';
 import Footer from './components/footer.js';
+import SearchBar from './components/search_bar.js';
 
 class App extends Component {
   constructor(props){
@@ -11,7 +12,8 @@ class App extends Component {
 
     this.state = { 
       todoList:[],
-      filter: "ALL" 
+      filter: "ALL",
+      searchTerm: ''
     };
 
   }
@@ -101,8 +103,25 @@ class App extends Component {
       if (this.state.filter === "ALL") return todo;
       if (this.state.filter === "COMPLETED") return todo.completed;
       if (this.state.filter === "ACTIVE") return !todo.completed;
+    });
+  }
+
+  setSearch = (searchTerm) => {
+    this.setState({searchTerm:searchTerm}); //can be shortened?
+  }
+
+  search = () => {
+    return this.getVisibleTodos().filter(todo => {
+     if (this.state.searchTerm === '') return todo;
+     else if (todo.text.includes(this.state.searchTerm)) return todo;
     })
   }
+
+    //get visible todos, then filter further based on search term. return that in TodoList instead.
+    //if searchTerm is part of any todo.text, show the todo.text, otherwise no show
+    //reset searchTerm with button?
+    
+  
 
   render() {
     return (
@@ -115,8 +134,9 @@ class App extends Component {
           To add items to the list, input below.
         </p>
         <div>
+          <SearchBar setSearch= {this.setSearch} />
           <Input onTodoSubmit= {this.addToList} /*pass onToDoSubmit as prop*/ />
-          <TodoList todoList= {this.getVisibleTodos()}
+          <TodoList todoList= {this.search()}
                     toggleCompleted= {this.toggleCompleted} 
                     delete= {this.delete}
                     />
