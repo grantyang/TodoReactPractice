@@ -5,6 +5,7 @@ import Input from './components/input.js';
 import TodoList from './components/todo_list.js';
 import Footer from './components/footer.js';
 import SearchBar from './components/search_bar.js';
+import { Link } from 'react-router-dom'; 
 
 class App extends Component {
   constructor(props){
@@ -86,6 +87,8 @@ class App extends Component {
     this.setState({todoList:newList});
   }
 
+
+
   showAll = () => {
     this.setState({filter: "ALL"});
   }
@@ -128,7 +131,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>TodoList</h2>
+          <h2>Grant's TodoList</h2>
         </div>
         <p className="App-intro">
           To add items to the list, input below.
@@ -139,6 +142,7 @@ class App extends Component {
           <TodoList todoList= {this.search()}
                     toggleCompleted= {this.toggleCompleted} 
                     delete= {this.delete}
+                  //  edit= {this.edit}
                     />
           <Footer 
           clear= {this.clearAll} 
@@ -148,6 +152,7 @@ class App extends Component {
           showActive={this.showActive}
           count= {this.count}
            />
+           <Link className= "btn btn-primary" to="/about"> About Us </Link>
         </div>
       </div>
       

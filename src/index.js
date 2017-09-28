@@ -1,11 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from './App';
+import About from './components/about.js';
+
+ReactDOM.render(
+    <BrowserRouter>
+        <div  /*if user is on path, show component  <App /> */>
+            <Switch /*Takes in Routes and will render only the first match*/>
+                <Route path="/about" component={About} />
+                <Route path="/" component={App} />
+            </Switch>   
+        </div>
+    </BrowserRouter>
+    ,
+    document.getElementById('root'));
 registerServiceWorker();
+
+
