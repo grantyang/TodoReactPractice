@@ -33,7 +33,7 @@ class App extends Component {
       const todoObj = {
         text: todoItem,
         completed: false,
-
+        editMode: false
       };
       this.setState({
         todoList:[todoObj, ...this.state.todoList] // add todoItem to todoList
@@ -57,7 +57,6 @@ class App extends Component {
         };
       })
     })
-
   }
 
   clearAll = () => {
@@ -87,7 +86,35 @@ class App extends Component {
     this.setState({todoList:newList});
   }
 
+  editMode = (todo) => {
+    //when clicked, change field to input. onSubmit, create new array with todo.text of this todo updated.
+    this.setState({
+      todoList: this.state.todoList.map(item => {
+        if (item.text !== todo.text){ 
+          return item;
+        }
+        else return {
+          ...todo,
+          editMode: true 
+        };
+      })
+    });
+  }
 
+  save = (todo, newText) => {
+    this.setState({
+      todoList: this.state.todoList.map(item => {
+        if (item.text !== todo.text){ 
+          return item;
+        }
+        else return {
+          ...todo,
+          text: newText,
+          editMode: false 
+        };
+      })
+    });
+  }
 
   showAll = () => {
     this.setState({filter: "ALL"});
@@ -142,15 +169,15 @@ class App extends Component {
           <TodoList todoList= {this.search()}
                     toggleCompleted= {this.toggleCompleted} 
                     delete= {this.delete}
-                  //  edit= {this.edit}
-                    />
-          <Footer 
-          clear= {this.clearAll} 
-          clearComplete= {this.clearComplete}
-          showAll= {this.showAll}
-          showCompleted= {this.showCompleted}
-          showActive={this.showActive}
-          count= {this.count}
+                    editMode= {this.editMode}
+                    save= {this.save}
+          />
+          <Footer clear= {this.clearAll} 
+                  clearComplete= {this.clearComplete}
+                  showAll= {this.showAll}
+                  showCompleted= {this.showCompleted}
+                  showActive={this.showActive}
+                  count= {this.count}
            />
            <Link className= "btn btn-primary" to="/about"> About Us </Link>
         </div>

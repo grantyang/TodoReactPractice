@@ -9,7 +9,8 @@ const TodoList = (props) => {
                 todo= {todo}
                 toggleCompleted= {props.toggleCompleted}
                 delete= {props.delete}
-                edit= {props.edit}
+                editMode= {props.editMode}
+                save= {props.save}
                 />
         );
     });

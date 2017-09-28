@@ -11,11 +11,10 @@ export default class Input extends Component{
 
 
     onInputChange = (event) => {  // when input is changed, update state
-        // console.log(event.target.value);
         this.setState({todo: event.target.value});
     }
 
-    onInputSubmit = (event) => {   // when input is submitted, add to state
+    onInputSubmit = (event) => {   // when input is submitted, add to App state
         event.preventDefault();
         this.props.onTodoSubmit(this.state.todo);
         this.setState({todo:''});   //clears out input after submit
