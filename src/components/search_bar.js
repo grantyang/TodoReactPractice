@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 class SearchBar extends Component {
     constructor(props){
         super(props);
-
         this.state = {term: ''};
     }
 
@@ -15,6 +14,7 @@ class SearchBar extends Component {
         this.setState({term: ''}); //clear out search term
     }
 
+
     render(){
         return (
             <div>
@@ -23,6 +23,11 @@ class SearchBar extends Component {
                         value = {this.state.term}
                         placeholder= "Search for a Todo"
                         onChange = {event => this.onInputChange(event.target.value)}/>
+
+                    <button type="submit"> Search </button>
+                    <button onClick= {() => this.props.setSearch()}>
+                        Clear Search
+                    </button>
                 </form>
             </div>
         );

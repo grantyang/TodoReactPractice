@@ -4,8 +4,7 @@ class TodoListItem extends Component{
  
     constructor(props){
         super(props);
-
-        this.state = {text: this.props.todo.text}; // init state to blank
+        this.state = {text: this.props.todo.text};  // init state to blank
     }
 
 
@@ -19,8 +18,13 @@ class TodoListItem extends Component{
     }
 
 
+
+
     render(){
-        if (this.props.todo.editMode === true){  //edit mode
+        if (this.props.todo.saving === true){
+            return <li>saving...</li>
+        }
+        else if (this.props.todo.editMode === true){  //edit mode
             return (
                 <li>
                     <form onSubmit= {this.onEditSubmit}>

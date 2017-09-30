@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 export default class Input extends Component{
     constructor(props){
         super(props);
-
         this.state = {todo: ''}; // init state to blank
         //this.onInputChange = this.onInputChange.bind(this); // bind context to this
         //this.onInputSubmit = this.onInputSubmit.bind(this);

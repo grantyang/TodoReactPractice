@@ -10,65 +10,120 @@ import { Link } from 'react-router-dom';
 class App extends Component {
   constructor(props){
     super(props);
-
     this.state = { 
       todoList:[],
       filter: "ALL",
-      searchTerm: ''
+      searchTerm: '',
+      loading: true
     };
-
   }
 
-  addToList = (todoItem) => { //fat arrow function instead of binding separately
-    console.log(this.state.todoList);
-    if (!todoItem) {
-      alert('Please input a value');
-    }
-    
-    else if (this.state.todoList.find(item => item.text===todoItem)){ //if there is a duplicate
-      alert('Todo item already exists');
-    }
-
-    else if (todoItem){
-      const todoObj = {
-        text: todoItem,
-        completed: false,
-        editMode: false
-      };
+  componentDidMount(){
+    fetch('http://localhost:5000/todos',{ 
+      method: 'GET'})
+    .then(res => { return res.json()})
+    .then( returnedList => {
       this.setState({
-        todoList:[todoObj, ...this.state.todoList] // add todoItem to todoList
+        todoList: returnedList, // load in initial list from server     
+        loading: false   
       });
-    }
-  }
-
-  toggleCompleted = (todo) => {
-    this.setState({
-      todoList: this.state.todoList.map(item => {
-        if (item.text !== todo.text){ //if an item does not match text
-          // then return it to the new array without touching it
-
-          return item;
-        }
-        // otherwise, return the item with a value changed.
-        // EQUIV shortand: return Object.extend({}, todo, { completed: true})
-        else return {
-          ...todo,
-          completed: !item.completed 
-        };
-      })
     })
   }
+  //componentDidMount
+  //get request
+  //runs once
 
-  clearAll = () => {
-    this.setState({
-      todoList: []
-    });        
+  addToList = (todoText) => { //fat arrow function instead of binding separately
+    console.log(this.state.todoList);
+    if (!todoText) {
+      alert('Please input a value');
+    }
+    else if (this.state.todoList.find(item => item.text===todoText)){ //if there is a duplicate
+      alert('Todo item already exists');
+    }
+    else if (todoText){
+      const todoObj = {
+        text: todoText,
+        completed: false,
+        editMode: false,
+        saving: false
+      };
+      fetch('http://localhost:5000/todos',{ 
+        method: 'POST', 
+        body: JSON.stringify(todoObj),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => { return res.json()})
+      .then(newTodo => {
+        this.setState({
+          todoList:[newTodo, ...this.state.todoList] // add new Object to todoList
+        });
+      })
+    }
+  }
+
+ 
+  toggleCompleted = (todo) => {
+    
+    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
+      method: 'PUT', 
+      body: JSON.stringify({completed: !todo.completed}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => { return res.json()})
+    .then(newTodo => {
+      this.setState({
+        todoList: this.state.todoList.map(item => {
+          if (item.text !== todo.text){ //if an item does not match text
+            // then return it to the new array without touching it
+            
+            return item;
+          }
+          // otherwise, return the item with a value changed.
+          // EQUIV shortand: return Object.extend({}, todo, { completed: true})
+          else return {
+            ...todo,
+            completed: !item.completed 
+          };
+        })
+      });
+    })
+
+    
+  }
+
+  clearAll = () => { 
+    fetch(
+        `http://localhost:5000/todos/`, 
+        {method: 'DELETE'})
+    .then(() => {
+      this.setState({
+        todoList: []
+      });     
+    })
+    .catch(error => {
+      return error;
+    })
   }
 
   
   clearComplete = () => {
-    const newList = this.state.todoList.filter((item) => item.completed === false)
-    this.setState({todoList:newList});
+    fetch(
+      `http://localhost:5000/todos?completed=true`, 
+      {method: 'DELETE'})
+    .then(() => {
+      const newList = this.state.todoList.filter((item) => item.completed === false)
+      this.setState({todoList:newList}); 
+    })
+    .catch(error => {
+      return error;
+    })
   }
 
   count = () => {
@@ -81,13 +136,22 @@ class App extends Component {
     return total;
   }
 
+
   delete = (todo) => {
-    const newList = this.state.todoList.filter((item) => item.text !== todo.text)
-    this.setState({todoList:newList});
-  }
+    fetch(
+        `http://localhost:5000/todos/${todo.id}`, 
+        {method: 'DELETE'})
+    .then(() => {
+      const newList = this.state.todoList.filter((item) => item.text !== todo.text)
+      this.setState({todoList:newList}); 
+    })
+    .catch(error => {
+      return error;
+    })
+}  
+
 
   editMode = (todo) => {
-    //when clicked, change field to input. onSubmit, create new array with todo.text of this todo updated.
     this.setState({
       todoList: this.state.todoList.map(item => {
         if (item.text !== todo.text){ 
@@ -101,6 +165,8 @@ class App extends Component {
     });
   }
 
+
+
   save = (todo, newText) => {
     this.setState({
       todoList: this.state.todoList.map(item => {
@@ -109,12 +175,37 @@ class App extends Component {
         }
         else return {
           ...todo,
-          text: newText,
-          editMode: false 
+          saving: true
         };
       })
     });
+
+    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
+      method: 'PUT', 
+      body: JSON.stringify({text: newText}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => { return res.json()})
+    .then(() => {
+      this.setState({
+        todoList: this.state.todoList.map(item => {
+          if (item.text !== todo.text){ 
+            return item;
+          }
+          else return {
+            ...todo,
+            text: newText,
+            editMode: false,
+            saving: false
+          };
+        })
+      });
+    })
   }
+
 
   showAll = () => {
     this.setState({filter: "ALL"});
@@ -144,7 +235,7 @@ class App extends Component {
     return this.getVisibleTodos().filter(todo => {
      if (this.state.searchTerm === '') return todo;
      else if (todo.text.includes(this.state.searchTerm)) return todo;
-    })
+    });
   }
 
     //get visible todos, then filter further based on search term. return that in TodoList instead.
@@ -171,6 +262,7 @@ class App extends Component {
                     delete= {this.delete}
                     editMode= {this.editMode}
                     save= {this.save}
+                    loading= {this.state.loading}
           />
           <Footer clear= {this.clearAll} 
                   clearComplete= {this.clearComplete}
@@ -182,7 +274,6 @@ class App extends Component {
            <Link className= "btn btn-primary" to="/about"> About Us </Link>
         </div>
       </div>
-      
     );
   }
 }
