@@ -1,19 +1,15 @@
 import React from 'react';
 import TodoListItem from './todo_list_item.js';
+import { Link } from 'react-router-dom'; 
 
 const TodoList = (props) => {
     if (props.loading) return (<h1>LOADING</h1>)
     else{
         const todoItems = props.todoList.map((todo) => {
             return (
-                <TodoListItem
-                    key= {todo.text}
-                    todo= {todo}
-                    toggleCompleted= {props.toggleCompleted}
-                    delete= {props.delete}
-                    editMode= {props.editMode}
-                    save= {props.save}
-                    />
+                <li key={todo.id}>
+                <Link className= "btn btn-secondary" to={`/todo/${todo.id}`}>{todo.text}</Link>
+                </li>
             );
         });
     
@@ -22,5 +18,6 @@ const TodoList = (props) => {
         );
     }
 }
+
 
 export default TodoList;

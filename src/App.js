@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    fetch('http://localhost:5000/todos',{ 
+    fetch('http://localhost:5000/todos/',{ 
       method: 'GET'})
     .then(res => { return res.json()})
     .then( returnedList => {
@@ -29,6 +29,10 @@ class App extends Component {
       });
     })
   }
+      // setTimeout(function(){
+    //     res.json(updatedTodo) 
+
+    // },1000)
   //componentDidMount
   //get request
   //runs once
@@ -66,37 +70,6 @@ class App extends Component {
   }
 
  
-  toggleCompleted = (todo) => {
-    
-    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
-      method: 'PUT', 
-      body: JSON.stringify({completed: !todo.completed}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => { return res.json()})
-    .then(newTodo => {
-      this.setState({
-        todoList: this.state.todoList.map(item => {
-          if (item.text !== todo.text){ //if an item does not match text
-            // then return it to the new array without touching it
-            
-            return item;
-          }
-          // otherwise, return the item with a value changed.
-          // EQUIV shortand: return Object.extend({}, todo, { completed: true})
-          else return {
-            ...todo,
-            completed: !item.completed 
-          };
-        })
-      });
-    })
-
-    
-  }
 
   clearAll = () => { 
     fetch(
@@ -137,74 +110,8 @@ class App extends Component {
   }
 
 
-  delete = (todo) => {
-    fetch(
-        `http://localhost:5000/todos/${todo.id}`, 
-        {method: 'DELETE'})
-    .then(() => {
-      const newList = this.state.todoList.filter((item) => item.text !== todo.text)
-      this.setState({todoList:newList}); 
-    })
-    .catch(error => {
-      return error;
-    })
-}  
 
 
-  editMode = (todo) => {
-    this.setState({
-      todoList: this.state.todoList.map(item => {
-        if (item.text !== todo.text){ 
-          return item;
-        }
-        else return {
-          ...todo,
-          editMode: true 
-        };
-      })
-    });
-  }
-
-
-
-  save = (todo, newText) => {
-    this.setState({
-      todoList: this.state.todoList.map(item => {
-        if (item.text !== todo.text){ 
-          return item;
-        }
-        else return {
-          ...todo,
-          saving: true
-        };
-      })
-    });
-
-    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
-      method: 'PUT', 
-      body: JSON.stringify({text: newText}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => { return res.json()})
-    .then(() => {
-      this.setState({
-        todoList: this.state.todoList.map(item => {
-          if (item.text !== todo.text){ 
-            return item;
-          }
-          else return {
-            ...todo,
-            text: newText,
-            editMode: false,
-            saving: false
-          };
-        })
-      });
-    })
-  }
 
 
   showAll = () => {
@@ -220,6 +127,9 @@ class App extends Component {
   }
 
   getVisibleTodos = () => { //return list of items based on filter
+    console.log(this.state.todoList);
+    console.log(this.state.filter);
+    
     return this.state.todoList.filter( todo => {
       if (this.state.filter === "ALL") return todo;
       if (this.state.filter === "COMPLETED") return todo.completed;
