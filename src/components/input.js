@@ -20,8 +20,8 @@ export default class Input extends Component{
 
     render(){
         return(
-            <div className="row">
-            <form className='input-group col-md-2 col-md-offset-5' onSubmit= {this.onInputSubmit}>
+            <div className='col-md-12'>
+            <form className='input input-group col-md-2 col-md-offset-5' onSubmit= {this.onInputSubmit}>
                 <input 
                     type='text'
                     className= 'form-control'

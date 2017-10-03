@@ -7,7 +7,7 @@ const TodoList = (props) => {
     else{
         const todoItems = props.todoList.map((todo) => {
             return (
-                <Link key={todo.id} className= "btn btn-secondary list-group-item col-md-4 col-md-offset-4" to={`/todo/${todo.id}`}>{todo.text}</Link>
+                <Link key={todo.id} className= {`btn btn-secondary list-group-item col-md-4 col-md-offset-4 completed${todo.completed}`} to={`/todo/${todo.id}`}>{todo.text}</Link>
             );
         });
         return (

@@ -132,19 +132,28 @@ class TodoListItem extends Component{
             );
         }
         else {  //view mode
+            const todo = this.state.todo;
             return (
                 <div className='col-md-4 col-md-offset-4'>
-                    <span className= {this.state.todo.completed}> 
-                        <span className= 'todoItem list-group-item' onClick= {() => this.toggleCompleted(this.state.todo)}>{this.state.todo.text}</span> 
-                        
-                        <button className= 'col-md-5 btn btn-item btn-warning' onClick= {() => this.editMode(this.state.todo)}>
-                            Edit
-                        </button>
+                    <span className= {`completed${todo.completed}`}> 
+                        <span className= 'todoItem list-group-item'>{todo.text}</span> 
+                     </span>
 
-                        <button className= 'col-md-5 col-md-offset-2 btn btn-item  btn-danger' onClick= {() => this.delete(this.state.todo)}>
-                            Delete
-                        </button>
-                    </span>
+                    <button className= 'col-md-3 btn btn-item btn-warning' 
+                        onClick= {() => this.editMode(todo)}>
+                        Edit
+                    </button>
+
+                    <button className= 'col-md-4 col-md-offset-1 btn btn-item btn-info' 
+                        onClick= {() => this.toggleCompleted(todo)}>
+                        Toggle Completed
+                    </button>
+
+                    <button className= 'col-md-3 col-md-offset-1 btn btn-item  btn-danger' 
+                        onClick= {() => this.delete(todo)}>
+                        Delete
+                    </button>
+                    
                     <div>
                     <Link className= "col-md-12 btn btn-item btn-primary" to="/"> Return Home </Link>
                     </div>

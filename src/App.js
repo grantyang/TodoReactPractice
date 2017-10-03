@@ -144,7 +144,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Grant's TodoList</h2>
+          <h2 className="Header-text">Grant's TodoList</h2>
         </div>
         <div>
           <SearchBar setSearch= {this.setSearch} />

@@ -5,16 +5,16 @@ body {
   background-image: url("topography.png");  
 }
 
-.true {
+.completedtrue {
   text-decoration: line-through;  
 }
 
 .btn-footer {
-  margin-right: 4px;
-  margin-top: 4px;
+  margin-right: 6px;
+  margin-top: 6px;
 }
 
-.input-group{
+.input{
   margin: 6px;
 }
 
@@ -23,13 +23,14 @@ body {
 }
 
 .todoItem{
-  margin: 0px 0px 10px 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;  
 }
 
 .btn-item{
   margin-top: 10px; 
 }
 
-.todoItem{
-  margin-top: 10px;
+.Header-text{
+  margin-top: 0px;
 }
