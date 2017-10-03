@@ -8,7 +8,6 @@ export default class Input extends Component{
         //this.onInputSubmit = this.onInputSubmit.bind(this);
     }
 
-
     onInputChange = (event) => {  // when input is changed, update state
         this.setState({todo: event.target.value});
     }
@@ -18,18 +17,6 @@ export default class Input extends Component{
         this.props.onTodoSubmit(this.state.todo);
         this.setState({todo:''});   //clears out input after submit
     }
-
-//     <div class="row">
-//     <div class="col-lg-6">
-//       <div class="input-group">
-//         <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
-//         <span class="input-group-btn">
-//           <button class="btn btn-secondary" type="button">Go!</button>
-//         </span>
-//       </div>
-//     </div>
-//   </div>
-
 
     render(){
         return(
@@ -42,7 +29,6 @@ export default class Input extends Component{
                     value= {this.state.todo}        // grab value from state
                     onChange= {this.onInputChange}  // update state on change
                     />            
-
                 <span className='input-group-btn'>
                     <button className='btn btn-success' type= "submit">Add</button>
                 </span>
@@ -50,7 +36,5 @@ export default class Input extends Component{
             </div>
         );
     }
-
-
 }
 

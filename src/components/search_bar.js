@@ -11,7 +11,6 @@ class SearchBar extends Component {
         this.props.setSearch(term);
     }
 
-
     render(){
         return (
             <div className='row'>
@@ -26,8 +25,6 @@ class SearchBar extends Component {
             </div>
         );
     }
-
-
 }
 
 export default SearchBar;

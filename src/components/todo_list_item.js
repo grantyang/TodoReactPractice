@@ -8,8 +8,6 @@ class TodoListItem extends Component{
           method: 'GET'})
         .then(res => { return res.json()})
         .then( returnedItem => {
-            console.log('loaded.')
-            console.log(returnedItem)
           this.setState({        
             todo: returnedItem, // load in initial list from server     
             text: returnedItem.text,    
@@ -27,7 +25,6 @@ class TodoListItem extends Component{
     }
     
     onEditChange = (event) => {  // when input is changed, update state
-        console.log(event.target);
         this.setState({text: event.target.value});
     }
 
@@ -52,7 +49,6 @@ class TodoListItem extends Component{
           saving: true
       }
     });
-
     fetch(`http://localhost:5000/todos/${todo.id}`,{ 
       method: 'PUT', 
       body: JSON.stringify({text: newText}),
@@ -73,11 +69,8 @@ class TodoListItem extends Component{
       });
     })
   }
-    
-
 
   toggleCompleted = (todo) => {
-    
     fetch(`http://localhost:5000/todos/${todo.id}`,{ 
       method: 'PUT', 
       body: JSON.stringify({completed: !todo.completed}),
@@ -111,56 +104,51 @@ class TodoListItem extends Component{
 
     render(){
         if (this.state.loading === true){
-            return <li>loading...</li>
+            return <b>Please wait, loading...</b>
         }
         else if (this.state.todo.saving === true){
-            return <li>saving...</li>
+            return <b>Please wait, saving...</b>
         }
         else if (this.state.todo.editMode === true){  //edit mode
             return (
                 <div className='col-md-4 col-md-offset-4'>
-                    <div className='todoItem'>
-                        <form onSubmit= {this.onEditSubmit}>
-                            <input 
-                                className='list-group-item col-md-12'
-                                type="text" 
-                                value={this.state.text}
-                                onChange= {this.onEditChange}  // update state on change
-                            />
+                    <form onSubmit= {this.onEditSubmit}>
+                        <input 
+                            className='todoItem list-group-item col-md-12'
+                            type="text" 
+                            value={this.state.text}
+                            onChange= {this.onEditChange}  // update state on change
+                        />
 
-                            <button className= 'btn btn-item col-md-5 btn-success' type="submit" >
-                                Save
-                            </button>
+                        <button className= 'btn btn-item col-md-5 btn-success' type="submit" >
+                            Save
+                        </button>
 
-                            <button className= 'btn btn-item col-md-5 col-md-offset-2 btn-danger' onClick= {() => this.delete(this.state.todo)}>
-                                Delete
-                            </button>
-                        </form>
-                    </div>
+                        <button className= 'btn btn-item col-md-5 col-md-offset-2 btn-danger' onClick= {() => this.delete(this.state.todo)}>
+                            Delete
+                        </button>
+                    </form>
                 </div>
             );
         }
         else {  //view mode
             return (
                 <div className='col-md-4 col-md-offset-4'>
-                    <div className='todoItem'>
-                        <span className= {this.state.todo.completed} > 
-                            <span className= 'list-group-item' onClick= {() => this.toggleCompleted(this.state.todo)}>{this.state.todo.text}</span> 
-                            
-                            <button className= 'col-md-5 btn btn-item btn-warning' onClick= {() => this.editMode(this.state.todo)}>
-                                Edit
-                            </button>
+                    <span className= {this.state.todo.completed}> 
+                        <span className= 'todoItem list-group-item' onClick= {() => this.toggleCompleted(this.state.todo)}>{this.state.todo.text}</span> 
+                        
+                        <button className= 'col-md-5 btn btn-item btn-warning' onClick= {() => this.editMode(this.state.todo)}>
+                            Edit
+                        </button>
 
-                            <button className= 'col-md-5 col-md-offset-2 btn btn-item  btn-danger' onClick= {() => this.delete(this.state.todo)}>
-                                Delete
-                            </button>
-                        </span>
-                    </div>
+                        <button className= 'col-md-5 col-md-offset-2 btn btn-item  btn-danger' onClick= {() => this.delete(this.state.todo)}>
+                            Delete
+                        </button>
+                    </span>
                     <div>
                     <Link className= "col-md-12 btn btn-item btn-primary" to="/"> Return Home </Link>
                     </div>
                 </div>
-
             );
         }
     }

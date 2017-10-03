@@ -33,9 +33,6 @@ class App extends Component {
     //     res.json(updatedTodo) 
 
     // },1000)
-  //componentDidMount
-  //get request
-  //runs once
 
   addToList = (todoText) => { //fat arrow function instead of binding separately
     console.log(this.state.todoList);
@@ -67,9 +64,7 @@ class App extends Component {
         });
       })
     }
-  }
-
- 
+  } 
 
   clearAll = () => { 
     fetch(
@@ -84,7 +79,6 @@ class App extends Component {
       return error;
     })
   }
-
   
   clearComplete = () => {
     fetch(
@@ -122,10 +116,7 @@ class App extends Component {
     this.setState({filter: "ACTIVE"});
   }
 
-  getVisibleTodos = () => { //return list of items based on filter
-    console.log(this.state.todoList);
-    console.log(this.state.filter);
-    
+  getVisibleTodos = () => { //return list of items based on filter    
     return this.state.todoList.filter( todo => {
       if (this.state.filter === "ALL") return todo;
       if (this.state.filter === "COMPLETED") return todo.completed;
@@ -147,8 +138,6 @@ class App extends Component {
     //get visible todos, then filter further based on search term. return that in TodoList instead.
     //if searchTerm is part of any todo.text, show the todo.text, otherwise no show
     //reset searchTerm with button?
-    
-  
 
   render() {
     return (
