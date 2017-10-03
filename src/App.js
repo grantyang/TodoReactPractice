@@ -157,9 +157,6 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Grant's TodoList</h2>
         </div>
-        <p className="App-intro">
-          To add items to the list, input below.
-        </p>
         <div>
           <SearchBar setSearch= {this.setSearch} />
           <Input onTodoSubmit= {this.addToList} /*pass onToDoSubmit as prop*/ />

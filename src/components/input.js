@@ -19,20 +19,35 @@ export default class Input extends Component{
         this.setState({todo:''});   //clears out input after submit
     }
 
+//     <div class="row">
+//     <div class="col-lg-6">
+//       <div class="input-group">
+//         <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+//         <span class="input-group-btn">
+//           <button class="btn btn-secondary" type="button">Go!</button>
+//         </span>
+//       </div>
+//     </div>
+//   </div>
+
 
     render(){
         return(
-            <form onSubmit= {this.onInputSubmit}>
+            <div className="row">
+            <form className='input-group col-md-2 col-md-offset-5' onSubmit= {this.onInputSubmit}>
                 <input 
-                    placeholder= 'Input list items here'
+                    type='text'
+                    className= 'form-control'
+                    placeholder= 'Input new Todos here'
                     value= {this.state.todo}        // grab value from state
                     onChange= {this.onInputChange}  // update state on change
                     />            
 
-                <span>
-                    <button type= "submit">Add</button>
+                <span className='input-group-btn'>
+                    <button className='btn btn-success' type= "submit">Add</button>
                 </span>
             </form>
+            </div>
         );
     }
 

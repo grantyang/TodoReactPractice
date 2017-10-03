@@ -9,7 +9,7 @@ export default class Footer extends Component {
                 <button className="btn btn-footer btn-default" onClick={this.props.showAll}>Show All</button>
                 <button className="btn btn-footer btn-default" onClick={this.props.showCompleted}>Show Completed</button>
                 <button className="btn btn-footer btn-default" onClick={this.props.showActive}>Show Active</button>
-                <p>Items Left: {this.props.count()}</p>
+                <p className="counter">Items Left: {this.props.count()}</p>
             </div>
 
         );

@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 .true {
@@ -11,4 +11,24 @@ body {
 .btn-footer {
   margin-right: 4px;
   margin-top: 4px;
+}
+
+.input-group{
+  margin: 6px;
+}
+
+.counter{
+  margin: 5px;
+}
+
+.todoItem{
+  margin: 0px 0px 10px 0px;
+}
+
+.btn-item{
+  margin-top: 10px; 
+}
+
+.todoItem{
+  margin-top: 10px;
 }

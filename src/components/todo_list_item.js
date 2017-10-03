@@ -18,15 +18,6 @@ class TodoListItem extends Component{
         })
       }
 
-                      // <TodoListItem
-                //     todo= {todo}
-                //     toggleCompleted= {props.toggleCompleted}
-                //     delete= {props.delete}
-                //     editMode= {props.editMode}
-                //     save= {props.save}
-                //     />
-
-
     constructor(props){
         super(props);
         this.state = {text: '',
@@ -35,7 +26,6 @@ class TodoListItem extends Component{
                     }; 
     }
     
-
     onEditChange = (event) => {  // when input is changed, update state
         console.log(event.target);
         this.setState({text: event.target.value});
@@ -46,8 +36,6 @@ class TodoListItem extends Component{
         this.save(this.state.todo, this.state.text);
     }
 
-    
-
     editMode = (todo) => {
         this.setState({
           todo: {
@@ -56,7 +44,6 @@ class TodoListItem extends Component{
             }
         });
       }
-
 
   save = (todo, newText) => {
     this.setState({
@@ -110,7 +97,6 @@ class TodoListItem extends Component{
     })    
   }
 
-
     delete = (todo) => {
         fetch(
             `http://localhost:5000/todos/${todo.id}`, 
@@ -123,8 +109,6 @@ class TodoListItem extends Component{
         })
     }  
 
-
-
     render(){
         if (this.state.loading === true){
             return <li>loading...</li>
@@ -134,41 +118,49 @@ class TodoListItem extends Component{
         }
         else if (this.state.todo.editMode === true){  //edit mode
             return (
-                <span>
-                    <form onSubmit= {this.onEditSubmit}>
-                        <input 
-                            type="text" 
-                            value={this.state.text}
-                            onChange= {this.onEditChange}  // update state on change
-                        />
+                <div className='col-md-4 col-md-offset-4'>
+                    <div className='todoItem'>
+                        <form onSubmit= {this.onEditSubmit}>
+                            <input 
+                                className='list-group-item col-md-12'
+                                type="text" 
+                                value={this.state.text}
+                                onChange= {this.onEditChange}  // update state on change
+                            />
 
-                        <button type="submit" >
-                            Save
-                        </button>
+                            <button className= 'btn btn-item col-md-5 btn-success' type="submit" >
+                                Save
+                            </button>
 
-                        <button onClick= {() => this.delete(this.state.todo)}>
-                            Delete
-                        </button>
-                    </form>
-                </span>
+                            <button className= 'btn btn-item col-md-5 col-md-offset-2 btn-danger' onClick= {() => this.delete(this.state.todo)}>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
             );
         }
         else {  //view mode
             return (
-                <span className= {this.state.todo.completed} > 
-                    <span onClick= {() => this.toggleCompleted(this.state.todo)}>{this.state.todo.text}</span> 
-                    
-                    <button onClick= {() => this.editMode(this.state.todo)}>
-                        Edit
-                    </button>
+                <div className='col-md-4 col-md-offset-4'>
+                    <div className='todoItem'>
+                        <span className= {this.state.todo.completed} > 
+                            <span className= 'list-group-item' onClick= {() => this.toggleCompleted(this.state.todo)}>{this.state.todo.text}</span> 
+                            
+                            <button className= 'col-md-5 btn btn-item btn-warning' onClick= {() => this.editMode(this.state.todo)}>
+                                Edit
+                            </button>
 
-                    <button onClick= {() => this.delete(this.state.todo)}>
-                        Delete
-                    </button>
+                            <button className= 'col-md-5 col-md-offset-2 btn btn-item  btn-danger' onClick= {() => this.delete(this.state.todo)}>
+                                Delete
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                    <Link className= "col-md-12 btn btn-item btn-primary" to="/"> Return Home </Link>
+                    </div>
+                </div>
 
-                    <Link className= "btn btn-primary" to="/"> Return Home </Link>
-
-                </span>
             );
         }
     }
