@@ -7,3 +7,8 @@ body {
 .true {
   text-decoration: line-through;  
 }
+
+.btn-footer {
+  margin-right: 4px;
+  margin-top: 4px;
+}

@@ -7,14 +7,14 @@ const TodoList = (props) => {
     else{
         const todoItems = props.todoList.map((todo) => {
             return (
-                <li key={todo.id}>
-                <Link className= "btn btn-secondary" to={`/todo/${todo.id}`}>{todo.text}</Link>
-                </li>
+                
+                <Link key={todo.id} className= "btn btn-secondary list-group-item col-md-4 col-md-offset-4" to={`/todo/${todo.id}`}>{todo.text}</Link>
+                
             );
         });
     
         return (
-            <ol > {todoItems} </ol>
+            <div> {todoItems} </div>
         );
     }
 }

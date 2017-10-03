@@ -110,10 +110,6 @@ class App extends Component {
   }
 
 
-
-
-
-
   showAll = () => {
     this.setState({filter: "ALL"});
   }
@@ -167,21 +163,19 @@ class App extends Component {
         <div>
           <SearchBar setSearch= {this.setSearch} />
           <Input onTodoSubmit= {this.addToList} /*pass onToDoSubmit as prop*/ />
-          <TodoList todoList= {this.search()}
-                    toggleCompleted= {this.toggleCompleted} 
-                    delete= {this.delete}
-                    editMode= {this.editMode}
-                    save= {this.save}
+          <TodoList className= ""
+                    todoList= {this.search()}
                     loading= {this.state.loading}
           />
-          <Footer clear= {this.clearAll} 
+          <Footer className= "list-group"
+                  clear= {this.clearAll} 
                   clearComplete= {this.clearComplete}
                   showAll= {this.showAll}
                   showCompleted= {this.showCompleted}
                   showActive={this.showActive}
                   count= {this.count}
            />
-           <Link className= "btn btn-primary" to="/about"> About Us </Link>
+           <Link className= "btn btn-primary col-md-2 col-md-offset-5" to="/about"> About Us </Link>
         </div>
       </div>
     );
