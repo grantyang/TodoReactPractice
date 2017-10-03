@@ -6,12 +6,9 @@ class SearchBar extends Component {
         this.state = {term: ''};
     }
 
-    onInputChange = (term) => this.setState({term})
-
-    onSearchSubmit = (event) => {
-        event.preventDefault();
-        this.props.setSearch(this.state.term); //search for term
-        this.setState({term: ''}); //clear out search term
+    onInputChange = (term) => {
+        this.setState({term})
+        this.props.setSearch(term);
     }
 
 
@@ -37,17 +34,15 @@ class SearchBar extends Component {
     render(){
         return (
             <div className='row'>
-                <form className='col-md-4 col-md-offset-4' onSubmit= {this.onSearchSubmit}>
+                <form className='col-md-4 col-md-offset-4'>
                     <input 
                         type= 'text'
                         className= 'form-control'
                         value= {this.state.term}
                         placeholder= "Search for a Todo"
                         onChange= {event => this.onInputChange(event.target.value)}/>
-                    <span className='input-group-btn'>
-                        <button className='btn btn-secondary' type="button"> Search </button>
-                    </span>
-                    <button onClick= {() => this.props.setSearch()}> Clear Search </button>
+                    
+                    
                 </form>
             </div>
         );
