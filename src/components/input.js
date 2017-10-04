@@ -1,21 +1,24 @@
 import React, {Component} from 'react';
 
+//single text input form
+//onSubmit f(x)
+
 export default class Input extends Component{
     constructor(props){
         super(props);
-        this.state = {todo: ''}; // init state to blank
+        this.state = {text: ''}; // init state to blank
         //this.onInputChange = this.onInputChange.bind(this); // bind context to this
         //this.onInputSubmit = this.onInputSubmit.bind(this);
     }
 
     onInputChange = (event) => {  // when input is changed, update state
-        this.setState({todo: event.target.value});
+        this.setState({text: event.target.value});
     }
 
-    onInputSubmit = (event) => {   // when input is submitted, add to App state
+    onInputSubmit = (event) => {   // when input is submitted, run fx
         event.preventDefault();
-        this.props.onTodoSubmit(this.state.todo);
-        this.setState({todo:''});   //clears out input after submit
+        this.props.fxToRun(this.state.text);
+        this.setState({text:''});   //clears out input after submit
     }
 
     render(){
@@ -25,12 +28,12 @@ export default class Input extends Component{
                 <input 
                     type='text'
                     className= 'form-control'
-                    placeholder= 'Input new Todos here'
-                    value= {this.state.todo}        // grab value from state
+                    placeholder= 'Input text here'
+                    value= {this.state.text}        // grab value from state
                     onChange= {this.onInputChange}  // update state on change
                     />            
                 <span className='input-group-btn'>
-                    <button className='btn btn-success' type= "submit">Add</button>
+                    <button className='btn btn-success' type= "submit">Submit</button>
                 </span>
             </form>
             </div>

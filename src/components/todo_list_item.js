@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 class TodoListItem extends Component{
     componentDidMount(){
-        const itemId= this.props.match.params.itemid;        
-        fetch(`http://localhost:5000/todos/${itemId}`,{ 
+        const itemId= this.props.match.params.itemId;        
+        fetch(`http://localhost:5000/list/${this.getListName()}/${itemId}`,{ 
           method: 'GET'})
         .then(res => { return res.json()})
         .then( returnedItem => {
           this.setState({        
             todo: returnedItem, // load in initial list from server     
-            text: returnedItem.text,    
+            text: returnedItem.text,    //GY initialTextInputValue
             loading: false   
           });
         })
@@ -24,6 +24,9 @@ class TodoListItem extends Component{
                     }; 
     }
     
+    getListName = () => {
+        return this.props.match.params.listName;   
+    }
     onEditChange = (event) => {  // when input is changed, update state
         this.setState({text: event.target.value});
     }
@@ -49,7 +52,7 @@ class TodoListItem extends Component{
           saving: true
       }
     });
-    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
+    fetch(`http://localhost:5000/list/${this.getListName()}/${todo.id}`,{
       method: 'PUT', 
       body: JSON.stringify({text: newText}),
       headers: {
@@ -71,7 +74,7 @@ class TodoListItem extends Component{
   }
 
   toggleCompleted = (todo) => {
-    fetch(`http://localhost:5000/todos/${todo.id}`,{ 
+    fetch(`http://localhost:5000/list/${this.getListName()}/${todo.id}`,{
       method: 'PUT', 
       body: JSON.stringify({completed: !todo.completed}),
       headers: {
@@ -90,12 +93,13 @@ class TodoListItem extends Component{
     })    
   }
 
-    delete = (todo) => {
+    delete = (todo) => {        
+        console.log(this.getListName())
         fetch(
-            `http://localhost:5000/todos/${todo.id}`, 
+            `http://localhost:5000/list/${this.getListName()}/${todo.id}`,
             {method: 'DELETE'})
          .then(() => {
-            window.history.back();
+            window.history.back();//GY react router navigation withRouter history.push state /programatically navigate
          })
         .catch(error => {
           return error;
@@ -109,7 +113,7 @@ class TodoListItem extends Component{
         else if (this.state.todo.saving === true){
             return <b>Please wait, saving...</b>
         }
-        else if (this.state.todo.editMode === true){  //edit mode
+        else if (this.state.todo.editMode === true){  //edit mode //GY two different components
             return (
                 <div className='col-md-4 col-md-offset-4'>
                     <form onSubmit= {this.onEditSubmit}>
@@ -133,6 +137,7 @@ class TodoListItem extends Component{
         }
         else {  //view mode
             const todo = this.state.todo;
+            const listName= this.props.match.params.listName;   
             return (
                 <div className='col-md-4 col-md-offset-4'>
                     <span className= {`completed${todo.completed}`}> 
@@ -155,7 +160,7 @@ class TodoListItem extends Component{
                     </button>
                     
                     <div>
-                    <Link className= "col-md-12 btn btn-item btn-primary" to="/"> Return Home </Link>
+                    <Link className= "col-md-12 btn btn-item btn-primary" to={`/list/${this.getListName()}`}> Return to List </Link>
                     </div>
                 </div>
             );
