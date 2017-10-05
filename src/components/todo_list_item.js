@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import TodoListItemView from './todo_list_item_view';
+import TodoListItemEdit from './todo_list_item_edit';
 
 class TodoListItem extends Component {
 	componentDidMount() {
@@ -13,7 +15,7 @@ class TodoListItem extends Component {
 			.then(returnedItem => {
 				this.setState({
 					todo: returnedItem, // load in initial list from server
-					text: returnedItem.text, //GY initialTextInputValue
+					initialTextInputValue: returnedItem.text, 
 					loading: false
 				});
 			});
@@ -22,7 +24,7 @@ class TodoListItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			text: '',
+			initialTextInputValue: '',
 			loading: true,
 			todo: {}
 		};
@@ -33,13 +35,13 @@ class TodoListItem extends Component {
 	};
 	onEditChange = event => {
 		// when input is changed, update state
-		this.setState({ text: event.target.value });
+		this.setState({ initialTextInputValue: event.target.value });
 	};
 
 	onEditSubmit = event => {
 		// when input is submitted, add to App state
 		event.preventDefault();
-		this.save(this.state.todo, this.state.text);
+		this.save(this.state.todo, this.state.initialTextInputValue);
 	};
 
 	editMode = todo => {
@@ -109,7 +111,7 @@ class TodoListItem extends Component {
 			method: 'DELETE'
 		})
 			.then(() => {
-				window.history.back(); //GY react router navigation withRouter history.push state /programatically navigate
+				this.props.history.push(`/list/${this.getListName()}`)								
 			})
 			.catch(error => {
 				return error;
@@ -121,76 +123,23 @@ class TodoListItem extends Component {
 			return <b>Please wait, loading...</b>;
 		} else if (this.state.todo.saving === true) {
 			return <b>Please wait, saving...</b>;
-		} else if (this.state.todo.editMode === true) {
-			//edit mode //GY two different components
-			return (
-				<div>
-					<div className="row justify-content-sm-center">
-						<form className="col-sm-8" onSubmit={this.onEditSubmit}>
-							<input
-								className="todoItem list-group-item col-sm-12"
-								type="text"
-								value={this.state.text}
-								onChange={this.onEditChange} // update state on change
-							/>
-						</form>
-					</div>
-					<div className="row justify-content-sm-center">
-						<button
-							className="col-sm-2 btn btn-item btn-success"
-							onClick={this.onEditSubmit}>
-							Save
-						</button>
-
-						<button
-							className="col-sm-2 btn btn-item btn-danger"
-							onClick={() => this.delete(this.state.todo)}>
-							Delete
-						</button>
-					</div>
-				</div>
-			);
-		} else {
-			//view mode
-			const todo = this.state.todo;
-			const listName = this.props.match.params.listName;
-			return (
-				<div>
-					<div className="row justify-content-sm-center">
-						<span className={`col-sm-8 completed${todo.completed}`}>
-							<span className="todoItem list-group-item">{todo.text}</span>
-						</span>
-					</div>
-					<div className="row justify-content-sm-center">
-						<button
-							className="col-sm-2 btn btn-item btn-warning"
-							onClick={() => this.editMode(todo)}>
-							Edit
-						</button>
-
-						<button
-							className="col-sm-2 btn btn-item btn-info"
-							onClick={() => this.toggleCompleted(todo)}>
-							Toggle Completed
-						</button>
-
-						<button
-							className="col-sm-2 btn btn-item  btn-danger"
-							onClick={() => this.delete(todo)}>
-							Delete
-						</button>
-					</div>
-					<div className="row justify-content-sm-center">
-						<Link
-							className="col-md-4 btn btn-item btn-primary"
-							to={`/list/${this.getListName()}`}>
-							{' '}
-							Return to List{' '}
-						</Link>
-					</div>
-				</div>
-			);
+		} else if (this.state.todo.editMode === false) { 
+			return  <TodoListItemView
+									todo={this.state.todo}
+									listName={this.props.match.params.listName}
+									editMode={this.editMode}
+									toggleCompleted={this.toggleCompleted}
+									delete={this.delete}
+									getListName={this.getListName}
+									/>;
 		}
+		return <TodoListItemEdit
+									onEditSubmit={this.onEditSubmit}
+									onEditChange={this.onEditChange}
+									initialTextInputValue={this.state.initialTextInputValue}
+									delete={this.delete}
+									todo={this.state.todo}
+									/>;
 	}
 }
 

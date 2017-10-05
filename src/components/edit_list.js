@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import { Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom'
 import Input from './input.js';
 
 export default class EditList extends Component {
@@ -30,7 +31,7 @@ export default class EditList extends Component {
 		return this.props.match.params.listName;
 	};
 
-	changeName = name => {
+	changeName = (name) => {
 		//change name of this list
 		fetch(`http://localhost:5000/list/${this.getListName()}`, {
 			method: 'PUT',
@@ -44,7 +45,7 @@ export default class EditList extends Component {
 				return res.json();
 			})
 			.then(() => {
-				window.location.replace(`http://localhost:3000/list/${name}`); //route back to list GY React router
+				this.props.history.push(`${name}`)				
 			});
 	};
 
@@ -54,7 +55,7 @@ export default class EditList extends Component {
 			method: 'DELETE'
 		})
 			.then(() => {
-				window.location.replace(`http://localhost:3000/`); //GY React router
+				window.location.replace(`http://localhost:3000/`);
 			})
 			.catch(error => {
 				return error;
