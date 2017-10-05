@@ -19,7 +19,8 @@ body {
 }
 
 .counter{
-  margin: 5px;
+  margin-bottom: 0px;
+  margin-top: 6px;
 }
 
 .todoItem{
@@ -28,7 +29,7 @@ body {
 }
 
 .btn-item{
-  margin-top: 10px; 
+  margin: 6px; 
 }
 
 .Header-text{
@@ -39,3 +40,10 @@ body {
   margin-top:6px;
 }
 
+.list-group{
+  padding-left: 15px !important; 
+}
+
+.search{
+  margin-top:6px;
+}

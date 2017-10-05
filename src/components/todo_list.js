@@ -1,22 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 
-const TodoList = (props) => {
-    if (props.loading) return (<h1>Please wait, loading...</h1>)
-    else{
-        const name = props.listName;
-        const todoItems = props.todoList.map((todo) => {
-            return (
-                <Link key={todo.id} 
-                className= {`btn btn-secondary list-group-item col-md-4 col-md-offset-4 completed${todo.completed}`} 
-                to={`/list/${name}/${todo.id}`}>{todo.text}</Link>
-            );
-        });
-        return (
-            <div> {todoItems} </div>
-        );
-    }
+const TodoList = ({loading,listName,todoList}) => { //done: ({loading, completed, id}) destructuring 
+    if (loading) return (<h1>Please wait, loading...</h1>)
+    return (
+        <div className='row justify-content-sm-center'> 
+            <div className='col-sm-8 list-group'>
+            {todoList.map((todo) => {
+                return (<Link key={todo.id} 
+                className= {`list-group-item completed${todo.completed}`} 
+                to={`/list/${listName}/${todo.id}`}>{todo.text}</Link>
+                );
+            })} 
+            </div>  
+        </div>
+    );
 }
+
 
 
 export default TodoList;

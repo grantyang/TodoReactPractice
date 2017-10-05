@@ -156,7 +156,7 @@ class List extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2 className="Header-text">{this.state.name}</h2>
         </div>
-        <div>
+        <div className='container'>
           <SearchBar setSearchTerm= {this.setSearchTerm}
                      term= {this.state.searchTerm} />
           <Input fxToRun= {this.addToList} /*pass addToList as prop*/ />
@@ -173,8 +173,14 @@ class List extends Component {
                   showActive={this.showActive}
                   count= {this.count}
            />
-           <Link className= "btn btn-warning col-md-2 col-md-offset-5" to={`/list/edit/${name}`}>Edit List </Link>
-           <Link className= "btn btn-item btn-primary col-md-2 col-md-offset-5" to="/"> Return Home </Link>
+          <div className='row justify-content-sm-center'>
+            <Link className= "btn col-sm-4 btn-item btn-warning" 
+            to={`/list/edit/${name}`}>Edit List </Link>
+          </div>
+          <div className='row justify-content-sm-center'>
+            <Link className= "btn col-sm-4 btn-item btn-primary " 
+            to="/"> Return Home </Link>
+          </div>
         </div>
       </div>
     );

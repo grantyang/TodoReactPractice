@@ -67,18 +67,17 @@ class App extends Component {
         return (
             <div className="List">
                 <div className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h2 className="Header-text">Grant's TodoLists</h2>
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h2 className="Header-text">Grant's TodoLists</h2>
                 </div>
-                <div>
-                <Input fxToRun= {this.create} /*pass addToList as prop*/ />
-                <ListOfLists className= ""
-                    listOfLists= {this.state.listOfLists}
-                    loading= {this.state.loading}
-                />
-                </div>
-                <Link className= "btn btn-primary about-home col-md-2 col-md-offset-5" to="/about"> About Us </Link>
-
+                <div className='container'>
+                    <Input fxToRun= {this.create} /*pass addToList as prop*/ />
+                    <ListOfLists className= ""
+                        listOfLists= {this.state.listOfLists}
+                        loading= {this.state.loading}
+                    />
+                    <Link className= "btn btn-outline-info about-home col-sm-4 justify-content-sm-center" to="/about"> About Us </Link>
+                </div>  
             </div>
         );
     }

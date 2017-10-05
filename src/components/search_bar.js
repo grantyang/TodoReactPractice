@@ -7,10 +7,10 @@ class SearchBar extends Component {
 
     render(){
         return (
-            <div className='col-md-2 col-md-offset-5'>
+            <div className='row justify-content-sm-center'>
                     <input 
                         type= 'text'
-                        className= 'form-control'
+                        className= 'form-control col-sm-6 search'
                         value= {this.props.term}
                         placeholder= "Search for a Todo"
                         onChange= {event => this.props.setSearchTerm(event.target.value)}/>

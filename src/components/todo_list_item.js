@@ -115,23 +115,26 @@ class TodoListItem extends Component{
         }
         else if (this.state.todo.editMode === true){  //edit mode //GY two different components
             return (
-                <div className='col-md-4 col-md-offset-4'>
-                    <form onSubmit= {this.onEditSubmit}>
-                        <input 
-                            className='todoItem list-group-item col-md-12'
-                            type="text" 
-                            value={this.state.text}
-                            onChange= {this.onEditChange}  // update state on change
-                        />
-
-                        <button className= 'btn btn-item col-md-5 btn-success' type="submit" >
+                <div>
+                    <div className='row justify-content-sm-center'>
+                        <form className='col-sm-8' onSubmit= {this.onEditSubmit}>
+                            <input 
+                                className='todoItem list-group-item col-sm-12'
+                                type="text" 
+                                value={this.state.text}
+                                onChange= {this.onEditChange}  // update state on change
+                            />
+                        </form>
+                    </div>
+                    <div className='row justify-content-sm-center'>
+                        <button className= 'col-sm-2 btn btn-item btn-success' onClick= {this.onEditSubmit}>
                             Save
                         </button>
 
-                        <button className= 'btn btn-item col-md-5 col-md-offset-2 btn-danger' onClick= {() => this.delete(this.state.todo)}>
+                        <button className= 'col-sm-2 btn btn-item btn-danger' onClick= {() => this.delete(this.state.todo)}>
                             Delete
                         </button>
-                    </form>
+                    </div>
                 </div>
             );
         }
@@ -139,28 +142,30 @@ class TodoListItem extends Component{
             const todo = this.state.todo;
             const listName= this.props.match.params.listName;   
             return (
-                <div className='col-md-4 col-md-offset-4'>
-                    <span className= {`completed${todo.completed}`}> 
-                        <span className= 'todoItem list-group-item'>{todo.text}</span> 
-                     </span>
+                <div>
+                    <div className='row justify-content-sm-center'>
+                        <span className= {`col-sm-8 completed${todo.completed}`}> 
+                            <span className= 'todoItem list-group-item'>{todo.text}</span> 
+                        </span>
+                    </div>
+                    <div className='row justify-content-sm-center'>
+                        <button className= 'col-sm-2 btn btn-item btn-warning' 
+                            onClick= {() => this.editMode(todo)}>
+                            Edit
+                        </button>
 
-                    <button className= 'col-md-3 btn btn-item btn-warning' 
-                        onClick= {() => this.editMode(todo)}>
-                        Edit
-                    </button>
+                        <button className= 'col-sm-2 btn btn-item btn-info' 
+                            onClick= {() => this.toggleCompleted(todo)}>
+                            Toggle Completed
+                        </button>
 
-                    <button className= 'col-md-4 col-md-offset-1 btn btn-item btn-info' 
-                        onClick= {() => this.toggleCompleted(todo)}>
-                        Toggle Completed
-                    </button>
-
-                    <button className= 'col-md-3 col-md-offset-1 btn btn-item  btn-danger' 
-                        onClick= {() => this.delete(todo)}>
-                        Delete
-                    </button>
-                    
-                    <div>
-                    <Link className= "col-md-12 btn btn-item btn-primary" to={`/list/${this.getListName()}`}> Return to List </Link>
+                        <button className= 'col-sm-2 btn btn-item  btn-danger' 
+                            onClick= {() => this.delete(todo)}>
+                            Delete
+                        </button>
+                    </div>
+                    <div className='row justify-content-sm-center'>
+                        <Link className= "col-md-4 btn btn-item btn-primary" to={`/list/${this.getListName()}`}> Return to List </Link>
                     </div>
                 </div>
             );

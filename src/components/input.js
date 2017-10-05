@@ -23,19 +23,21 @@ export default class Input extends Component{
 
     render(){
         return(
-            <div className='col-md-12'>
-            <form className='input input-group col-md-2 col-md-offset-5' onSubmit= {this.onInputSubmit}>
-                <input 
-                    type='text'
-                    className= 'form-control'
-                    placeholder= 'Input text here'
-                    value= {this.state.text}        // grab value from state
-                    onChange= {this.onInputChange}  // update state on change
-                    />            
-                <span className='input-group-btn'>
-                    <button className='btn btn-success' type= "submit">Submit</button>
-                </span>
-            </form>
+            <div className='row justify-content-sm-center'>
+                <div className='col-sm-8'>
+                    <form className='input input-group' onSubmit= {this.onInputSubmit}>
+                        <input 
+                            type='text'
+                            className= 'form-control'
+                            placeholder= 'Input text here'
+                            value= {this.state.text}        // grab value from state
+                            onChange= {this.onInputChange}  // update state on change
+                            />            
+                        <span className='input-group-btn'>
+                            <button className='btn btn-success' type= "submit">Submit</button>
+                        </span>
+                    </form>
+                </div>
             </div>
         );
     }

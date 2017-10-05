@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'whatwg-fetch'
 
 import App from './App.js';

@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 
 const ListOfLists = (props) => {
     if (props.loading) return (<h1>Please wait, loading...</h1>)
-    
-    const lists = props.listOfLists.map((list) => {
-        return (
-            <Link key={list.name} className= {`btn btn-secondary list-group-item col-md-4 col-md-offset-4`} 
-                to={`/list/${list.name}`}>{list.name} -- Total items: {list.todoList.length}</Link>
-        );
-    });
     return (
-        <div> {lists} </div>
+        <div className='row justify-content-sm-center'>
+            <div className='col-sm-8 list-group'>
+            {props.listOfLists.map((list) => {
+               return (
+                    <Link key={list.name} className= {`list-group-item justify-content-between`} 
+                        to={`/list/${list.name}`}>{list.name} <span className="badge badge-info badge-pill">{list.todoList.length}</span></Link>
+                );
+            })} 
+            </div>
+        </div>
     );
 }
 
