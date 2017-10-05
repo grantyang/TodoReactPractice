@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import { Link } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom'
-import Input from './input.js';
+import EditListView from './edit_list_view';
 
 export default class EditList extends Component {
 	componentDidMount() {
@@ -65,30 +64,11 @@ export default class EditList extends Component {
 	render() {
 		if (this.state.loading === true) {
 			return <b>Please wait, loading...</b>;
-		} else {
-			return (
-				<div className="List">
-					<div className="App-header">
-						<img src={logo} className="App-logo" alt="logo" />
-						<h2 className="Header-text">Editing: {this.getListName()}</h2>
-					</div>
-					<div>
-						<b>Change Name to:</b>{' '}
-						<Input fxToRun={this.changeName} /*pass addToList as prop*/ />
-						<button
-							className="btn btn-item col-md-2 col-md-offset-5 btn-danger"
-							onClick={() => this.delete()}>
-							Delete
-						</button>
-						<Link
-							className="col-md-2 col-md-offset-5 btn btn-item btn-primary"
-							to={`/list/${this.getListName()}`}>
-							{' '}
-							Return to List{' '}
-						</Link>
-					</div>
-				</div>
-			);
-		}
+		} 
+		return <EditListView
+							getListName={this.getListName}
+							changeName={this.changeName}
+							delete={this.delete}
+							/>;
 	}
 }
