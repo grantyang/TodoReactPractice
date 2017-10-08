@@ -5,7 +5,7 @@ import TodoListItemEdit from './todo_list_item_edit';
 class TodoListItem extends Component {
 	componentDidMount() {
 		const itemId = this.props.match.params.itemId;
-		fetch(`http://localhost:5000/list/${this.getListName()}/${itemId}`, {
+		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
 			method: 'GET'
 		})
 			.then(res => {
@@ -59,7 +59,7 @@ class TodoListItem extends Component {
 				saving: true
 			}
 		});
-		fetch(`http://localhost:5000/list/${this.getListName()}/${todo.id}`, {
+		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
 			method: 'PUT',
 			body: JSON.stringify({ text: newText }),
 			headers: {
@@ -83,7 +83,7 @@ class TodoListItem extends Component {
 	};
 
 	toggleCompleted = todo => {
-		fetch(`http://localhost:5000/list/${this.getListName()}/${todo.id}`, {
+		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
 			method: 'PUT',
 			body: JSON.stringify({ completed: !todo.completed }),
 			headers: {
@@ -106,7 +106,7 @@ class TodoListItem extends Component {
 
 	delete = todo => {
 		console.log(this.getListName());
-		fetch(`http://localhost:5000/list/${this.getListName()}/${todo.id}`, {
+		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
 			method: 'DELETE'
 		})
 			.then(() => {

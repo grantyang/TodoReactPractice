@@ -79,7 +79,7 @@ class List extends Component {
 		//clear all todo items from this list
 		const listName = this.props.match.params.listName;
 		fetch(
-			`http://localhost:5000/list/${listName}?all=true`, // / GY `http://localhost:5000/list/${listName}/toods/liajwdiawjdladi`
+			`http://localhost:5000/list/${listName}?all=true`, // / GY `http://localhost:5000/list/${listName}/todos/liajwdiawjdladi`
 			{ method: 'DELETE' }
 		)
 			.then(() => {

@@ -25,7 +25,7 @@ ReactDOM.render(
             <Switch /*Takes in Routes and will render only the first match*/>
                 <Route exact path="/" component={App} />
                 <Route path="/list/edit/:listName/" component={EditList} />
-                <Route path="/list/:listName/:itemId" component={TodoListItem} />
+                <Route path="/list/:listName/todo/:itemId" component={TodoListItem} />
                 <Route path="/list/:listName" component={List} />
                 <Route exact path="/about" component={About} />      
             </Switch>   
