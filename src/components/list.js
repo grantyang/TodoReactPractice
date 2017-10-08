@@ -28,7 +28,6 @@ class List extends Component {
 				return res.json();
 			})
 			.then(returnedList => {
-				console.log(returnedList);
 				this.setState({
 					name: returnedList.name,
 					todoList: returnedList.todoList, // load in initial list from server
@@ -140,9 +139,10 @@ class List extends Component {
 		//return list of items based on filter
 		return this.state.todoList.filter(todo => {
 			//GY change name to applyCompletedFilter - takes in todos, returns
-			if (this.state.filter === 'ALL') return todo;
 			if (this.state.filter === 'COMPLETED') return todo.completed;
 			if (this.state.filter === 'ACTIVE') return !todo.completed;
+			return todo; //else ALL
+			
 		});
 	};
 
@@ -198,13 +198,12 @@ class List extends Component {
 						<Link
 							className="btn col-sm-4 btn-item btn-warning"
 							to={`/list/edit/${name}`}>
-							Edit List{' '}
+							Edit List
 						</Link>
 					</div>
 					<div className="row justify-content-sm-center">
 						<Link className="btn col-sm-4 btn-item btn-primary " to="/">
-							{' '}
-							Return Home{' '}
+							Return Home
 						</Link>
 					</div>
 				</div>

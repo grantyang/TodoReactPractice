@@ -18,6 +18,7 @@ export default class Input extends Component {
 
   onInputSubmit = event => {
     // when input is submitted, run fx
+    
     event.preventDefault();
     this.props.fxToRun(this.state.text);
     this.setState({ text: '' }); //clears out input after submit

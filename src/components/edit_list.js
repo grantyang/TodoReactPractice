@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
-import { Link } from 'react-router-dom';
 import EditListView from './edit_list_view';
 
 export default class EditList extends Component {
@@ -41,9 +39,12 @@ export default class EditList extends Component {
 			}
 		})
 			.then(res => {
+				console.log(`step 2`)
+				
 				return res.json();
 			})
 			.then(() => {
+				console.log(`step 3 new name of list is ${name}`)
 				this.props.history.push(`${name}`)				
 			});
 	};

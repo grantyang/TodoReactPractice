@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import TodoListItemView from './todo_list_item_view';
 import TodoListItemEdit from './todo_list_item_edit';
 

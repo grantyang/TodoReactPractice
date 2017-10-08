@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import List from './components/list.js';
 import { Link } from 'react-router-dom';
 import './App.css';
 
@@ -76,7 +75,7 @@ class App extends Component {
           <h2 className="Header-text">Grant's TodoLists</h2>
         </div>
         <div className="container">
-          <Input fxToRun={this.create} /*pass addToList as prop*/ />
+          <Input fxToRun={this.create} />
           <ListOfLists
             className=""
             listOfLists={this.state.listOfLists}
@@ -85,8 +84,7 @@ class App extends Component {
           <Link
             className="btn btn-outline-info about-home col-sm-4 justify-content-sm-center"
             to="/about">
-            {' '}
-            About Us{' '}
+            About Us
           </Link>
         </div>
       </div>
