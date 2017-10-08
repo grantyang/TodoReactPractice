@@ -14,7 +14,7 @@ const Footer = props => {
         </div>
         <div className="row justify-content-sm-center">
                     
-            <p className="counter">Items Left: {props.count()}</p>
+            <p className="counter">Items Left: {props.countCompleted()}</p>
         </div>
         </div>
     );

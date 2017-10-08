@@ -73,13 +73,12 @@ class List extends Component {
 				});
 		}
 	};
-	//GY helper function
 
 	clearAll = () => {
 		//clear all todo items from this list
 		const listName = this.props.match.params.listName;
 		fetch(
-			`http://localhost:5000/list/${listName}?all=true`, // / GY `http://localhost:5000/list/${listName}/todos/liajwdiawjdladi`
+			`http://localhost:5000/list/${listName}?all=true`, 
 			{ method: 'DELETE' }
 		)
 			.then(() => {
@@ -109,8 +108,8 @@ class List extends Component {
 			});
 	};
 
-	count = () => {
-		//count number of tood items not yet completed in this list //GY change name to countCompleted
+	countCompleted = () => {
+		//count number of tood items not yet completed in this list
 		let total = 0;
 		this.state.todoList.forEach(element => {
 			if (element.completed === false) {
@@ -135,10 +134,9 @@ class List extends Component {
 		this.setState({ filter: 'ACTIVE' });
 	};
 
-	getVisibleTodos = () => {
+	applyCompletedFilter = (todos) => {
 		//return list of items based on filter
-		return this.state.todoList.filter(todo => {
-			//GY change name to applyCompletedFilter - takes in todos, returns
+		return todos.filter(todo => {
 			if (this.state.filter === 'COMPLETED') return todo.completed;
 			if (this.state.filter === 'ACTIVE') return !todo.completed;
 			return todo; //else ALL
@@ -152,10 +150,10 @@ class List extends Component {
 	};
 
 	searchResults = () => {
-		//searches for searchterm  GY apply search filter
-		return this.getVisibleTodos().filter(todo => {
+		//searches for searchterm 
+		return this.state.todoList.filter(todo => {
 			if (this.state.searchTerm === '') return todo;
-			else if (todo.text.includes(this.state.searchTerm)) return todo;
+			if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase())) return todo;
 		});
 	};
 
@@ -165,13 +163,13 @@ class List extends Component {
 
 	render() {
 		const name = this.state.name;
-		//GY filtered todos, pass one into another, add (todos) as input
+		const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
 		return (
 			<div className="List">
 				<div className="App-header">
 					<img src={logo} className="App-logo" alt="logo" />
-					<h2 className="Header-text">{this.state.name}</h2>
+					<h2 className="Header-text">{name}</h2>
 				</div>
 				<div className="container">
 					<SearchBar
@@ -181,8 +179,8 @@ class List extends Component {
 					<Input fxToRun={this.addToList} /*pass addToList as prop*/ />
 					<TodoList
 						className=""
-						listName={this.state.name}
-						todoList={this.searchResults()}
+						listName={name}
+						todoList={filteredTodos}
 						loading={this.state.loading}
 					/>
 					<Footer
@@ -192,7 +190,7 @@ class List extends Component {
 						showAll={this.showAll}
 						showCompleted={this.showCompleted}
 						showActive={this.showActive}
-						count={this.count}
+						countCompleted={this.countCompleted}
 					/>
 					<div className="row justify-content-sm-center">
 						<Link
