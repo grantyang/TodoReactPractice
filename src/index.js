@@ -12,6 +12,8 @@ import List from './components/list.js';
 import About from './components/about.js';
 import TodoListItem from './components/todo_list_item.js';
 import EditList from './components/edit_list.js'
+import TodoListItemEdit from './components/todo_list_item_edit.js';
+
 
 
 // / is a list of todo lists, each link has the name of the todo list and how many todos it has in it
@@ -25,6 +27,7 @@ ReactDOM.render(
             <Switch /*Takes in Routes and will render only the first match*/>
                 <Route exact path="/" component={App} />
                 <Route path="/list/edit/:listName/" component={EditList} />
+                <Route path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                 <Route path="/list/:listName/todo/:itemId" component={TodoListItem} />
                 <Route path="/list/:listName" component={List} />
                 <Route exact path="/about" component={About} />      

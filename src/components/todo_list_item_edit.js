@@ -1,32 +1,99 @@
-import React from 'react';
+import React, { Component } from 'react';
+import TodoListItemEditView from './todo_list_item_edit_view';
 
-const TodoListItemEdit = props => {
-    return(
-      <div>
-					<div className="row justify-content-sm-center">
-						<form className="col-sm-8" onSubmit={props.onEditSubmit}>
-							<input
-								className="todoItem list-group-item col-sm-12"
-								type="text"
-								value={props.initialTextInputValue}
-								onChange={props.onEditChange} // update state on change
-							/>
-						</form>
-					</div>
-					<div className="row justify-content-sm-center">
-						<button
-							className="col-sm-2 btn btn-item btn-success"
-							onClick={props.onEditSubmit}>
-							Save
-						</button>
+//no more passing prop from last page.
+export default class TodoListItemEdit extends Component {
+  componentDidMount() {
+    const itemId = this.props.match.params.itemId;
+    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
+      method: 'GET'
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(returnedItem => {
+        this.setState({
+          todoId: returnedItem.id, // load in initial list from server
+          initialTextInputValue: returnedItem.text,
+          loading: false
+        });
+      });
+  }
 
-						<button
-							className="col-sm-2 btn btn-item btn-danger"
-							onClick={() => props.delete(props.todo)}>
-							Delete
-						</button>
-					</div>
-				</div>
+  constructor(props) {
+    super(props);
+    this.state = {
+      initialTextInputValue: '',
+      loading: true,
+      saving: false,
+      todoId: ''
+    };
+  }
+
+  getListName = () => {
+    return this.props.match.params.listName;
+  };
+
+  onEditChange = event => {
+    // when input is changed, update state
+    this.setState({ initialTextInputValue: event.target.value });
+  };
+
+  onEditSubmit = event => {
+    // when input is submitted, add to database
+    event.preventDefault();
+    this.save(this.state.initialTextInputValue);
+  };
+
+  save = (newText) => {
+    this.setState({
+      saving: true
+    });
+    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todoId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ text: newText }),
+      headers: {
+        Accept: 'application/json', // this is what i expect to recive from the server
+        'Content-Type': 'application/json' // This is what i am sending to the server
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(() => {
+        this.setState({
+          saving: false
+        });
+        this.props.history.push(`/list/${this.getListName()}/todo/${this.state.todoId}`);
+      });
+  };
+
+  delete = event => {
+    event.preventDefault();    
+    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todoId}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        this.props.history.push(`/list/${this.getListName()}`);
+      })
+      .catch(error => {
+        return error;
+      });
+  };
+
+  render() {
+    if (this.state.loading === true) {
+      return <b>Please wait, loading...</b>;
+    } else if (this.state.saving === true) {
+      return <b>Please wait, saving...</b>;
+    }
+    return (
+      <TodoListItemEditView
+        initialTextInputValue={this.state.initialTextInputValue}
+        onEditChange={this.onEditChange}
+        onEditSubmit={this.onEditSubmit}
+        delete={this.delete}
+      />
     );
+  }
 }
-export default TodoListItemEdit;

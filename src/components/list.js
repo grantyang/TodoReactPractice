@@ -51,8 +51,6 @@ class List extends Component {
 			const todoObj = {
 				text: todoText,
 				completed: false,
-				editMode: false,
-				saving: false
 			};
 			const listName = this.props.match.params.listName;
 			fetch(`http://localhost:5000/list/${listName}`, {

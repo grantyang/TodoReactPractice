@@ -12,11 +12,11 @@ const TodoListItemView = props => {
         </span>
       </div>
       <div className="row justify-content-sm-center">
-        <button
+        <Link
           className="col-sm-2 btn btn-item btn-warning"
-          onClick={() => props.editMode(todo)}>
+          to={`/list/${props.getListName()}/todo/${todo.id}/edit`}>
           Edit
-        </button>
+        </Link>
 
         <button
           className="col-sm-2 btn btn-item btn-info"
@@ -32,10 +32,9 @@ const TodoListItemView = props => {
       </div>
       <div className="row justify-content-sm-center">
         <Link
-          className="col-md-4 btn btn-item btn-primary"
+          className="col-sm-4 btn btn-item btn-primary"
           to={`/list/${props.getListName()}`}>
-          {' '}
-          Return to List{' '}
+          Return to List
         </Link>
       </div>
       </div>
