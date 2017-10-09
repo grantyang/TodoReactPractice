@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom';
 import './App.css';
-
+import NavBar from './presentational/nav_bar.js';
 import Input from './components/input.js';
-import ListOfLists from './components/list_of_lists.js';
+import ListOfLists from './presentational/list_of_lists.js';
 
 class App extends Component {
   componentDidMount() {
@@ -70,10 +70,7 @@ class App extends Component {
   render() {
     return (
       <div className="List">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2 className="Header-text">Grant's TodoLists</h2>
-        </div>
+        <NavBar />
         <div className="container">
           <Input fxToRun={this.create} />
           <ListOfLists
@@ -81,11 +78,6 @@ class App extends Component {
             listOfLists={this.state.listOfLists}
             loading={this.state.loading}
           />
-          <Link
-            className="btn btn-outline-info about-home col-sm-4 justify-content-sm-center"
-            to="/about">
-            About Us
-          </Link>
         </div>
       </div>
     );

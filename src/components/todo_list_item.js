@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TodoListItemView from './todo_list_item_view';
+import TodoListItemView from '../presentational/todo_list_item_view';
 
 class TodoListItem extends Component {
   componentDidMount() {

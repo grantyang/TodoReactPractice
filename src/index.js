@@ -9,7 +9,7 @@ import 'whatwg-fetch'
 
 import App from './App.js';
 import List from './components/list.js';
-import About from './components/about.js';
+import About from './presentational/about.js';
 import TodoListItem from './components/todo_list_item.js';
 import EditList from './components/edit_list.js'
 import TodoListItemEdit from './components/todo_list_item_edit.js';

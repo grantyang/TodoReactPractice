@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import Input from './input.js';
-import TodoList from './todo_list.js';
-import Footer from './footer.js';
-import SearchBar from './search_bar.js';
+import Footer from '../presentational/footer.js';
+import NavBar from '../presentational/nav_bar.js';
+import TodoList from '../presentational/todo_list.js';
+import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
 
 class List extends Component {
@@ -21,12 +22,10 @@ class List extends Component {
 
 	componentDidMount() {
 		const listName = this.props.match.params.listName;
-		console.log(listName)
 		fetch(`http://localhost:5000/list/${listName}`, {
 			method: 'GET'
 		})
 			.then(res => {
-				console.log(res)
 				return res.json();
 			})
 			.then(returnedList => {
@@ -169,10 +168,7 @@ class List extends Component {
 
 		return (
 			<div className="List">
-				<div className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h2 className="Header-text">{name}</h2>
-				</div>
+				<NavBar />
 				<div className="container">
 					<SearchBar
 						setSearchTerm={this.setSearchTerm}

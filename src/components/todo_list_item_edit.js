@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TodoListItemEditView from './todo_list_item_edit_view';
+import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 
 //no more passing prop from last page.
 export default class TodoListItemEdit extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import EditListView from './edit_list_view';
+import EditListView from '../presentational/edit_list_view';
 
 export default class EditList extends Component {
   componentDidMount() {

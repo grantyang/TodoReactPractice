@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../logo.svg';
 
-import Input from './input.js';
+import Input from '../components/input.js';
 
 const EditListView = props => {
   return (

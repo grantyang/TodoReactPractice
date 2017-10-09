@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-//single text input form
-//onSubmit f(x)
-
 export default class Input extends Component {
   constructor(props) {
     super(props);

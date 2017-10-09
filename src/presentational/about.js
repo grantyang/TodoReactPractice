@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import GoogleMap from './google_map'
+import GoogleMap from '../components/google_map'
+import NavBar from './nav_bar.js';
 
 const About = props => {
   return (
     <div>
-      <div className="row justify-content-sm-center">
-        <h1>About Us</h1>
-      </div>
+      <NavBar/>
       <div className="row justify-content-sm-center">
         <span>
           This todo app was created by <b>Grant Yang</b>
@@ -17,14 +16,8 @@ const About = props => {
         <span>Please contact me at grantyang1@gmail.com. Thank you!</span>
       </div>
       <div className="row justify-content-sm-center">
-        <Link className="btn btn-item btn-primary" to="/">
-          {' '}
-          Return Home{' '}
-        </Link>
-      </div>
-      <div className="row justify-content-sm-center">
 
-      <GoogleMap className='map' />
+      <GoogleMap  />
       </div>
 
     </div>
