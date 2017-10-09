@@ -13,6 +13,8 @@ import About from './presentational/about.js';
 import TodoListItem from './components/todo_list_item.js';
 import EditList from './components/edit_list.js'
 import TodoListItemEdit from './components/todo_list_item_edit.js';
+import SignUp from './components/signup.js'
+import Login from './components/login.js'
 
 
 
@@ -30,6 +32,8 @@ ReactDOM.render(
                 <Route path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                 <Route path="/list/:listName/todo/:itemId" component={TodoListItem} />
                 <Route path="/list/:listName" component={List} />
+                <Route exact path="/signup" component={SignUp} />     
+                <Route exact path="/login" component={Login} />       
                 <Route exact path="/about" component={About} />      
             </Switch>   
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import SignUp from '../components/signup.js'
 
 const NavBar = props => {
   return (
