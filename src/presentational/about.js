@@ -7,7 +7,7 @@ const About = props => {
   return (
     <div>
       <NavBar/>
-      <div className="row justify-content-sm-center">
+      <div className="row justify-content-sm-center mt-2">
         <span>
           This todo app was created by <b>Grant Yang</b>
         </span>

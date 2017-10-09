@@ -4,7 +4,82 @@ import NavBar from '../presentational/nav_bar.js';
 class SignUp extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      nameInput: '',
+      emailInput: '',
+      passwordInput: '',
+    };
   }
+
+  onNameChange = event => {
+    // when name is changed, update state
+    this.setState({
+      nameInput: event.target.value
+    });
+  };
+
+  onEmailChange = date => {
+    //when email is changed, update state
+    this.setState({
+      emailInput: date.target.value
+    });
+  };  
+  
+  onPasswordChange = event => {
+    //when password is changed, update state
+    this.setState({
+      passwordInput: event.target.value
+    });
+  };
+
+  createUser = () => {
+    const nameInput = this.state.nameInput;
+    const emailInput = this.state.emailInput;
+    const passwordInput = this.state.passwordInput;
+    if (!nameInput) {
+      alert('Please input a name.');
+      return;
+    }
+    if (!emailInput) {
+      alert('Please input an email.');
+      return;
+    }
+    if (!passwordInput) {
+      alert('Please input a password.');
+      return;
+    }
+
+    // if (this.state.listOfLists.find(item => item.name.toLowerCase() === newName.toLowerCase())) {
+    //   //if there is a duplicate
+    //   alert('User already exists.');
+    //   return;
+    // }
+
+    const newUser = {
+      name: nameInput,
+      email: emailInput,
+      password: passwordInput
+    };
+
+    fetch('http://localhost:5000/signup', {
+      method: 'POST',
+      body: JSON.stringify(newUser),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      this.props.history.push(`/login`
+      );
+      // .then(newList => {
+      //   this.setState({
+      //     listOfLists: [newList, ...this.state.listOfLists] // add new Object to todoList
+      //   });
+      // });
+  };
 
   render() {
     return (
@@ -15,10 +90,10 @@ class SignUp extends Component {
           <div className="form-group">
             <label>Name</label>
             <input
-              type="email"
+              type="text"
+              value={this.state.nameInput}      
+              onChange={this.onNameChange}        
               className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
               placeholder="Enter full name"
             />
           </div>
@@ -26,9 +101,9 @@ class SignUp extends Component {
             <label>Email address</label>
             <input
               type="email"
+              value={this.state.emailInput}
+              onChange={this.onEmailChange}
               className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
               placeholder="Enter email"
             />
             <small id="emailHelp" className="form-text text-muted">
@@ -39,12 +114,13 @@ class SignUp extends Component {
             <label>Password</label>
             <input
               type="password"
+              value={this.state.passwordInput}
+              onChange={this.onPasswordChange}
               className="form-control"
-              id="exampleInputPassword1"
               placeholder="Password"
             />
           </div>
-          <button type="submit" className="btn btn-outline-success">
+          <button type="submit" className="btn btn-outline-success" onClick={() => {this.createUser(1,2,3)}}>
           Create Account
           </button>
         </form>

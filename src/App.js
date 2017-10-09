@@ -44,6 +44,7 @@ class App extends Component {
 
     const newList = {
       name: newName,
+      creator: 'placeholderuserID',
       todoList: [],
       filter: 'ALL',
       searchTerm: '',

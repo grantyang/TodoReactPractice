@@ -13,6 +13,7 @@ class List extends Component {
 		super(props);
 		this.state = {
 			name: '',
+			creator:'',
 			todoList: [],
 			filter: 'ALL',
 			searchTerm: '',
@@ -31,6 +32,7 @@ class List extends Component {
 			.then(returnedList => {
 				this.setState({
 					name: returnedList.name,
+					creator: returnedList.creator,
 					todoList: returnedList.todoList, // load in initial list from server
 					loading: false
 				});

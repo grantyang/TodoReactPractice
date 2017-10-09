@@ -13,7 +13,6 @@ class TodoListItem extends Component {
       .then(returnedItem => {
         this.setState({
           todo: returnedItem, // load in initial list from server
-          initialTextInputValue: returnedItem.text,
           loading: false
         });
       });
@@ -22,7 +21,6 @@ class TodoListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialTextInputValue: '',
       loading: true,
       todo: {}
     };
