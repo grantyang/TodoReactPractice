@@ -13,7 +13,7 @@ const TodoList = ({ loading, listName, todoList }) => {
 							key={todo.id}
 							className={`list-group-item completed${todo.completed}`}
 							to={`/list/${listName}/todo/${todo.id}`}>
-							{todo.text}
+							{todo.text} {todo.dueDate && (`Due: ${todo.dueDate}`)}
 						</Link>
 					);
 				})}

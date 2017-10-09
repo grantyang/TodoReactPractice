@@ -47,3 +47,8 @@ body {
 .search{
   margin-top:6px;
 }
+
+.map{
+  height: 200px;
+  width: 250px;
+}

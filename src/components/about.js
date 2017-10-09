@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GoogleMap from './google_map'
 
 const About = props => {
   return (
@@ -21,6 +22,11 @@ const About = props => {
           Return Home{' '}
         </Link>
       </div>
+      <div className="row justify-content-sm-center">
+
+      <GoogleMap className='map' />
+      </div>
+
     </div>
   );
 };

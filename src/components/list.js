@@ -46,7 +46,7 @@ class List extends Component {
 		//fat arrow function instead of binding separately
 		if (!todoText) {
 			alert('Please input a value');
-		} else if (this.state.todoList.find(item => item.text === todoText)) {
+		} else if (this.state.todoList.find(item => item.text.toLowerCase() === todoText.toLowerCase())) {
 			//if there is a duplicate
 			alert('Todo item already exists');
 		} else if (todoText) {
