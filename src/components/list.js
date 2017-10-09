@@ -21,10 +21,12 @@ class List extends Component {
 
 	componentDidMount() {
 		const listName = this.props.match.params.listName;
+		console.log(listName)
 		fetch(`http://localhost:5000/list/${listName}`, {
 			method: 'GET'
 		})
 			.then(res => {
+				console.log(res)
 				return res.json();
 			})
 			.then(returnedList => {
@@ -51,6 +53,8 @@ class List extends Component {
 			const todoObj = {
 				text: todoText,
 				completed: false,
+				tag: '',
+				dueDate: ''
 			};
 			const listName = this.props.match.params.listName;
 			fetch(`http://localhost:5000/list/${listName}`, {

@@ -14,7 +14,9 @@ export default class TodoListItemEdit extends Component {
       .then(returnedItem => {
         this.setState({
           todoId: returnedItem.id, // load in initial list from server
-          initialTextInputValue: returnedItem.text,
+          textInputValue: returnedItem.text,
+          dateInput: returnedItem.dueDate,
+          tagInput: returnedItem.tag,
           loading: false
         });
       });
@@ -23,7 +25,9 @@ export default class TodoListItemEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialTextInputValue: '',
+      textInputValue: '',
+      tagInput: '',
+      dateInput: '',
       loading: true,
       saving: false,
       todoId: ''
@@ -36,27 +40,49 @@ export default class TodoListItemEdit extends Component {
 
   onEditChange = event => {
     // when input is changed, update state
-    this.setState({ initialTextInputValue: event.target.value });
+    this.setState({
+      textInputValue: event.target.value
+    });
   };
 
-  onEditSubmit = event => {
+  onDateChange = date => {
+    //when date is changed, update state
+    this.setState({
+      dateInput: date.target.value
+    });
+  };  
+  
+  onTagChange = event => {
+    //when tag is changed, update state
+    this.setState({
+      tagInput: event.target.value
+    });
+  };
+
+  onSave = () => {
     // when input is submitted, add to database
-    event.preventDefault();
-    this.save(this.state.initialTextInputValue);
-  };
-
-  save = (newText) => {
+    const newText = this.state.textInputValue;
+    const newDate = this.state.dateInput;
+    const newTag = this.state.tagInput;
     this.setState({
       saving: true
     });
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todoId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ text: newText }),
-      headers: {
-        Accept: 'application/json', // this is what i expect to recive from the server
-        'Content-Type': 'application/json' // This is what i am sending to the server
+    fetch(
+      `http://localhost:5000/list/${this.getListName()}/todo/${this.state
+        .todoId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          text: newText,
+          dueDate: newDate,
+          tag: newTag
+        }),
+        headers: {
+          Accept: 'application/json', // this is what i expect to receive from the server
+          'Content-Type': 'application/json' // This is what i am sending to the server
+        }
       }
-    })
+    )
       .then(res => {
         return res.json();
       })
@@ -64,15 +90,20 @@ export default class TodoListItemEdit extends Component {
         this.setState({
           saving: false
         });
-        this.props.history.push(`/list/${this.getListName()}/todo/${this.state.todoId}`);
+        this.props.history.push(
+          `/list/${this.getListName()}/todo/${this.state.todoId}`
+        );
       });
   };
 
   delete = event => {
-    event.preventDefault();    
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todoId}`, {
-      method: 'DELETE'
-    })
+    fetch(
+      `http://localhost:5000/list/${this.getListName()}/todo/${this.state
+        .todoId}`,
+      {
+        method: 'DELETE'
+      }
+    )
       .then(() => {
         this.props.history.push(`/list/${this.getListName()}`);
       })
@@ -89,10 +120,14 @@ export default class TodoListItemEdit extends Component {
     }
     return (
       <TodoListItemEditView
-        initialTextInputValue={this.state.initialTextInputValue}
-        onEditChange={this.onEditChange}
-        onEditSubmit={this.onEditSubmit}
+        textInputValue={this.state.textInputValue}
+        dateInput={this.state.dateInput}        
+        tagInput={this.state.tagInput}
+        onSave={this.onSave}
         delete={this.delete}
+        onEditChange={this.onEditChange}
+        onDateChange={this.onDateChange}
+        onTagChange={this.onTagChange}
       />
     );
   }

@@ -54,8 +54,8 @@ class TodoListItem extends Component {
       });
 	};
 	
-	delete = (todo) => {
-		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
+	delete = () => {
+		fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todo.id}`, {
 			method: 'DELETE'
 		})
 			.then(() => {

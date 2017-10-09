@@ -59,7 +59,7 @@ export default class EditList extends Component {
       method: 'DELETE'
     })
       .then(() => {
-        window.location.replace(`http://localhost:3000/`);
+        this.props.history.push('');
       })
       .catch(error => {
         return error;

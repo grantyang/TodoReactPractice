@@ -36,7 +36,7 @@ class App extends Component {
       return;
     }
 
-    if (this.state.listOfLists.find(item => item.name === newName)) {
+    if (this.state.listOfLists.find(item => item.name.toLowerCase() === newName.toLowerCase())) {
       //if there is a duplicate
       alert('Todo List already exists.');
       return;

@@ -26,7 +26,7 @@ const TodoListItemView = props => {
 
         <button
           className="col-sm-2 btn btn-item  btn-danger"
-          onClick={() => props.delete(todo)}>
+          onClick={() => props.delete()}>
           Delete
         </button>
       </div>
