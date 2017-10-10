@@ -7,7 +7,6 @@ class Login extends Component {
     this.state = {
       emailInput: '',
       passwordInput: '',
-      loginToken: ''
     };
   }
   onEmailChange = date => {
@@ -41,10 +40,10 @@ class Login extends Component {
       email: emailInput,
       password: passwordInput
     };
-    console.log(loginData);
     fetch('http://localhost:5000/login', {
       method: 'POST',
       body: JSON.stringify(loginData),
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -55,9 +54,8 @@ class Login extends Component {
     .then( data => {
       if (data === 'email') return alert('Incorrect Email')      
       if (data === 'password') return alert('Incorrect Password')
-      this.setState({loginToken: data})
-      console.log(`token in state is ${this.state.loginToken}`);
-      
+      return this.props.history.push(`/`)
+
       })
 
 //      this.props.history.push(`/login`

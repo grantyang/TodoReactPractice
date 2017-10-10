@@ -9,7 +9,8 @@ import ListOfLists from './presentational/list_of_lists.js';
 class App extends Component {
   componentDidMount() {
     fetch('http://localhost:5000/lists/', {
-      method: 'GET'
+      method: 'GET',
+      credentials: 'include'
     })
       .then(res => {
         return res.json();
@@ -53,6 +54,7 @@ class App extends Component {
     fetch('http://localhost:5000/create', {
       method: 'POST',
       body: JSON.stringify(newList),
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'

@@ -6,7 +6,8 @@ export default class TodoListItemEdit extends Component {
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
     fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
-      method: 'GET'
+      method: 'GET',
+      credentials: 'include'
     })
       .then(res => {
         return res.json();
@@ -77,6 +78,7 @@ export default class TodoListItemEdit extends Component {
           dueDate: newDate,
           tag: newTag
         }),
+        credentials: 'include',
         headers: {
           Accept: 'application/json', // this is what i expect to receive from the server
           'Content-Type': 'application/json' // This is what i am sending to the server

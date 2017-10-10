@@ -5,7 +5,8 @@ class TodoListItem extends Component {
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
     fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
-      method: 'GET'
+			method: 'GET',
+			credentials: 'include'
     })
       .then(res => {
         return res.json();
@@ -33,7 +34,8 @@ class TodoListItem extends Component {
   toggleCompleted = todo => {
     fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
       method: 'PUT',
-      body: JSON.stringify({ completed: !todo.completed }),
+			body: JSON.stringify({ completed: !todo.completed }),
+			credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'

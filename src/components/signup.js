@@ -64,6 +64,7 @@ class SignUp extends Component {
     fetch('http://localhost:5000/signup', {
       method: 'POST',
       body: JSON.stringify(newUser),
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'

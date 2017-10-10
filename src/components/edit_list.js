@@ -5,7 +5,8 @@ import EditListView from '../presentational/edit_list_view';
 export default class EditList extends Component {
   componentDidMount() {
     fetch(`http://localhost:5000/list/${this.getListName()}`, {
-      method: 'GET'
+			method: 'GET',
+			credentials: 'include'
     })
       .then(res => {
         return res.json();
@@ -36,7 +37,8 @@ export default class EditList extends Component {
 		})
     fetch(`http://localhost:5000/list/${this.getListName()}`, {
       method: 'PUT',
-      body: JSON.stringify({ name }),
+			body: JSON.stringify({ name }),
+			credentials: 'include',
       headers: {
         Accept: 'application/json', // this is what i expect to recive from the server
         'Content-Type': 'application/json' // This is what i am sending to the server

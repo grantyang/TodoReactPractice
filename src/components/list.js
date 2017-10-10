@@ -24,7 +24,8 @@ class List extends Component {
 	componentDidMount() {
 		const listName = this.props.match.params.listName;
 		fetch(`http://localhost:5000/list/${listName}`, {
-			method: 'GET'
+			method: 'GET',
+			    credentials: 'include'
 		})
 			.then(res => {
 				return res.json();
@@ -61,6 +62,7 @@ class List extends Component {
 			fetch(`http://localhost:5000/list/${listName}`, {
 				method: 'POST',
 				body: JSON.stringify(todoObj),
+				credentials: 'include',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json'
