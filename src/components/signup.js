@@ -120,7 +120,7 @@ class SignUp extends Component {
               placeholder="Password"
             />
           </div>
-          <button type="submit" className="btn btn-outline-success" onClick={() => {this.createUser(1,2,3)}}>
+          <button type="submit" className="btn btn-outline-success" onClick={() => {this.createUser()}}>
           Create Account
           </button>
         </form>
