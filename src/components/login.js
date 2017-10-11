@@ -35,7 +35,7 @@ class Login extends Component {
       alert('Please input a password.');
       return;
     }
-    //if email is wrong or if password is wrong
+
     const loginData = {
       email: emailInput,
       password: passwordInput

@@ -71,10 +71,10 @@ class SignUp extends Component {
       }
     })
       .then(res => {
-        return res.json();
+        if (res.status === 401) return alert('User already exists')            
+        res.json();
+        return this.props.history.push(`/login`);
       })
-      this.props.history.push(`/login`
-      );
       // .then(newList => {
       //   this.setState({
       //     listOfLists: [newList, ...this.state.listOfLists] // add new Object to todoList

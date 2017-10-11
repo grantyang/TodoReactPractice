@@ -18,11 +18,6 @@ import Login from './components/login.js'
 import Profile from './components/profile.js'
 import ProfileEdit from './components/profile_edit.js'
 
-// / is a list of todo lists, each link has the name of the todo list and how many todos it has in it
-// /lists/create A page with a form to create todo lists
-// /lists/:id/edit A page where you can edit the name of the todo list, you can also delete the todo list here
-// /lists/:id A page with a list of todos, each link has the text of the todo and if it is completed or not
-
 ReactDOM.render(
     <BrowserRouter>
         <div  /*if user is on path, show component  <App /> */>
