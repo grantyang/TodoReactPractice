@@ -1,7 +1,6 @@
 import React from 'react';
-import SignUp from '../components/signup.js'
 
-const NavBar = props => {
+const NavBarView = props => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" href="/">
@@ -32,9 +31,13 @@ const NavBar = props => {
           </li>
         </ul>
         <span className="form-inline my-2 my-lg-0">
+          <a className="btn btn-secondary mr-2 my-2 my-sm-0" href="/" onClick={props.deleteCookie}>
+            Sign Out
+          </a>
           <a className="btn btn-primary mr-2 my-2 my-sm-0" href="/login">
             Login
           </a>
+
           <a className="btn btn-success mr-2 my-2 my-sm-0" href="/signup">
             Sign Up
           </a>
@@ -43,4 +46,4 @@ const NavBar = props => {
     </nav>
   );
 };
-export default NavBar;
+export default NavBarView;

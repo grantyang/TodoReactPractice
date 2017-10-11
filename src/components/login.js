@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from '../presentational/nav_bar.js';
+import NavBar from './nav_bar.js';
 
 class Login extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Login extends Component {
   };
 
 
-  login = () => {
+  login = () => {    
     const emailInput = this.state.emailInput;
     const passwordInput = this.state.passwordInput;
     if (!emailInput) {
@@ -55,16 +55,7 @@ class Login extends Component {
       if (data === 'email') return alert('Incorrect Email')      
       if (data === 'password') return alert('Incorrect Password')
       return this.props.history.push(`/`)
-
       })
-
-//      this.props.history.push(`/login`
-//      );
-      // .then(newList => {
-      //   this.setState({
-      //     listOfLists: [newList, ...this.state.listOfLists] // add new Object to todoList
-      //   });
-      // });
   };
 
 

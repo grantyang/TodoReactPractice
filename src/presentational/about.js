@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import GoogleMap from '../components/google_map'
-import NavBar from './nav_bar.js';
+import NavBar from '../components/nav_bar.js';
 
 const About = props => {
   return (

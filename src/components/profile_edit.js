@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from '../presentational/nav_bar.js';
+import NavBar from './nav_bar.js';
 
 class ProfileEdit extends Component {
   constructor(props) {
