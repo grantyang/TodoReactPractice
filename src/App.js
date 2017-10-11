@@ -19,6 +19,20 @@ class App extends Component {
           loading: false
         });
       });
+
+      fetch('http://localhost:5000/profile', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(res => {
+          return res.json();
+        })
+        .then(user => {
+          this.setState({
+            currentUser: user.userId
+          });
+          console.log(this.state.currentUser)
+        });
   }
 
   constructor(props) {
@@ -41,9 +55,10 @@ class App extends Component {
       return;
     }
 
+
     const newList = {
       name: newName,
-      creator: 'placeholderuserID',
+      creator: this.state.currentUser,
       todoList: [],
       filter: 'ALL',
       searchTerm: '',
