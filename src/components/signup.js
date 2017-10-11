@@ -75,11 +75,6 @@ class SignUp extends Component {
         res.json();
         return this.props.history.push(`/login`);
       })
-      // .then(newList => {
-      //   this.setState({
-      //     listOfLists: [newList, ...this.state.listOfLists] // add new Object to todoList
-      //   });
-      // });
   };
 
   render() {

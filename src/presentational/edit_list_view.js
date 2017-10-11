@@ -7,10 +7,6 @@ import Input from '../components/input.js';
 const EditListView = props => {
   return (
     <div className="List">
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h2 className="Header-text">Editing: {props.getListName()}</h2>
-      </div>
       <div>
         <b>Change Name to:</b> <Input fxToRun={props.changeName} />
         <button

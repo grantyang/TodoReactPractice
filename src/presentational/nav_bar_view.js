@@ -31,6 +31,10 @@ const NavBarView = props => {
           </li>
         </ul>
         <span className="form-inline my-2 my-lg-0">
+          <a className="btn btn-info mr-2 my-2 my-sm-0" href="/profile">
+            Profile
+          </a>
+
           <a className="btn btn-secondary mr-2 my-2 my-sm-0" href="/" onClick={props.deleteCookie}>
             Sign Out
           </a>
