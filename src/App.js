@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import { Link } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/nav_bar.js';
 import Input from './components/input.js';

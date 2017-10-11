@@ -32,7 +32,6 @@ ReactDOM.render(
                 <Route exact path="/signup" component={SignUp} />     
                 <Route exact path="/login" component={Login} />       
                 <Route exact path="/about" component={About} />      
-                
             </Switch>   
         </div>
     </BrowserRouter>
