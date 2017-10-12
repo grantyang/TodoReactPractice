@@ -10,28 +10,26 @@ class NavBar extends Component {
   }
   //if user's cookie is correct, show
   componentDidMount() {
-     () => {
-      fetch('http://localhost:5000/user', {
-        method: 'GET',
-        credentials: 'include'
+    fetch('http://localhost:5000/user', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => {
+        if (res.status === 403) {
+          this.setState({
+            activeSession: false
+          });
+          return null
+        }
+        return res.json();
       })
-        .then(res => {
-          if (res.status === 403) {
-            this.setState({
-              activeSession: false
-            });
-            return null
-          }
-          return res.json();
-        })
-        .then(user => {
-          if (user) {
-            this.setState({
-              activeSession: true
-            });
-          }
-        });
-      }
+      .then(user => {
+        if (user) {
+          this.setState({
+            activeSession: true
+          });
+        }
+      });
   }
 
   deleteCookie = () => {
@@ -39,7 +37,6 @@ class NavBar extends Component {
   };
 
   render() {
-    console.log(`is session active from component? ${this.state.activeSession}`);
     return (
       <NavBarView
         activeSession={this.state.activeSession}

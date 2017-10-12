@@ -1,7 +1,6 @@
 import React from 'react';
 
 const NavBarView = props => {
-  console.log(`session active from view? ${props.activeSession}`)  
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" href="/">

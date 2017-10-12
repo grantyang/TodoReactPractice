@@ -17,18 +17,34 @@ import SignUp from './components/signup.js'
 import Login from './components/login.js'
 import Profile from './components/profile.js'
 import ProfileEdit from './components/profile_edit.js'
+import PrivateRoute from './components/private_route.js'
+// const AuthExample = () => (
+//     <Router>
+//       <div>
+//         <AuthButton/>
+//         <ul>
+//           <li><Link to="/public">Public Page</Link></li>
+//           <li><Link to="/protected">Protected Page</Link></li>
+//         </ul>
+//         <Route path="/public" component={Public}/>
+//         <Route path="/login" component={Login}/>
+//         <PrivateRoute path="/protected" component={Protected}/>
+//       </div>
+//     </Router>
+//   )
+
 
 ReactDOM.render(
     <BrowserRouter>
         <div  /*if user is on path, show component  <App /> */>
             <Switch /*Takes in Routes and will render only the first match*/>
                 <Route exact path="/" component={App} />
-                <Route path="/list/edit/:listName/" component={EditList} />
-                <Route path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
-                <Route path="/list/:listName/todo/:itemId" component={TodoListItem} />
-                <Route path="/list/:listName" component={List} />
-                <Route exact path="/profile/" component={Profile} />     
-                <Route exact path="/profile/edit" component={ProfileEdit} />     
+                <PrivateRoute path="/list/edit/:listName/" component={EditList} />
+                <PrivateRoute path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
+                <PrivateRoute path="/list/:listName/todo/:itemId" component={TodoListItem} />
+                <PrivateRoute path="/list/:listName" component={List} />
+                <PrivateRoute exact path="/profile/" component={Profile} />     
+                <PrivateRoute exact path="/profile/edit" component={ProfileEdit} />     
                 <Route exact path="/signup" component={SignUp} />     
                 <Route exact path="/login" component={Login} />       
                 <Route exact path="/about" component={About} />      
