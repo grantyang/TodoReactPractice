@@ -33,7 +33,7 @@ class NavBar extends Component {
   }
 
   deleteCookie = () => {
-    document.cookie = 'userToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'userToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   };
 
   render() {

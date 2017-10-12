@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import NavBar from './nav_bar.js';
-import Input from '../components/input.js';
 import { Link } from 'react-router-dom';
 
 class ProfileEdit extends Component {

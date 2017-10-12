@@ -43,8 +43,8 @@ ReactDOM.render(
                 <PrivateRoute path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                 <PrivateRoute path="/list/:listName/todo/:itemId" component={TodoListItem} />
                 <PrivateRoute path="/list/:listName" component={List} />
-                <PrivateRoute exact path="/profile/" component={Profile} />     
-                <PrivateRoute exact path="/profile/edit" component={ProfileEdit} />     
+                <PrivateRoute path="/profile/edit" component={ProfileEdit} />     
+                <PrivateRoute path="/profile/" component={Profile} />     
                 <Route exact path="/signup" component={SignUp} />     
                 <Route exact path="/login" component={Login} />       
                 <Route exact path="/about" component={About} />      
