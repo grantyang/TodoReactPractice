@@ -5,32 +5,15 @@ import Input from './components/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
 
 class App extends Component {
-//   fetch(`http://localhost:5000/user/`, {
-//     method: 'GET',
-//         credentials: 'include'
-//   })
-//     .then(res => {
-//       if (res.status === 403) return alert('Please Log In')                      
-//       if (res.status === 401) return alert('Invalid Token')              
-//       return res.json();
-//     })
-//     .then(returnedUser => {
-//       if (returnedUser){
-//         this.setState({
-//           name: returnedUser.name,
-//           email: returnedUser.email
-//         });
-//       }
-//     });
-// }
+
   componentDidMount() {
     fetch('http://localhost:5000/user', {
       method: 'GET',
       credentials: 'include'
     })
       .then(res => {
-        if (res.status===403) {
-          this.setState({
+        if (res.status===403) { //if error code is returned, then user is not logged in
+          this.setState({ // clear current user
             currentUser: null,
             loading: false            
           });
@@ -39,9 +22,9 @@ class App extends Component {
         return res.json();
       })
       .then(user => {
-        if (user) {
+        if (user) { //otherwise, if there is a valid user logged in
           this.setState({
-            currentUser: user
+            currentUser: user //set current user to be that user
           });
           fetch('http://localhost:5000/lists/', {
             method: 'GET',
@@ -69,6 +52,7 @@ class App extends Component {
     };
   }
 
+  //GY only validate against user's own lists
   create = newName => {
     if (!newName) {
       alert('Please input a value.');
@@ -116,7 +100,9 @@ class App extends Component {
     return (
       <div className="List">
         <NavBar />
-        {!this.state.currentUser && <h1>Please log in to view this page.</h1>}
+        {!this.state.currentUser && 
+        <h3 className='mt-4'>Please log in to view your lists.</h3>
+        }
         {this.state.currentUser && (
           <div className="container">
             <Input fxToRun={this.create} />

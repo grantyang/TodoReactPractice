@@ -7,7 +7,8 @@ class Profile extends Component {
     super(props);
     this.state ={
       name: '',
-      email: ''
+      email: '',
+      loading: true
     };
   }
 
@@ -27,13 +28,17 @@ class Profile extends Component {
         if (returnedUser){
           this.setState({
             name: returnedUser.name,
-            email: returnedUser.email
+            email: returnedUser.email,
+            loading: false
           });
         }
 			});
 	}
 
   render() {
+    if (this.state.loading === true) {
+      return <b>Please wait, loading...</b>;
+    }
     return (
       <div>
         <NavBar/>
