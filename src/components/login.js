@@ -58,7 +58,7 @@ class Login extends Component {
       })
   };
 
-
+  //GY if a logged in user navigates to this page, do not allow them to log in again.
   render() {
     return (
       <div>

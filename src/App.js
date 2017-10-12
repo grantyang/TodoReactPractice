@@ -6,6 +6,7 @@ import ListOfLists from './presentational/list_of_lists.js';
 
 class App extends Component {
   componentDidMount() {
+    
     fetch('http://localhost:5000/lists/', {
       method: 'GET',
       credentials: 'include'
@@ -20,26 +21,16 @@ class App extends Component {
         });
       });
 
-      fetch('http://localhost:5000/profile', {
-        method: 'GET',
-        credentials: 'include',
-      })
-        .then(res => {
-          return res.json();
-        })
-        .then(user => {
-          this.setState({
-            currentUser: user.userId
-          });
-          console.log(this.state.currentUser)
-        });
-  }
+
+      }
+  
 
   constructor(props) {
     super(props);
     this.state = {
       listOfLists: [],
-      loading: true
+      loading: true,
+      currentUser: {}
     };
   }
 
@@ -55,10 +46,9 @@ class App extends Component {
       return;
     }
 
-
     const newList = {
       name: newName,
-      creator: this.state.currentUser,
+      creator: this.state.currentUser.userId,
       todoList: [],
       filter: 'ALL',
       searchTerm: '',
@@ -83,18 +73,21 @@ class App extends Component {
       });
   };
 
-  render() {
+  render() {    
     return (
       <div className="List">
         <NavBar />
+        {!this.state.currentUser && <h1>Please log in to view this page.</h1>}
+        {this.state.currentUser &&
         <div className="container">
+          
           <Input fxToRun={this.create} />
           <ListOfLists
             className=""
             listOfLists={this.state.listOfLists}
             loading={this.state.loading}
           />
-        </div>
+        </div>}
       </div>
     );
   }

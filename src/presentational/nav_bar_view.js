@@ -1,6 +1,7 @@
 import React from 'react';
 
 const NavBarView = props => {
+  console.log(`session active from view? ${props.activeSession}`)  
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" href="/">
@@ -30,7 +31,7 @@ const NavBarView = props => {
             </a>
           </li>
         </ul>
-        <span className="form-inline my-2 my-lg-0">
+        {props.activeSession && <span className="form-inline my-2 my-lg-0">
           <a className="btn btn-info mr-2 my-2 my-sm-0" href="/profile">
             Profile
           </a>
@@ -38,6 +39,9 @@ const NavBarView = props => {
           <a className="btn btn-secondary mr-2 my-2 my-sm-0" href="/" onClick={props.deleteCookie}>
             Sign Out
           </a>
+          </span>
+          }
+          {!props.activeSession && <span className="form-inline my-2 my-lg-0">
           <a className="btn btn-primary mr-2 my-2 my-sm-0" href="/login">
             Login
           </a>
@@ -45,7 +49,7 @@ const NavBarView = props => {
           <a className="btn btn-success mr-2 my-2 my-sm-0" href="/signup">
             Sign Up
           </a>
-        </span>
+        </span>}
       </div>
     </nav>
   );

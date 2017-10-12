@@ -11,15 +11,10 @@ class Profile extends Component {
     };
   }
 
-  //I am logged in, so i have a cookie with authId
-  //I send the server authId in the cookie when i want data
-  //Server checks to see if authId matches a current session (middleware?)
-  //If the authId i sent matches a session, server sends me data.
-  //If no match, send error status code.
   
   componentDidMount() {
 
-    fetch(`http://localhost:5000/profile/`, {
+    fetch(`http://localhost:5000/user/`, {
 			method: 'GET',
 			    credentials: 'include'
 		})
