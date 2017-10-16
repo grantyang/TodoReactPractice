@@ -11,16 +11,47 @@ class ChangePassword extends Component {
     };
   }
 
+  saveNewPassword = () => {    // when input is submitted, add to database
+    const oldPasswordInput = this.state.oldPasswordInput;
+    const newPasswordInput = this.state.newPasswordInput;
 
-  saveNewPassword = () => {};
+    if (!oldPasswordInput) {
+      alert('Please input your current password.');
+      return;
+    }
+    if (!newPasswordInput) {
+      alert('Please input a new password.');
+      return;
+    }
 
+    fetch(`http://localhost:5000/user?changepassword=true`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        oldPassword: oldPasswordInput,
+        newPassword: newPasswordInput
+      }),
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json', // this is what i expect to receive from the server
+        'Content-Type': 'application/json' // This is what i am sending to the server
+      }
+    })
+    .then(res => res.text()      
+  )
+  .then( data => {
+    if (data === 'password') return alert('Incorrect Current Password')
+    return this.props.history.push(`/profile`);    
+    })
+};
+
+  
   render() {
     return (
       <div>
         <NavBar />
         <div className="container mt-2">
           <div className="justify-content-sm-center row">
-            <b>Old Password:</b>
+            <b>Current Password:</b>
           </div>
           <div className=" justify-content-sm-center row">
             <form className="col-sm-8" onSubmit={this.saveNewPassword}>

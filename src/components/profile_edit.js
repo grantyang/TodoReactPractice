@@ -6,7 +6,6 @@ class ProfileEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {},
       nameInputValue: '',
       emailInputValue: '',
       loading: true,
@@ -27,7 +26,6 @@ class ProfileEdit extends Component {
       .then(returnedUser => {
         if (returnedUser) {
           this.setState({
-            currentUser: returnedUser,
             nameInputValue: returnedUser.name,
             emailInputValue: returnedUser.email,
             loading: false
@@ -38,14 +36,13 @@ class ProfileEdit extends Component {
 
   onUserInfoUpdate = () => {
     // when input is submitted, add to database
-    const currentUser = this.state.currentUser;
     const newName = this.state.nameInputValue;
     const newEmail = this.state.emailInputValue;
 
     this.setState({
       saving: true
     });
-    fetch(`http://localhost:5000/user/${currentUser.userId}`, {
+    fetch(`http://localhost:5000/user/`, {
       method: 'PUT',
       body: JSON.stringify({
         name: newName,
