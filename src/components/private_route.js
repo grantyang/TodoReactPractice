@@ -26,6 +26,7 @@ export default class PrivateRoute extends Component {
           })
           return alert('Please log in to view that page')        
         }
+        return res.json();          
       })
       .then(user => {
         if (user) { //otherwise, there is a valid user logged in
@@ -47,9 +48,11 @@ export default class PrivateRoute extends Component {
     }
 
     render(){
-      if (this.state.loading) return <h1>Please wait, loading...</h1>;      
+      const newRoute = this.privateRoute(this.props); 
+      if (this.state.loading){ 
+        return <h1>Please wait, loading...</h1>;   }   
       return (
-        this.privateRoute(this.props)
+        newRoute
       )
     }
   }

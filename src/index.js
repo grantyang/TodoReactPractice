@@ -17,21 +17,9 @@ import SignUp from './components/signup.js'
 import Login from './components/login.js'
 import Profile from './components/profile.js'
 import ProfileEdit from './components/profile_edit.js'
+import ChangePassword from './components/change_password.js';
 import PrivateRoute from './components/private_route.js'
-// const AuthExample = () => (
-//     <Router>
-//       <div>
-//         <AuthButton/>
-//         <ul>
-//           <li><Link to="/public">Public Page</Link></li>
-//           <li><Link to="/protected">Protected Page</Link></li>
-//         </ul>
-//         <Route path="/public" component={Public}/>
-//         <Route path="/login" component={Login}/>
-//         <PrivateRoute path="/protected" component={Protected}/>
-//       </div>
-//     </Router>
-//   )
+
 
 
 ReactDOM.render(
@@ -43,6 +31,7 @@ ReactDOM.render(
                 <PrivateRoute path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                 <PrivateRoute path="/list/:listName/todo/:itemId" component={TodoListItem} />
                 <PrivateRoute path="/list/:listName" component={List} />
+                <PrivateRoute path="/profile/changepassword" component={ChangePassword} />     
                 <PrivateRoute path="/profile/edit" component={ProfileEdit} />     
                 <PrivateRoute path="/profile/" component={Profile} />     
                 <Route exact path="/signup" component={SignUp} />     

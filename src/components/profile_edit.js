@@ -41,7 +41,7 @@ class ProfileEdit extends Component {
     const currentUser = this.state.currentUser;
     const newName = this.state.nameInputValue;
     const newEmail = this.state.emailInputValue;
-    //      const newPassword = this.state.passwordInputValue;
+
     this.setState({
       saving: true
     });
@@ -50,7 +50,6 @@ class ProfileEdit extends Component {
       body: JSON.stringify({
         name: newName,
         email: newEmail
-        //password: newPassword
       }),
       credentials: 'include',
       headers: {
@@ -69,19 +68,6 @@ class ProfileEdit extends Component {
       });
   };
 
-  onNameChange = event => {
-    // when input is changed, update state
-    this.setState({
-      nameInputValue: event.target.value
-    });
-  };
-
-  onEmailChange = event => {
-    //when date is changed, update state
-    this.setState({
-      emailInputValue: event.target.value
-    });
-  };
 
   render() {
     if (this.state.loading === true) {
@@ -102,7 +88,7 @@ class ProfileEdit extends Component {
                 className="todoItem list-group-item col-sm-12"
                 type="text"
                 value={this.state.nameInputValue}
-                onChange={this.onNameChange} // update state on change
+                onChange={(event) => this.setState({nameInputValue:event.target.value})} // update state on change
               />
             </form>
           </div>
@@ -115,7 +101,7 @@ class ProfileEdit extends Component {
                 className="todoItem list-group-item col-sm-12"
                 type="email"
                 value={this.state.emailInputValue}
-                onChange={this.onEmailChange} // update state on change
+                onChange={(event) => this.setState({emailInputValue:event.target.value})} // update state on change
               />
             </form>
           </div>
@@ -125,7 +111,11 @@ class ProfileEdit extends Component {
               onClick={this.onUserInfoUpdate}>
               Save
             </button>
-            <button className="col-sm-2 btn btn-item btn-danger">Delete</button>
+            <Link
+            className="col-sm-2 btn btn-item btn-warning"
+            to={`/profile/changepassword`}>
+              Change Password            
+            </Link>          
           </div>
           <div className="row justify-content-sm-center">
             <Link className="col-sm-2 btn btn-item btn-primary" to={`/profile`}>
