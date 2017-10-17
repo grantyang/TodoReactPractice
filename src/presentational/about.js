@@ -15,8 +15,7 @@ const About = props => {
         <span>Please contact me at grantyang1@gmail.com. Thank you!</span>
       </div>
       <div className="row justify-content-sm-center">
-
-      <GoogleMap  />
+        <h1>pic goes here</h1>
       </div>
 
     </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import GoogleMap from '../components/google_map.js';
 
 const TodoListItemView = props => {
   const todo = props.todo;
-    return(
-      <div>
+  return (
+    <div>
       <div className="row justify-content-sm-center">
         <span className={`col-sm-8 completed${todo.completed}`}>
           <span className="todoItem list-group-item">{todo.text}</span>
@@ -37,7 +37,13 @@ const TodoListItemView = props => {
           Return to List
         </Link>
       </div>
+      <div className="row justify-content-sm-center">
+        <GoogleMap
+          saveLocation={props.saveLocation}
+          location={props.location}
+       />
       </div>
-    );
-}
+    </div>
+  );
+};
 export default TodoListItemView;
