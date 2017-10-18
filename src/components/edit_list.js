@@ -13,7 +13,9 @@ export default class EditList extends Component {
       })
       .then(returnedList => {
         this.setState({
-          loading: false
+					loading: false,
+					privacyInput: returnedList.privacy,
+					textInputValue: returnedList.name
         });
       });
   }
@@ -22,7 +24,9 @@ export default class EditList extends Component {
     super(props);
     this.state = {
 			loading: true,
-			saving: false
+			saving: false,
+			privacyInput: 'private',
+			textInputValue: ''
     };
   }
 
@@ -30,30 +34,56 @@ export default class EditList extends Component {
     return this.props.match.params.listName;
   };
 
-  changeName = name => {
-		//change name of this list
-		this.setState({
-			saving: true
-		})
-    fetch(`http://localhost:5000/list/${this.getListName()}`, {
-      method: 'PUT',
-			body: JSON.stringify({ name }),
-			credentials: 'include',
-      headers: {
-        Accept: 'application/json', // this is what i expect to recive from the server
-        'Content-Type': 'application/json' // This is what i am sending to the server
+
+
+	onSave = () => {
+    // when input is submitted, add to database
+    const newText = this.state.textInputValue;
+		const newPrivacy = this.state.privacyInput;
+		console.log(`privacy input is : ${newPrivacy}`)
+    this.setState({
+      saving: true
+    });
+    fetch(
+      `http://localhost:5000/list/${this.getListName()}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          name: newText,
+          privacy: newPrivacy
+        }),
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json', // this is what i expect to receive from the server
+          'Content-Type': 'application/json' // This is what i am sending to the server
+        }
       }
-    })
+    )
       .then(res => {
         return res.json();
       })
       .then(() => {
-				this.setState({
-					saving: false
-				})
-        this.props.history.push(`${name}`);
+        this.setState({
+          saving: false
+        });
+        this.props.history.push(`${newText}`);
       });
+	};
+	
+	onPrivacyChange = event => {
+    //when Privacy is changed, update state
+    this.setState({
+      privacyInput: event.target.value
+    });
+	};
+
+	onTextChange = event => {
+    // when input is changed, update state
+    this.setState({
+      textInputValue: event.target.value
+    });
   };
+	
 
   delete = () => {
     //delete this list and return to homepage
@@ -77,9 +107,16 @@ export default class EditList extends Component {
     }
     return (
       <EditListView
+			  onSave={this.onSave}
+				onTextChange={this.onTextChange}
+        textInputValue={this.state.textInputValue}
+
+			  privacyInput={this.state.privacyInput}
         getListName={this.getListName}
         changeName={this.changeName}
         delete={this.delete}
+				onPrivacyChange={this.onPrivacyChange}
+
       />
     );
   }

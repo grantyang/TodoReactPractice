@@ -72,10 +72,12 @@ class App extends Component {
     const newList = {
       name: newName,
       creator: this.state.currentUser.userId,
+      privacy: 'private',      
       todoList: [],
       filter: 'ALL',
       searchTerm: '',
-      loading: true
+      loading: true,
+      
     };
     fetch('http://localhost:5000/create', {
       method: 'POST',
@@ -101,7 +103,7 @@ class App extends Component {
       <div className="List">
         <NavBar />
         {!this.state.currentUser && 
-        <h3 className='mt-4'>Please log in to view your lists.</h3>
+        <h3 className='mt-4'>Please log in to view lists.</h3>
         }
         {this.state.currentUser && (
           <div className="container">

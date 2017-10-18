@@ -56,8 +56,7 @@ class List extends Component {
 				completed: false,
 				tag: '',
 				dueDate: '',
-				location: { lat: 52.5200066, lng: 13.404954 }
-				
+				location: { lat: 52.5200066, lng: 13.404954 }				
 			};
 			const listName = this.props.match.params.listName;
 			fetch(`http://localhost:5000/list/${listName}`, {

@@ -93,7 +93,7 @@ class GoogleMap extends Component {
             placeholder="Search to set a location"
           />
         </div>
-        <div className="map" ref="map" />;
+        <div className="map" ref="map" />
       </div>
     );
   }

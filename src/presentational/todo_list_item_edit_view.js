@@ -9,7 +9,7 @@ const TodoListItemEditView = props => {
               className="todoItem list-group-item col-sm-12"
               type="text"
               value={props.textInputValue}
-              onChange={props.onEditChange} // update state on change
+              onChange={props.onTextChange} // update state on change
             />
           </form>
         </div>
@@ -25,7 +25,6 @@ const TodoListItemEditView = props => {
               <option value="work">Work</option>
               <option value="home">Home</option>
             </select>
-            
         </div>
         <div className="row justify-content-sm-center">
           <button

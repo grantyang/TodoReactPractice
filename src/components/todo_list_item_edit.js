@@ -39,7 +39,7 @@ export default class TodoListItemEdit extends Component {
     return this.props.match.params.listName;
   };
 
-  onEditChange = event => {
+  onTextChange = event => {
     // when input is changed, update state
     this.setState({
       textInputValue: event.target.value
@@ -127,7 +127,7 @@ export default class TodoListItemEdit extends Component {
         tagInput={this.state.tagInput}
         onSave={this.onSave}
         delete={this.delete}
-        onEditChange={this.onEditChange}
+        onTextChange={this.onTextChange}
         onDateChange={this.onDateChange}
         onTagChange={this.onTagChange}
       />
