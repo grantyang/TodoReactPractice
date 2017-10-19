@@ -14,7 +14,7 @@ const ListOfLists = props => {
                 key={list.name}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
-                {list.name}
+                {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
                   {list.todoList.length}
                 </span>
@@ -32,7 +32,7 @@ const ListOfLists = props => {
                 key={list.name}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
-                {list.name}
+                {list.name }
                 <span className="badge badge-primary badge-pill">
                   {list.todoList.length}
                 </span>
