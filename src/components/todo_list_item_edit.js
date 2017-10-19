@@ -103,7 +103,8 @@ export default class TodoListItemEdit extends Component {
       `http://localhost:5000/list/${this.getListName()}/todo/${this.state
         .todoId}`,
       {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       }
     )
       .then(() => {

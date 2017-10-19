@@ -62,7 +62,8 @@ class TodoListItem extends Component {
       `http://localhost:5000/list/${this.getListName()}/todo/${this.state.todo
         .id}`,
       {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       }
     )
       .then(() => {

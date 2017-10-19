@@ -88,7 +88,9 @@ export default class TodoListEdit extends Component {
   delete = () => {
     //delete this list and return to homepage
     fetch(`http://localhost:5000/list/${this.getListName()}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include'
+      
     })
       .then(() => {
         this.props.history.push('');
