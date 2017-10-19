@@ -50,7 +50,7 @@ class TodoList extends Component {
           loading: false
         });
       });
-    fetch('http://localhost:5000/lists/', {
+    fetch('http://localhost:5000/lists?authored=true', {
       method: 'GET',
       credentials: 'include'
     })
@@ -108,7 +108,8 @@ class TodoList extends Component {
     //clear all todo items from this list
     const listName = this.props.match.params.listName;
     fetch(`http://localhost:5000/list/${listName}?all=true`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include'
     })
       .then(() => {
         this.setState({
@@ -124,7 +125,8 @@ class TodoList extends Component {
     //clear completed todo items from this list
     const listName = this.props.match.params.listName;
     fetch(`http://localhost:5000/list/${listName}?completed=true`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include'
     })
       .then(() => {
         const newList = this.state.todoList.filter(
