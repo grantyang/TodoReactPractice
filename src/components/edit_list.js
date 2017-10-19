@@ -110,13 +110,11 @@ export default class EditList extends Component {
 			  onSave={this.onSave}
 				onTextChange={this.onTextChange}
         textInputValue={this.state.textInputValue}
-
 			  privacyInput={this.state.privacyInput}
         getListName={this.getListName}
         changeName={this.changeName}
         delete={this.delete}
 				onPrivacyChange={this.onPrivacyChange}
-
       />
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from './nav_bar.js';
+import SignUpView from '../presentational/signup_view.js';
 
 class SignUp extends Component {
   constructor(props) {
@@ -49,12 +49,6 @@ class SignUp extends Component {
       return;
     }
 
-    // if (this.state.listOfLists.find(item => item.name.toLowerCase() === newName.toLowerCase())) {
-    //   //if there is a duplicate
-    //   alert('User already exists.');
-    //   return;
-    // }
-
     const newUser = {
       name: nameInput,
       email: emailInput,
@@ -79,50 +73,18 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-      <NavBar/>
-      <div className="container mt-2">
-        <form>
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              value={this.state.nameInput}      
-              onChange={this.onNameChange}        
-              className="form-control"
-              placeholder="Enter full name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email address</label>
-            <input
-              type="email"
-              value={this.state.emailInput}
-              onChange={this.onEmailChange}
-              className="form-control"
-              placeholder="Enter email"
-            />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={this.state.passwordInput}
-              onChange={this.onPasswordChange}
-              className="form-control"
-              placeholder="Password"
-            />
-          </div>
-          <button type="submit" className="btn btn-outline-success" onClick={() => {this.createUser()}}>
-          Create Account
-          </button>
-        </form>
-      </div>
-      </div>
+      <SignUpView
+      nameInput={this.state.nameInput}
+      emailInput={this.state.emailInput}
+      passwordInput={this.state.passwordInput}
+      onNameChange={this.onNameChange}
+      onEmailChange={this.onEmailChange}
+      onPasswordChange={this.onPasswordChange}
+      createUser={this.createUser}
 
+
+      
+      />
     );
   }
 }

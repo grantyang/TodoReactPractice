@@ -21,7 +21,7 @@ class List extends Component {
     };
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     this.getListFromServer();
   }
   componentDidUpdate() {
@@ -34,7 +34,7 @@ class List extends Component {
 
   getListFromServer() {
     const listName = this.props.match.params.listName;
-    if (listName === this.state.name) return //if list is already loaded, avoid infinite loop
+    if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
     fetch(`http://localhost:5000/list/${listName}`, {
       method: 'GET',
       credentials: 'include'
@@ -205,7 +205,7 @@ class List extends Component {
         <TodoList
           className=""
           location={this.props.location}
-          otherAuthoredLists={this.state.otherAuthoredLists} //GY
+          otherAuthoredLists={this.state.otherAuthoredLists}
           listName={name}
           todoList={filteredTodos}
           loading={this.state.loading}
@@ -219,18 +219,14 @@ class List extends Component {
           showActive={this.showActive}
           countCompleted={this.countCompleted}
         />
-        <div className="row justify-content-sm-center">
-          <Link
-            className="btn col-sm-4 btn-item btn-warning"
-            to={`/list/edit/${name}`}>
-            Edit List
-          </Link>
-        </div>
-        <div className="row justify-content-sm-center">
-          <Link className="btn col-sm-4 btn-item btn-primary " to="/">
-            Return Home
-          </Link>
-        </div>
+        <Link
+          className="btn col-sm-4 btn-item btn-warning"
+          to={`/list/edit/${name}`}>
+          Edit List
+        </Link>
+        <Link className="btn col-sm-4 btn-item btn-primary " to="/">
+          Return Home
+        </Link>
       </div>
     );
   }

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from './nav_bar.js';
-import { Link } from 'react-router-dom';
-
+import ProfileEditView from '../presentational/profile_edit_view.js';
 class ProfileEdit extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,8 @@ class ProfileEdit extends Component {
       });
   }
 
-  onUserInfoUpdate = () => {
+  onUserInfoUpdate = event => {
+    event.preventDefault();
     // when input is submitted, add to database
     const newName = this.state.nameInputValue;
     const newEmail = this.state.emailInputValue;
@@ -65,6 +64,13 @@ class ProfileEdit extends Component {
       });
   };
 
+  onNameChange = event => {
+    return this.setState({ nameInputValue: event.target.value });
+  };
+
+  onEmailChange = event => {
+    return this.setState({ emailInputValue: event.target.value });
+  };
 
   render() {
     if (this.state.loading === true) {
@@ -73,54 +79,13 @@ class ProfileEdit extends Component {
       return <b>Please wait, saving...</b>;
     }
     return (
-      <div>
-        <NavBar />
-        <div>
-          <div className="justify-content-sm-center row">
-            <b>Change name to:</b>
-          </div>
-          <div className="justify-content-sm-center row">
-            <form className="col-sm-8" onSubmit={this.onUserInfoUpdate}>
-              <input
-                className="todoItem list-group-item col-sm-12"
-                type="text"
-                value={this.state.nameInputValue}
-                onChange={(event) => this.setState({nameInputValue:event.target.value})} // update state on change
-              />
-            </form>
-          </div>
-          <div className="justify-content-sm-center row">
-            <b>Change email to:</b>
-          </div>
-          <div className=" justify-content-sm-center row">
-            <form className="col-sm-8" onSubmit={this.onUserInfoUpdate}>
-              <input
-                className="todoItem list-group-item col-sm-12"
-                type="email"
-                value={this.state.emailInputValue}
-                onChange={(event) => this.setState({emailInputValue:event.target.value})} // update state on change
-              />
-            </form>
-          </div>
-          <div className="row justify-content-sm-center">
-            <button
-              className="col-sm-2 btn btn-item btn-success"
-              onClick={this.onUserInfoUpdate}>
-              Save
-            </button>
-            <Link
-            className="col-sm-2 btn btn-item btn-warning"
-            to={`/profile/changepassword`}>
-              Change Password            
-            </Link>          
-          </div>
-          <div className="row justify-content-sm-center">
-            <Link className="col-sm-2 btn btn-item btn-primary" to={`/profile`}>
-              Return to Profile
-            </Link>
-          </div>
-        </div>
-      </div>
+      <ProfileEditView
+        onUserInfoUpdate={this.onUserInfoUpdate}
+        onNameChange={this.onNameChange}
+        onEmailChange={this.onEmailChange}
+        nameInputValue={this.state.nameInputValue}
+        emailInputValue={this.state.emailInputValue}
+      />
     );
   }
 }

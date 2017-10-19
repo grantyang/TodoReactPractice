@@ -24,18 +24,18 @@ export default class Input extends Component {
   render() {
     return (
       <div className="row justify-content-sm-center">
-        <div className="col-sm-8">
+        <div className="col-sm-7">
           <form className="input input-group" onSubmit={this.onInputSubmit}>
             <input
               type="text"
               className="form-control"
-              placeholder="Input text here"
+              placeholder="Enter new todo here"
               value={this.state.text} // grab value from state
               onChange={this.onInputChange} // update state on change
             />
             <span className="input-group-btn">
               <button className="btn btn-success" type="submit">
-                Submit
+                Create
               </button>
             </span>
           </form>
