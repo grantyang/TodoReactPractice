@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavBarView from '../presentational/nav_bar_view.js';
+import {callJSON} from '../ajax_utility.js';
 
 class NavBar extends Component {
   constructor(props) {
@@ -10,10 +11,7 @@ class NavBar extends Component {
   }
   //if user's cookie is correct, show
   componentDidMount() {
-    fetch('http://localhost:5000/user', {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', 'user')
       .then(res => {
         if (res.status === 403) {
           this.setState({

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {callJSON} from '../ajax_utility.js';
 import {
   Route,
   Redirect,
@@ -14,10 +15,7 @@ export default class PrivateRoute extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:5000/user',{
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', 'user')
       .then(res => {
         if (res.status===403) { //if error code is returned, then user is not logged in
           this.setState({

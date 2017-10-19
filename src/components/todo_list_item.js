@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import TodoListItemView from '../presentational/todo_list_item_view';
+import {callJSON} from '../ajax_utility.js';
 
 class TodoListItem extends Component {
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', `list/${this.getListName()}/todo/${itemId}`)
       .then(res => {
         return res.json();
       })
@@ -35,15 +33,7 @@ class TodoListItem extends Component {
   };
 
   toggleCompleted = todo => {
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${todo.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ completed: !todo.completed }),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    callJSON('PUT', `list/${this.getListName()}/todo/${todo.id}`,{completed: !todo.completed })
       .then(res => {
         return res.json();
       })
@@ -58,14 +48,7 @@ class TodoListItem extends Component {
   };
 
   delete = () => {
-    fetch(
-      `http://localhost:5000/list/${this.getListName()}/todo/${this.state.todo
-        .id}`,
-      {
-        method: 'DELETE',
-        credentials: 'include'
-      }
-    )
+    callJSON('DELETE', `list/${this.getListName()}/todo/${this.state.todo.id}`)
       .then(() => {
         this.props.history.push(`/list/${this.getListName()}`);
       })
@@ -75,16 +58,7 @@ class TodoListItem extends Component {
   };
 
   saveLocation = location => {
-    console.log(`location to be saved is: ${location}`);
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${this.state.todo.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ location: location}),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    callJSON('PUT', `list/${this.getListName()}/todo/${this.state.todo.id}`,{location: location})
       .then(res => {
         return res.json();
       })

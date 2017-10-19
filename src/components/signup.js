@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SignUpView from '../presentational/signup_view.js';
+import {callJSON} from '../ajax_utility.js';
 
 class SignUp extends Component {
   constructor(props) {
@@ -55,15 +56,7 @@ class SignUp extends Component {
       password: passwordInput
     };
 
-    fetch('http://localhost:5000/signup', {
-      method: 'POST',
-      body: JSON.stringify(newUser),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    callJSON('POST', 'signup', newUser)
       .then(res => {
         if (res.status === 401) return alert('User already exists')            
         res.json();

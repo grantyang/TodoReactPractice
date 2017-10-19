@@ -6,6 +6,7 @@ import Footer from '../presentational/footer.js';
 import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
+import { callJSON } from '../ajax_utility.js';
 
 class TodoList extends Component {
   constructor(props) {
@@ -35,10 +36,7 @@ class TodoList extends Component {
   getListFromServer() {
     const listName = this.props.match.params.listName;
     if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
-    fetch(`http://localhost:5000/list/${listName}`, {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', `list/${listName}`)
       .then(res => {
         return res.json();
       })
@@ -50,10 +48,7 @@ class TodoList extends Component {
           loading: false
         });
       });
-    fetch('http://localhost:5000/lists?authored=true', {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', `lists?authored=true`)
       .then(res => {
         return res.json();
       })
@@ -84,15 +79,7 @@ class TodoList extends Component {
         location: { lat: 52.5200066, lng: 13.404954 }
       };
       const listName = this.props.match.params.listName;
-      fetch(`http://localhost:5000/list/${listName}`, {
-        method: 'POST',
-        body: JSON.stringify(todoObj),
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
+      callJSON('POST', `list/${listName}`, todoObj)
         .then(res => {
           return res.json();
         })
@@ -107,10 +94,7 @@ class TodoList extends Component {
   clearAll = () => {
     //clear all todo items from this list
     const listName = this.props.match.params.listName;
-    fetch(`http://localhost:5000/list/${listName}?all=true`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
+    callJSON('DELETE', `list/${listName}?all=true`)
       .then(() => {
         this.setState({
           todoList: []
@@ -124,10 +108,7 @@ class TodoList extends Component {
   clearComplete = () => {
     //clear completed todo items from this list
     const listName = this.props.match.params.listName;
-    fetch(`http://localhost:5000/list/${listName}?completed=true`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
+    callJSON('DELETE', `list/${listName}?completed=true`)
       .then(() => {
         const newList = this.state.todoList.filter(
           item => item.completed === false

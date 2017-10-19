@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 class GoogleMap extends Component {
   componentDidMount() {
     var myLatLng = this.props.location;
-    console.log(this.props.location)
-
     const map = new google.maps.Map(
       this.refs.map, //embedded google map - renders map into input
       //second argument is options object

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ProfileEditView from '../presentational/profile_edit_view.js';
+import {callJSON} from '../ajax_utility.js';
+
 class ProfileEdit extends Component {
   constructor(props) {
     super(props);
@@ -10,12 +12,9 @@ class ProfileEdit extends Component {
       saving: false
     };
   }
-
+  
   componentDidMount() {
-    fetch(`http://localhost:5000/user/`, {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', 'user')    
       .then(res => {
         if (res.status === 403) return alert('Please Log In');
         if (res.status === 401) return alert('Invalid Token');
@@ -41,17 +40,9 @@ class ProfileEdit extends Component {
     this.setState({
       saving: true
     });
-    fetch(`http://localhost:5000/user/`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        name: newName,
-        email: newEmail
-      }),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json', // this is what i expect to receive from the server
-        'Content-Type': 'application/json' // This is what i am sending to the server
-      }
+    callJSON('PUT', 'user', {
+      name: newName,
+      email: newEmail
     })
       .then(res => {
         return res.json();

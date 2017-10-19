@@ -3,14 +3,12 @@ import './App.css';
 import NavBar from './components/nav_bar.js';
 import Input from './components/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
+import {callJSON} from './ajax_utility.js';
 
 class App extends Component {
 
   componentDidMount() {
-    fetch('http://localhost:5000/user', {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET','user')
       .then(res => {
         if (res.status===403) { //if error code is returned, then user is not logged in
           this.setState({ // clear current user
@@ -26,10 +24,7 @@ class App extends Component {
           this.setState({
             currentUser: user //set current user to be that user
           });
-          fetch('http://localhost:5000/lists/', {
-            method: 'GET',
-            credentials: 'include'
-          })
+          callJSON('GET','lists')
             .then(res => {
               return res.json();
             })
@@ -79,15 +74,7 @@ class App extends Component {
       loading: true,
       
     };
-    fetch('http://localhost:5000/create', {
-      method: 'POST',
-      body: JSON.stringify(newList),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    callJSON('POST','create', newList)
       .then(res => {
         return res.json();
       })

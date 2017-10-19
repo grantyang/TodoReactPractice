@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LoginView from '../presentational/login_view.js';
+import { callJSON } from '../ajax_utility.js';
 
 class Login extends Component {
   constructor(props) {
@@ -26,28 +27,14 @@ class Login extends Component {
   login = () => {
     const emailInput = this.state.emailInput;
     const passwordInput = this.state.passwordInput;
-    if (!emailInput) {
-      alert('Please input an email.');
-      return;
-    }
-    if (!passwordInput) {
-      alert('Please input a password.');
-      return;
-    }
+    if (!emailInput) return alert('Please input an email.');
+    if (!passwordInput) return alert('Please input a password.');
 
     const loginData = {
       email: emailInput,
       password: passwordInput
     };
-    fetch('http://localhost:5000/login', {
-      method: 'POST',
-      body: JSON.stringify(loginData),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    callJSON('POST', 'login', loginData)
       .then(res => res.text())
       .then(data => {
         if (data === 'email') return alert('Incorrect Email');

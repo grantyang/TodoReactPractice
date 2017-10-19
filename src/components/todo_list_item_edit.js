@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
+import {callJSON} from '../ajax_utility.js';
 
 //no more passing prop from last page.
 export default class TodoListItemEdit extends Component {
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
-    fetch(`http://localhost:5000/list/${this.getListName()}/todo/${itemId}`, {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', `list/${this.getListName()}/todo/${itemId}`)
       .then(res => {
         return res.json();
       })
@@ -68,23 +66,11 @@ export default class TodoListItemEdit extends Component {
     this.setState({
       saving: true
     });
-    fetch(
-      `http://localhost:5000/list/${this.getListName()}/todo/${this.state
-        .todoId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          text: newText,
-          dueDate: newDate,
-          tag: newTag
-        }),
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json', // this is what i expect to receive from the server
-          'Content-Type': 'application/json' // This is what i am sending to the server
-        }
-      }
-    )
+    callJSON('PUT', `list/${this.getListName()}/todo/${this.state.todoId}`,{
+      text: newText,
+      dueDate: newDate,
+      tag: newTag
+    })
       .then(res => {
         return res.json();
       })
@@ -99,14 +85,7 @@ export default class TodoListItemEdit extends Component {
   };
 
   delete = event => {
-    fetch(
-      `http://localhost:5000/list/${this.getListName()}/todo/${this.state
-        .todoId}`,
-      {
-        method: 'DELETE',
-        credentials: 'include'
-      }
-    )
+    callJSON('DELETE', `list/${this.getListName()}/todo/${this.state.todoId}`)
       .then(() => {
         this.props.history.push(`/list/${this.getListName()}`);
       })

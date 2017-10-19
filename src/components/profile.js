@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProfileView from '../presentational/profile_view.js';
+import {callJSON} from '../ajax_utility.js';
 
 class Profile extends Component {
   constructor(props) {
@@ -12,10 +13,7 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:5000/user/`, {
-      method: 'GET',
-      credentials: 'include'
-    })
+    callJSON('GET', 'user')
       .then(res => {
         if (res.status === 403) return alert('Please Log In');
         if (res.status === 401) return alert('Invalid Token');

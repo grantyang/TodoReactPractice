@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ChangePasswordView from '../presentational/change_password_view.js';
+import { callJSON } from '../ajax_utility.js';
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -24,18 +25,9 @@ class ChangePassword extends Component {
       alert('Please input a new password.');
       return;
     }
-
-    fetch(`http://localhost:5000/user?changepassword=true`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        oldPassword: oldPasswordInput,
-        newPassword: newPasswordInput
-      }),
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json', // this is what i expect to receive from the server
-        'Content-Type': 'application/json' // This is what i am sending to the server
-      }
+    callJSON('PUT','user?changepassword=true', {
+      oldPassword: oldPasswordInput,
+      newPassword: newPasswordInput
     })
       .then(res => res.text())
       .then(data => {
@@ -44,11 +36,11 @@ class ChangePassword extends Component {
       });
   };
 
-  onOldPasswordChange = (event) => {
+  onOldPasswordChange = event => {
     this.setState({ oldPasswordInput: event.target.value });
   };
-  
-  onNewPasswordChange = (event) => {
+
+  onNewPasswordChange = event => {
     this.setState({ newPasswordInput: event.target.value });
   };
 
@@ -61,7 +53,6 @@ class ChangePassword extends Component {
         onOldPasswordChange={this.onOldPasswordChange}
         onNewPasswordChange={this.onNewPasswordChange}
         saveNewPassword={this.saveNewPassword}
-
       />
     );
   }
