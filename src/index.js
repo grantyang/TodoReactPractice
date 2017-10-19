@@ -8,10 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'whatwg-fetch'
 
 import App from './App.js';
-import List from './components/list.js';
+import TodoList from './components/todo_list.js';
 import About from './presentational/about.js';
 import TodoListItem from './components/todo_list_item.js';
-import EditList from './components/edit_list.js'
+import TodoListEdit from './components/todo_list_edit.js'
 import TodoListItemEdit from './components/todo_list_item_edit.js';
 import SignUp from './components/signup.js'
 import Login from './components/login.js'
@@ -27,10 +27,10 @@ ReactDOM.render(
         <div  /*if user is on path, show component  <App /> */>
             <Switch /*Takes in Routes and will render only the first match*/>
                 <Route exact path="/" component={App} />
-                <PrivateRoute path="/list/edit/:listName/" component={EditList} />
+                <PrivateRoute path="/list/edit/:listName/" component={TodoListEdit} />
                 <PrivateRoute path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                 <PrivateRoute path="/list/:listName/todo/:itemId" component={TodoListItem} />
-                <PrivateRoute path="/list/:listName" component={List} />
+                <PrivateRoute path="/list/:listName" component={TodoList} />
                 <PrivateRoute path="/profile/changepassword" component={ChangePassword} />     
                 <PrivateRoute path="/profile/edit" component={ProfileEdit} />     
                 <PrivateRoute path="/profile/" component={Profile} />     

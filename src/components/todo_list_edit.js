@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
-import EditListView from '../presentational/edit_list_view';
+import TodoListEditView from '../presentational/todo_list_edit_view.js';
 
-export default class EditList extends Component {
+export default class TodoListEdit extends Component {
   componentDidMount() {
     fetch(`http://localhost:5000/list/${this.getListName()}`, {
 			method: 'GET',
@@ -106,7 +106,7 @@ export default class EditList extends Component {
       return <b>Please wait, saving...</b>;
     }
     return (
-      <EditListView
+      <TodoListEditView
 			  onSave={this.onSave}
 				onTextChange={this.onTextChange}
         textInputValue={this.state.textInputValue}

@@ -7,45 +7,36 @@ const ChangePasswordView = props => {
     <div>
       <NavBar />
       <div className="container mt-2">
-        <div className="justify-content-sm-center row">
-          <b>Current Password:</b>
-        </div>
-        <div className=" justify-content-sm-center row">
-          <form className="col-sm-8" onSubmit={props.saveNewPassword}>
+        <form className="col-sm-8">
+          <div className="form-group">
+            <b>Current Password:</b>
             <input
               className="todoItem list-group-item col-sm-12"
               type="password"
               value={props.oldPasswordInput}
-              onChange={event =>
-                props.onOldPasswordChange(event)} // update state on change
+              onChange={props.onOldPasswordChange} // update state on change
             />
-          </form>
-        </div>
-        <div className="justify-content-sm-center row">
-          <b>New Password:</b>
-        </div>
-        <div className=" justify-content-sm-center row">
-          <form className="col-sm-8" onSubmit={props.saveNewPassword}>
+          </div>
+          <div className="form-group">
+            <b>New Password:</b>
             <input
               className="todoItem list-group-item col-sm-12"
               type="password"
               value={props.newPasswordInput}
-              onChange={event =>
-                props.onNewPasswordChange(event)} // update state on change
-              onSubmit={event => props.saveNewPassword(event)}
+              onChange={props.onNewPasswordChange} // update state on change
+              onSubmit={props.saveNewPassword}
             />
-          </form>
-        </div>
-        <div className="row justify-content-sm-center">
+          </div>
           <button
-            className="col-sm-2 btn btn-item btn-success"
+            type="submit"
+            className="col-sm-4 btn btn-item btn-success"
             onClick={props.saveNewPassword}>
             Save
           </button>
-          <Link className="col-sm-2 btn btn-item btn-warning" to={`/profile`}>
+          <Link className="col-sm-4 btn btn-item btn-warning" to={`/profile`}>
             Return to Profile
           </Link>
-        </div>
+        </form>
       </div>
     </div>
   );

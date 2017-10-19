@@ -3,11 +3,11 @@ import '../App.css';
 import Input from './input.js';
 import NavBar from './nav_bar.js';
 import Footer from '../presentational/footer.js';
-import TodoList from '../presentational/todo_list.js';
+import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
 
-class List extends Component {
+class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -202,7 +202,7 @@ class List extends Component {
           term={this.state.searchTerm}
         />
         <Input fxToRun={this.addToList} /*pass addToList as prop*/ />
-        <TodoList
+        <TodoListView
           className=""
           location={this.props.location}
           otherAuthoredLists={this.state.otherAuthoredLists}
@@ -232,4 +232,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default TodoList;

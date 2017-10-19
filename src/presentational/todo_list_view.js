@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const TodoList = ({ loading, listName, todoList, otherAuthoredLists, location }) => {
+const TodoListView = ({ loading, listName, todoList, otherAuthoredLists, location }) => {
   //done: ({loading, completed, id}) destructuring
   if (loading) return <h1>Please wait, loading...</h1>;
 //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
@@ -38,4 +38,4 @@ const TodoList = ({ loading, listName, todoList, otherAuthoredLists, location })
   );
 };
 
-export default TodoList;
+export default TodoListView;

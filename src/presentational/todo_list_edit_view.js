@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const EditListView = props => {
+const TodoListEditView = props => {
   return (
     <div className="List">
       <div>
@@ -46,4 +46,4 @@ const EditListView = props => {
     </div>
   );
 };
-export default EditListView;
+export default TodoListEditView;
