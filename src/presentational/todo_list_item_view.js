@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import GoogleMap from '../components/google_map.js';
+import GoogleMap from '../presentational/google_map.js';
 
 const TodoListItemView = props => {
   const todo = props.todo;

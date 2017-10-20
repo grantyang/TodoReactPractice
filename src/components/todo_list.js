@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import Input from './input.js';
+import Input from '../presentational/input.js';
 import NavBar from './nav_bar.js';
 import Footer from '../presentational/footer.js';
 import TodoListView from '../presentational/todo_list_view.js';
@@ -166,6 +166,7 @@ class TodoList extends Component {
       if (this.state.searchTerm === '') return todo;
       if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
         return todo;
+      return null;
     });
   };
 

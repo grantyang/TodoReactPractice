@@ -52,7 +52,6 @@ class ChangePassword extends Component {
         newPasswordInput={this.state.newPasswordInput}
         onOldPasswordChange={this.onOldPasswordChange}
         onNewPasswordChange={this.onNewPasswordChange}
-        saveNewPassword={this.saveNewPassword}
       />
     );
   }

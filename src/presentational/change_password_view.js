@@ -7,11 +7,11 @@ const ChangePasswordView = props => {
     <div>
       <NavBar />
       <div className="container mt-2">
-        <form className="col-sm-8">
+        <form className="col-md-8">
           <div className="form-group">
             <b>Current Password:</b>
             <input
-              className="todoItem list-group-item col-sm-12"
+              className="todoItem list-group-item col-md-12"
               type="password"
               value={props.oldPasswordInput}
               onChange={props.onOldPasswordChange} // update state on change
@@ -20,7 +20,7 @@ const ChangePasswordView = props => {
           <div className="form-group">
             <b>New Password:</b>
             <input
-              className="todoItem list-group-item col-sm-12"
+              className="todoItem list-group-item col-md-12"
               type="password"
               value={props.newPasswordInput}
               onChange={props.onNewPasswordChange} // update state on change
@@ -29,11 +29,11 @@ const ChangePasswordView = props => {
           </div>
           <button
             type="submit"
-            className="col-sm-4 btn btn-item btn-success"
+            className="col-md-4 btn btn-item btn-success"
             onClick={props.saveNewPassword}>
             Save
           </button>
-          <Link className="col-sm-4 btn btn-item btn-warning" to={`/profile`}>
+          <Link className="col-md-4 btn btn-item btn-warning" to={`/profile`}>
             Return to Profile
           </Link>
         </form>

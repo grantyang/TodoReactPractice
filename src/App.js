@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import NavBar from './components/nav_bar.js';
-import Input from './components/input.js';
+import Input from './presentational/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
 import {callJSON} from './ajax_utility.js';
 

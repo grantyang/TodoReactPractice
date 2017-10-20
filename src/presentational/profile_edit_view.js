@@ -6,7 +6,7 @@ const ProfileEditView = (props) => {
   return (
     <div>
         <NavBar />
-        <div>
+        <div className="container mt-2">
           <div className="justify-content-sm-center row">
             <b>Change name to:</b>
           </div>
@@ -35,18 +35,18 @@ const ProfileEditView = (props) => {
           </div>
           <div className="row justify-content-sm-center">
             <button
-              className="col-sm-2 btn btn-item btn-success"
+              className="col-md-3 btn btn-item btn-success"
               onClick={(event) => props.onUserInfoUpdate(event)}>
               Save
             </button>
             <Link
-            className="col-sm-2 btn btn-item btn-warning"
+            className="col-md-3 btn btn-item btn-warning"
             to={`/profile/changepassword`}>
               Change Password            
             </Link>          
           </div>
           <div className="row justify-content-sm-center">
-            <Link className="col-sm-2 btn btn-item btn-primary" to={`/profile`}>
+            <Link className="col-md-3 btn btn-item btn-primary" to={`/profile`}>
               Return to Profile
             </Link>
           </div>
