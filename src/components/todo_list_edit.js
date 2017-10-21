@@ -14,9 +14,7 @@ export default class TodoListEdit extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() =>
-    this.forceUpdate()
-    );
+    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
@@ -31,7 +29,8 @@ export default class TodoListEdit extends Component {
     return this.props.store.getState().todoList.name;
   };
 
-  onSave = () => {
+  onSave = (event) => {
+    event.preventDefault();
     const newText = this.state.textInputValue;
     const newPrivacy = this.state.privacyInput;
     //GY check for duplicate against list of lists
@@ -39,11 +38,21 @@ export default class TodoListEdit extends Component {
       return alert('Please input a name');
     }
     // when input is submitted, add to database
-    return updateTodoList(this.props.store.dispatch, this.getListName(), {
+    //how to get back to list
+    //this.props.history.push(`/list/${newText}`)
+    
+    updateTodoList(this.props.store.dispatch, this.getListName(), {
       name: newText,
       privacy: newPrivacy
     });
+
+    return setTimeout(() => { this.props.history.push(`/list/${newText}`) }, 50); //ask CW. this returns after action emitted but before reducer sees it intermittently
+
   };
+
+  // redirect = () => {
+  //   return this.props.history.push(`/list/${this.state.textInputValue}`)  //ask CW. this returns after action emitted but before reducer sees it intermittently
+  // }
 
   onPrivacyChange = event => {
     //when Privacy is changed, update state
@@ -61,14 +70,8 @@ export default class TodoListEdit extends Component {
 
   delete = () => {
     //delete this list and return to homepage
-    return deleteList(this.props.store.dispatch, this.getListName())
-    // callJSON('DELETE', `list/${this.getListName()}`)
-    //   .then(() => {
-    //     this.props.history.push('');
-    //   })
-    //   .catch(error => {
-    //     return error;
-    //   });
+    this.props.history.push('');
+    return deleteList(this.props.store.dispatch, this.getListName());
   };
 
   render() {

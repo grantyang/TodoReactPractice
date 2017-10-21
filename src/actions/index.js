@@ -31,7 +31,7 @@ export const VisibilityFilters = {
  * action creators
  */
 
-export function updateTodoList(dispatch, listName, todoList) { 
+export function updateTodoList(dispatch, listName, todoList, callback) { 
   return callJSON('PUT', `list/${listName}`, todoList)
     .then(res => res.json())
     .then(
@@ -53,7 +53,7 @@ export function deleteList(dispatch, listName) {
   return callJSON('DELETE', `list/${listName}`
 )
     .then(
-      () => dispatch({ type: DELETE_ALL_TODO_SUCCESS }),
+      () => dispatch({ type: DELETE_LIST_SUCCESS }),
       err => dispatch({ type: DELETE_FAILURE, err })
     );
 }
