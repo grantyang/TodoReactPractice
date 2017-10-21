@@ -7,6 +7,7 @@ import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
 import { callJSON } from '../ajax_utility.js';
+import { addTodo, loadData, deleteAllTodos, deleteCompletedTodos } from '../actions/index.js';
 
 class TodoList extends Component {
   constructor(props) {
@@ -14,40 +15,29 @@ class TodoList extends Component {
     this.state = {
       name: '',
       creator: '',
-      todoList: [],
       otherAuthoredLists: [],
       filter: 'ALL',
       searchTerm: '',
-      loading: true
     };
   }
 
-  componentDidMount() {
-    this.getListFromServer();
+  componentWillMount() {
+    loadData(this.props.store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
-  componentDidUpdate() {
-    this.getListFromServer();
-  }
-  // setTimeout(function(){
-  //     res.json(updatedTodo)
 
-  // },1000)
+  componentDidMount() {
+    this.unsubscribe = this.props.store.subscribe(() =>
+      this.setState({ name: this.getTodoList().name })
+    );
+  }
+  
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   getListFromServer() {
     const listName = this.props.match.params.listName;
     if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
-    callJSON('GET', `list/${listName}`)
-      .then(res => {
-        return res.json();
-      })
-      .then(returnedList => {
-        this.setState({
-          name: returnedList.name,
-          creator: returnedList.creator,
-          todoList: returnedList.todoList,
-          loading: false
-        });
-      });
     callJSON('GET', `lists?authored=true`)
       .then(res => {
         return res.json();
@@ -60,70 +50,51 @@ class TodoList extends Component {
   }
 
   addToList = todoText => {
-    //fat arrow function instead of binding separately
     if (!todoText) {
-      alert('Please input a value');
-    } else if (
-      this.state.todoList.find(
-        item => item.text.toLowerCase() === todoText.toLowerCase()
-      )
+      return alert('Please input a value');
+    }
+    //if there is a duplicate
+    if (this.getTodoList().todos.find(item => item.text.toLowerCase() === todoText.toLowerCase())
     ) {
-      //if there is a duplicate
-      alert('Todo item already exists');
-    } else if (todoText) {
-      const todoObj = {
+      return alert('Todo item already exists');
+    } 
+    else {
+      const todoObj = { //create new object
         text: todoText,
         completed: false,
         tag: '',
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 }
       };
-      const listName = this.props.match.params.listName;
-      callJSON('POST', `list/${listName}`, todoObj)
-        .then(res => {
-          return res.json();
-        })
-        .then(newTodo => {
-          this.setState({
-            todoList: [newTodo, ...this.state.todoList] // add new Object to todoList
-          });
-        });
+      return addTodo( //dispatch async action
+        this.props.store.dispatch,
+        this.props.match.params.listName,
+        todoObj
+      );
     }
   };
 
   clearAll = () => {
-    //clear all todo items from this list
-    const listName = this.props.match.params.listName;
-    callJSON('DELETE', `list/${listName}?all=true`)
-      .then(() => {
-        this.setState({
-          todoList: []
-        });
-      })
-      .catch(error => {
-        return error;
-      });
+    //clear all todo items from this list  
+    return deleteAllTodos( //dispatch async action
+      this.props.store.dispatch,
+      this.props.match.params.listName
+    );
   };
 
   clearComplete = () => {
     //clear completed todo items from this list
-    const listName = this.props.match.params.listName;
-    callJSON('DELETE', `list/${listName}?completed=true`)
-      .then(() => {
-        const newList = this.state.todoList.filter(
-          item => item.completed === false
-        );
-        this.setState({ todoList: newList });
-      })
-      .catch(error => {
-        return error;
-      });
+    return deleteCompletedTodos( //dispatch async action
+      this.props.store.dispatch,
+      this.props.match.params.listName
+    );
   };
+
 
   countCompleted = () => {
     //count number of tood items not yet completed in this list
     let total = 0;
-    this.state.todoList.forEach(element => {
+    this.getTodoList().todos.forEach(element => {
       if (element.completed === false) {
         total++;
       }
@@ -162,7 +133,7 @@ class TodoList extends Component {
 
   searchResults = () => {
     //searches for searchterm
-    return this.state.todoList.filter(todo => {
+    return this.getTodoList().todos.filter(todo => {
       if (this.state.searchTerm === '') return todo;
       if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
         return todo;
@@ -170,11 +141,12 @@ class TodoList extends Component {
     });
   };
 
-  //get visible todos, then filter further based on search term. return that in TodoList instead.
-  //if searchTerm is part of any todo.text, show the todo.text, otherwise no show
-  //reset searchTerm with button?
+  getTodoList = () => {
+    return this.props.store.getState().todoList;
+  };
 
   render() {
+    const loading = this.props.store.getState().loading;    
     const name = this.state.name;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
@@ -191,8 +163,9 @@ class TodoList extends Component {
           location={this.props.location}
           otherAuthoredLists={this.state.otherAuthoredLists}
           listName={name}
-          todoList={filteredTodos}
-          loading={this.state.loading}
+          todos={filteredTodos}
+          loading={loading}
+
         />
         <Footer
           className="list-group"

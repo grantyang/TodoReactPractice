@@ -16,7 +16,7 @@ const ListOfLists = props => {
                 to={`/list/${list.name}`}>
                 {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.todoList.length}
+                  {list.todos.length}
                 </span>
               </Link>
             );
@@ -34,7 +34,7 @@ const ListOfLists = props => {
                 to={`/list/${list.name}`}>
                 {list.name }{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.todoList.length}
+                  {list.todos.length}
                 </span>
               </Link>
             );

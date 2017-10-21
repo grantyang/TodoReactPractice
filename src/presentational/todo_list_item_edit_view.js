@@ -8,6 +8,9 @@ const TodoListItemEditView = props => {
             <input
               className="todoItem list-group-item col-sm-12"
               type="text"
+              style={{
+                textDecoration: props.completed ? 'line-through' : 'none'
+              }}
               value={props.textInputValue}
               onChange={props.onTextChange} // update state on change
             />

@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const TodoListView = ({ loading, listName, todoList, otherAuthoredLists, location }) => {
+const TodoListView = ({
+  loading,
+  listName,
+  todos,
+  otherAuthoredLists,
+  location
+}) => {
   //done: ({loading, completed, id}) destructuring
   if (loading) return <h1>Please wait, loading...</h1>;
-//  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
+  //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
   return (
     <div className="row justify-content-sm-center">
       <div className="col-sm-3 list-group">
@@ -20,14 +26,16 @@ const TodoListView = ({ loading, listName, todoList, otherAuthoredLists, locatio
           );
         })}
       </div>
-
       <div className="col-sm-6 list-group">
         List Items
-        {todoList.map(todo => {
+        {todos.map(todo => {
           return (
             <Link
               key={todo.id}
-              className={`list-group-item completed${todo.completed}`}
+              className={`list-group-item `}
+              style={{
+                textDecoration: todo.completed ? 'line-through' : 'none'
+              }}
               to={`/list/${listName}/todo/${todo.id}`}>
               {todo.text} {todo.dueDate && `Due: ${todo.dueDate}`}
             </Link>

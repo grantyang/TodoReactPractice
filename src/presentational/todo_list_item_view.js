@@ -8,7 +8,13 @@ const TodoListItemView = props => {
     <div>
       <div className="row justify-content-sm-center">
         <span className={`col-sm-8 completed${todo.completed}`}>
-          <span className="todoItem list-group-item">{todo.text}</span>
+          <span
+            className="todoItem list-group-item"
+            style={{
+              textDecoration: todo.completed ? 'line-through' : 'none'
+            }}>
+            {todo.text}
+          </span>
         </span>
       </div>
       <div className="row justify-content-sm-center">
@@ -41,7 +47,7 @@ const TodoListItemView = props => {
         <GoogleMap
           saveLocation={props.saveLocation}
           location={props.location}
-       />
+        />
       </div>
     </div>
   );

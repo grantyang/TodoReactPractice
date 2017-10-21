@@ -36,9 +36,10 @@ export default class PrivateRoute extends Component {
       })
     }
 
+//https://github.com/ReactTraining/react-router/issues/4105  
     privateRoute = ({ component: Component, ...rest }) => {     
       if (this.state.activeSession) {
-        return <Route {...rest} render={props => ( <Component {...props}/>)}/>
+        return <Route {...rest} render={props => ( <Component {...props} store={this.props.store}/>)}/>
       }
       else{
         return <Route {...rest} render={props => ( <Redirect to={{pathname: '/login'}}/>)}/>            
