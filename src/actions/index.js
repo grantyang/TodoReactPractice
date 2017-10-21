@@ -9,8 +9,11 @@ export const ADD_TODO_SUCCESS = 'ADD_TODO_SUCCESS';
 export const ADD_TODO_FAILURE = 'ADD_TODO_FAILURE';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export const UPDATE_LIST_SUCCESS = 'UPDATE_LIST_SUCCESS'
+export const UPDATE_LIST_FAILURE = 'UPDATE_LIST_FAILURE'
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS'
 export const LOAD_LIST_FAILURE = 'LOAD_LIST_FAILURE'
+export const DELETE_LIST_SUCCESS = 'DELETE_ALL_TODO_SUCCESS'
 export const DELETE_ALL_TODO_SUCCESS = 'DELETE_ALL_TODO_SUCCESS'
 export const DELETE_COMPLETED_TODO_SUCCESS = 'DELETE_COMPLETED_TODO_SUCCESS'
 export const DELETE_FAILURE = 'DELETE_FAILURE'
@@ -27,12 +30,31 @@ export const VisibilityFilters = {
 /*
  * action creators
  */
+
+export function updateTodoList(dispatch, listName, todoList) { 
+  return callJSON('PUT', `list/${listName}`, todoList)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),
+      err => dispatch({ type: UPDATE_LIST_FAILURE, err })
+    );
+}
+
 export function addTodo(dispatch, listName, todoObj) { 
   return callJSON('POST', `list/${listName}`, todoObj)
     .then(res => res.json())
     .then(
       data => dispatch({ type: ADD_TODO_SUCCESS, data }),
       err => dispatch({ type: ADD_TODO_FAILURE, err })
+    );
+}
+
+export function deleteList(dispatch, listName) { 
+  return callJSON('DELETE', `list/${listName}`
+)
+    .then(
+      () => dispatch({ type: DELETE_ALL_TODO_SUCCESS }),
+      err => dispatch({ type: DELETE_FAILURE, err })
     );
 }
 

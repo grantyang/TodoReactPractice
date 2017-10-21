@@ -13,15 +13,16 @@ class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      creator: '',
-      otherAuthoredLists: [],
       filter: 'ALL',
       searchTerm: '',
+      otherAuthoredLists: []
+      
     };
   }
 
   componentWillMount() {
+   console.log(`getting list named ${this.props.match.params.listName}`)
+
     loadData(this.props.store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
 
@@ -35,19 +36,19 @@ class TodoList extends Component {
     this.unsubscribe();
   }
 
-  getListFromServer() {
-    const listName = this.props.match.params.listName;
-    if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
-    callJSON('GET', `lists?authored=true`)
-      .then(res => {
-        return res.json();
-      })
-      .then(returnedLists => {
-        this.setState({
-          otherAuthoredLists: returnedLists
-        });
-      });
-  }
+  // getListFromServer() {
+  //   const listName = this.props.match.params.listName;
+  //   if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
+  //   callJSON('GET', `lists?authored=true`)
+  //     .then(res => {
+  //       return res.json();
+  //     })
+  //     .then(returnedLists => {
+  //       this.setState({
+  //         otherAuthoredLists: returnedLists
+  //       });
+  //     });
+  // }
 
   addToList = todoText => {
     if (!todoText) {
@@ -89,7 +90,6 @@ class TodoList extends Component {
       this.props.match.params.listName
     );
   };
-
 
   countCompleted = () => {
     //count number of tood items not yet completed in this list
@@ -145,9 +145,13 @@ class TodoList extends Component {
     return this.props.store.getState().todoList;
   };
 
+  getOtherAuthoredLists = () => {
+    return // other lists authored by me (filter redux state) this.props.store.getState().todoList;
+  };
+
   render() {
     const loading = this.props.store.getState().loading;    
-    const name = this.state.name;
+    const name = this.getTodoList().name;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
     return (
@@ -165,7 +169,6 @@ class TodoList extends Component {
           listName={name}
           todos={filteredTodos}
           loading={loading}
-
         />
         <Footer
           className="list-group"
@@ -178,7 +181,7 @@ class TodoList extends Component {
         />
         <Link
           className="btn col-sm-4 btn-item btn-warning"
-          to={`/list/edit/${name}`}>
+          to={`/list/${name}/edit`}>
           Edit List
         </Link>
         <Link className="btn col-sm-4 btn-item btn-primary " to="/">

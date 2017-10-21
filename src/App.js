@@ -68,7 +68,7 @@ class App extends Component {
       name: newName,
       creator: this.state.currentUser.userId,
       privacy: 'private',      
-      todoList: [],
+      todos: [],
       filter: 'ALL',
       searchTerm: '',
       loading: true,

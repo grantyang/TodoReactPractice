@@ -47,9 +47,9 @@ ReactDOM.render(
             <div  /*if user is on path, show component  <App /> */>
                 <Switch /*Takes in Routes and will render only the first match*/>
                     <Route exact path="/" component={App} />
-                    <PrivateRoute path="/list/edit/:listName/" component={TodoListEdit} />
                     <PrivateRoute path="/list/:listName/todo/:itemId/edit" component={TodoListItemEdit} />
                     <PrivateRoute path="/list/:listName/todo/:itemId" component={TodoListItem} />
+                    <PrivateRoute path="/list/:listName/edit" component={TodoListEdit} store={store} />
                     <PrivateRoute path="/list/:listName" component={TodoList} store={store} />
                     <PrivateRoute path="/profile/changepassword" component={ChangePassword} />     
                     <PrivateRoute path="/profile/edit" component={ProfileEdit} />     

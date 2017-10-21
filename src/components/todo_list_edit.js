@@ -2,57 +2,47 @@ import React, { Component } from 'react';
 import '../App.css';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
+import { updateTodoList, deleteList } from '../actions/index.js';
 
 export default class TodoListEdit extends Component {
-  componentDidMount() {
-    callJSON('GET', `list/${this.getListName()}`)
-      .then(res => {
-        return res.json();
-      })
-      .then(returnedList => {
-        this.setState({
-          loading: false,
-          privacyInput: returnedList.privacy,
-          textInputValue: returnedList.name
-        });
-      });
-  }
-
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      saving: false,
-      privacyInput: 'private',
-      textInputValue: ''
+      privacyInput: this.getTodoList().privacy,
+      textInputValue: this.getTodoList().name
     };
   }
 
+  componentDidMount() {
+    this.unsubscribe = this.props.store.subscribe(() =>
+    this.forceUpdate()
+    );
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  getTodoList = () => {
+    return this.props.store.getState().todoList;
+  };
+
   getListName = () => {
-    return this.props.match.params.listName;
+    return this.props.store.getState().todoList.name;
   };
 
   onSave = () => {
-    // when input is submitted, add to database
     const newText = this.state.textInputValue;
     const newPrivacy = this.state.privacyInput;
-    console.log(`privacy input is : ${newPrivacy}`);
-    this.setState({
-      saving: true
-    });
-    callJSON('PUT', `list/${this.getListName()}`, {
+    //GY check for duplicate against list of lists
+    if (!newText) {
+      return alert('Please input a name');
+    }
+    // when input is submitted, add to database
+    return updateTodoList(this.props.store.dispatch, this.getListName(), {
       name: newText,
       privacy: newPrivacy
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(() => {
-        this.setState({
-          saving: false
-        });
-        this.props.history.push(`${newText}`);
-      });
+    });
   };
 
   onPrivacyChange = event => {
@@ -71,22 +61,18 @@ export default class TodoListEdit extends Component {
 
   delete = () => {
     //delete this list and return to homepage
-    callJSON('DELETE', `list/${this.getListName()}`)
-      .then(() => {
-        this.props.history.push('');
-      })
-      .catch(error => {
-        return error;
-      });
+    return deleteList(this.props.store.dispatch, this.getListName())
+    // callJSON('DELETE', `list/${this.getListName()}`)
+    //   .then(() => {
+    //     this.props.history.push('');
+    //   })
+    //   .catch(error => {
+    //     return error;
+    //   });
   };
 
   render() {
-    if (this.state.loading === true) {
-      return <b>Please wait, loading...</b>;
-    }
-    if (this.state.saving === true) {
-      return <b>Please wait, saving...</b>;
-    }
+    console.log(this.props.store.getState().todoList.name);
     return (
       <TodoListEditView
         onSave={this.onSave}

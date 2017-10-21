@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 import {callJSON} from '../ajax_utility.js';
 
-//no more passing prop from last page.
 export default class TodoListItemEdit extends Component {
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
