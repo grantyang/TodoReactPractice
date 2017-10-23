@@ -7,6 +7,7 @@
 
 const TodoListReducer = (
   state = {
+    // The actual data (model)
     name: 'initial list DO NOT SHOW',
     creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
     privacy: 'private',
@@ -24,8 +25,7 @@ const TodoListReducer = (
       }
     ],
     filter: 'ALL',
-    searchTerm: '',
-    loading: true
+    searchTerm: ''
   },
   action
 ) => {
@@ -37,6 +37,7 @@ const TodoListReducer = (
 
     case 'ADD_TODO_SUCCESS':
       return { ...state, todos: [action.data, ...state.todos] };
+
 
     case 'UPDATE_LIST_SUCCESS':
       return action.data;

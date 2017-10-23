@@ -70,9 +70,7 @@ class App extends Component {
       privacy: 'private',      
       todos: [],
       filter: 'ALL',
-      searchTerm: '',
-      loading: true,
-      
+      searchTerm: ''      
     };
     callJSON('POST','create', newList)
       .then(res => {
@@ -96,7 +94,6 @@ class App extends Component {
           <div className="container">
             <Input fxToRun={this.create} />
             <ListOfLists
-              className=""
               listOfLists={this.state.listOfLists}
               loading={this.state.loading}
             />

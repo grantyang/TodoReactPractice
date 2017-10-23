@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import TodoListReducer from './todo_list_reducer.js'
-import LoadingReducer from './loading_reducer.js'
+import MetaReducer from './meta_reducer.js'
 
 //Actions describe the fact that something happened, but don't specify how the application's state changes in response. 
 //This is the job of reducers.
@@ -9,7 +9,7 @@ import LoadingReducer from './loading_reducer.js'
 
 const allReducers = combineReducers({
   todoList: TodoListReducer,
-  loading: LoadingReducer
+  meta: MetaReducer
   //addtl reducers go here
 })
 export default allReducers

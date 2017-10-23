@@ -7,7 +7,8 @@ import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
 import { callJSON } from '../ajax_utility.js';
-import { addTodo, loadData, deleteAllTodos, deleteCompletedTodos } from '../actions/index.js';
+import { addTodo, loadTodoListData, deleteAllTodos, deleteCompletedTodos } from '../actions/index.js';
+import store from '../redux_create_store.js'
 
 class TodoList extends Component {
   constructor(props) {
@@ -16,18 +17,16 @@ class TodoList extends Component {
       filter: 'ALL',
       searchTerm: '',
       otherAuthoredLists: []
-      
     };
   }
 
   componentWillMount() {
    console.log(`getting list named ${this.props.match.params.listName}`)
-
-    loadData(this.props.store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
+    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() =>
+    this.unsubscribe = store.subscribe(() =>
       this.setState({ name: this.getTodoList().name })
     );
   }
@@ -35,20 +34,6 @@ class TodoList extends Component {
   componentWillUnmount() {
     this.unsubscribe();
   }
-
-  // getListFromServer() {
-  //   const listName = this.props.match.params.listName;
-  //   if (listName === this.state.name) return; //if list is already loaded, avoid infinite loop
-  //   callJSON('GET', `lists?authored=true`)
-  //     .then(res => {
-  //       return res.json();
-  //     })
-  //     .then(returnedLists => {
-  //       this.setState({
-  //         otherAuthoredLists: returnedLists
-  //       });
-  //     });
-  // }
 
   addToList = todoText => {
     if (!todoText) {
@@ -68,7 +53,7 @@ class TodoList extends Component {
         location: { lat: 52.5200066, lng: 13.404954 }
       };
       return addTodo( //dispatch async action
-        this.props.store.dispatch,
+        store.dispatch,
         this.props.match.params.listName,
         todoObj
       );
@@ -78,7 +63,7 @@ class TodoList extends Component {
   clearAll = () => {
     //clear all todo items from this list  
     return deleteAllTodos( //dispatch async action
-      this.props.store.dispatch,
+      store.dispatch,
       this.props.match.params.listName
     );
   };
@@ -86,7 +71,7 @@ class TodoList extends Component {
   clearComplete = () => {
     //clear completed todo items from this list
     return deleteCompletedTodos( //dispatch async action
-      this.props.store.dispatch,
+      store.dispatch,
       this.props.match.params.listName
     );
   };
@@ -142,15 +127,15 @@ class TodoList extends Component {
   };
 
   getTodoList = () => {
-    return this.props.store.getState().todoList;
+    return store.getState().todoList;
   };
 
   getOtherAuthoredLists = () => {
-    return // other lists authored by me (filter redux state) this.props.store.getState().todoList;
+    return // other lists authored by me (filter redux state) store.getState().todoList;
   };
 
   render() {
-    const loading = this.props.store.getState().loading;    
+    const loading = store.getState().meta.loading;    
     const name = this.getTodoList().name;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 

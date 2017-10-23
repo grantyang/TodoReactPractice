@@ -9,6 +9,7 @@ export const ADD_TODO_SUCCESS = 'ADD_TODO_SUCCESS';
 export const ADD_TODO_FAILURE = 'ADD_TODO_FAILURE';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export const UPDATE_LIST_REQUEST = 'UPDATE_LIST_REQUEST'
 export const UPDATE_LIST_SUCCESS = 'UPDATE_LIST_SUCCESS'
 export const UPDATE_LIST_FAILURE = 'UPDATE_LIST_FAILURE'
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS'
@@ -30,8 +31,8 @@ export const VisibilityFilters = {
 /*
  * action creators
  */
-
 export function updateTodoList(dispatch, listName, todoList, callback) { 
+  dispatch({ type: UPDATE_LIST_REQUEST})
   return callJSON('PUT', `list/${listName}`, todoList)
     .then(res => res.json())
     .then(
@@ -92,7 +93,7 @@ export function setVisibilityFilter(filter) {
   };
 }
 
-export function loadData(dispatch, listName) { // needs to dispatch, so it is first argument
+export function loadTodoListData(dispatch, listName) { // needs to dispatch, so it is first argument
   return callJSON('GET', `list/${listName}`)
     .then(res => res.json())
     .then(

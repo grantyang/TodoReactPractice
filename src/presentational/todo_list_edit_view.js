@@ -38,7 +38,7 @@ const TodoListEditView = props => {
         <div className="row justify-content-sm-center">
           <Link
             className="col-md-2 col-md-offset-5 btn btn-item btn-primary"
-            to={`/list/${props.getListName()}`}>
+            to={`/list/${props.listName}`}>
             Return to List
           </Link>
         </div>

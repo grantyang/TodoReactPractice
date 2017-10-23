@@ -3,33 +3,41 @@ import '../App.css';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
 import { updateTodoList, deleteList } from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 export default class TodoListEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      privacyInput: this.getTodoList().privacy,
-      textInputValue: this.getTodoList().name
+      listName: '',
+      textInputValue: '',
+      privacyInput: '',
+      updating: false
     };
   }
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    this.updateComponentState(); //keep in sync with redux
+    this.unsubscribe = store.subscribe(this.updateComponentState);
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  getTodoList = () => {
-    return this.props.store.getState().todoList;
+  updateComponentState = () => {
+    if (this.state.updating && store.getState().meta.updating === false) {
+      return this.props.history.push(`/list/${store.getState().todoList.name}`); //redirect to new name list if just updated
+    }
+    return this.setState({
+      updating: store.getState().meta.updating,
+      listName: store.getState().todoList.name,
+      textInputValue: store.getState().todoList.name,
+      privacyInput: store.getState().todoList.privacy
+    });
   };
 
-  getListName = () => {
-    return this.props.store.getState().todoList.name;
-  };
-
-  onSave = (event) => {
+  onSave = event => {
     event.preventDefault();
     const newText = this.state.textInputValue;
     const newPrivacy = this.state.privacyInput;
@@ -38,21 +46,11 @@ export default class TodoListEdit extends Component {
       return alert('Please input a name');
     }
     // when input is submitted, add to database
-    //how to get back to list
-    //this.props.history.push(`/list/${newText}`)
-    
-    updateTodoList(this.props.store.dispatch, this.getListName(), {
+    return updateTodoList(store.dispatch, this.state.listName, {
       name: newText,
       privacy: newPrivacy
     });
-
-    return setTimeout(() => { this.props.history.push(`/list/${newText}`) }, 50); //ask CW. this returns after action emitted but before reducer sees it intermittently
-
   };
-
-  // redirect = () => {
-  //   return this.props.history.push(`/list/${this.state.textInputValue}`)  //ask CW. this returns after action emitted but before reducer sees it intermittently
-  // }
 
   onPrivacyChange = event => {
     //when Privacy is changed, update state
@@ -71,18 +69,18 @@ export default class TodoListEdit extends Component {
   delete = () => {
     //delete this list and return to homepage
     this.props.history.push('');
-    return deleteList(this.props.store.dispatch, this.getListName());
+    return deleteList(store.dispatch, this.state.listName);
   };
 
   render() {
-    console.log(this.props.store.getState().todoList.name);
+    console.log(store.getState().todoList.name);
     return (
       <TodoListEditView
         onSave={this.onSave}
         onTextChange={this.onTextChange}
         textInputValue={this.state.textInputValue}
         privacyInput={this.state.privacyInput}
-        getListName={this.getListName}
+        listName={this.state.listName}
         changeName={this.changeName}
         delete={this.delete}
         onPrivacyChange={this.onPrivacyChange}
