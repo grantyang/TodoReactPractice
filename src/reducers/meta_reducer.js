@@ -9,17 +9,24 @@ const MetaReducer = (
   // Information about the model
   state = {
     loading: true,
-    updating: false
+    updating: false,
+    currentUser: null
   },
   action
 ) => {
   switch (action.type) {
-    
+    case 'USER_LOGIN_SUCCESS':
+      return { ...state, currentUser: action.data };
+
+    case 'USER_LOGIN_FAILURE':
+      alert('Please Log In.');
+      return state;
+
     case 'LOAD_ALL_LISTS_SUCCESS':
-    return { ...state, loading: false };
+      return { ...state, loading: false };
 
     case 'LOAD_ALL_LISTS_FAILURE':
-    return { ...state, loading: false };
+      return { ...state, loading: false };
 
     case 'LOAD_LIST_SUCCESS':
       return { ...state, loading: false };

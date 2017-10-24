@@ -37,7 +37,7 @@ class TodoList extends Component {
 
   updateComponentState = () => {
     return this.setState({
-      listName: store.getState().todoList[0].name
+      listName: store.getState().todoLists[0].name
     });
   };
 
@@ -143,7 +143,7 @@ class TodoList extends Component {
   };
 
   getTodoList = () => {
-    return store.getState().todoList[0];
+    return store.getState().todoLists[0];
   };
 
   getOtherAuthoredLists = () => {

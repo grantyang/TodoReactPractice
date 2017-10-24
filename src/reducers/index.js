@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import TodoListReducer from './todo_list_reducer.js'
+import TodoListsReducer from './todo_lists_reducer.js'
 import MetaReducer from './meta_reducer.js'
 
 //Actions describe the fact that something happened, but don't specify how the application's state changes in response. 
@@ -8,7 +8,7 @@ import MetaReducer from './meta_reducer.js'
 // and combining their results into a single object again. Does not return obj if its reducers do not change state.
 
 const allReducers = combineReducers({
-  todoList: TodoListReducer,
+  todoLists: TodoListsReducer,
   meta: MetaReducer
   //addtl reducers go here
 })

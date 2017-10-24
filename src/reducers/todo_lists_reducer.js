@@ -5,50 +5,55 @@
 // Perform side effects like API calls and routing transitions;
 // Call non-pure functions, e.g. Date.now() or Math.random().
 
-const TodoListReducer = (
-  state = [{
-    // The actual data (model)
-    name: 'initial list DO NOT SHOW',
-    creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
-    privacy: 'private',
-    todos: [
-      {
-        text: 'initial todo item DO NOT SHOW',
-        completed: false,
-        tag: '',
-        dueDate: '',
-        location: {
-          lat: 52.5200066,
-          lng: 13.404954
-        },
-        id: '60c31d60-b678-11e7-9684-ad5a4358b7ae'
-      }
-    ],
-    filter: 'ALL',
-    searchTerm: '',
-    id: '10c31d60-b678-11e7-9684-ad5a4358b7aa'
-  }],
+const TodoListsReducer = (
+  state = [
+    {
+      // The actual data (model)
+      name: 'initial list DO NOT SHOW',
+      creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
+      privacy: 'private',
+      todos: [
+        {
+          text: 'initial todo item DO NOT SHOW',
+          completed: false,
+          tag: '',
+          dueDate: '',
+          location: {
+            lat: 52.5200066,
+            lng: 13.404954
+          },
+          id: '60c31d60-b678-11e7-9684-ad5a4358b7ae'
+        }
+      ],
+      filter: 'ALL',
+      searchTerm: '',
+      id: '10c31d60-b678-11e7-9684-ad5a4358b7aa'
+    }
+  ],
   action
 ) => {
   console.log(`${action.type} detected by reducer`);
 
   switch (action.type) {
+    case 'LOAD_ALL_LISTS_SUCCESS':
+      return action.data;
+
     case 'LOAD_LIST_SUCCESS':
       return [action.data];
 
-    // case 'ADD_TODO_SUCCESS':
-    //   return { ...state, todos: [action.data, ...state.todos] };
+    case 'CREATE_LIST_SUCCESS':
+      return [action.data, ...state];
 
-      case 'ADD_TODO_SUCCESS':
-      return state.map((todoList) => {
+    case 'ADD_TODO_SUCCESS':
+      return state.map(todoList => {
         if (todoList.name === action.listName) {
           return Object.assign({}, todoList, {
-            todos: [...todoList.todos, action.data]
-          })
+            todos: [action.data, ...todoList.todos]
+          });
         }
-        return todoList
-      })
-      
+        return todoList;
+      });
+
     case 'UPDATE_LIST_SUCCESS':
       return action.data;
 
@@ -64,7 +69,9 @@ const TodoListReducer = (
         todos: state.todos.filter(item => item.completed === false)
       };
 
+    case 'CREATE_LIST_FAILURE':
     case 'DELETE_FAILURE':
+    case 'LOAD_ALL_LISTS_FAILURE':
     case 'LOAD_LIST_FAILURE':
     case 'ADD_TODO_FAILURE':
       alert('Error from Server');
@@ -80,4 +87,4 @@ const TodoListReducer = (
   }
 };
 
-export default TodoListReducer;
+export default TodoListsReducer;
