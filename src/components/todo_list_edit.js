@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
-import { updateTodoList, deleteList } from '../actions/index.js';
+import { updateTodoList, deleteList, loadTodoListData } from '../actions/index.js';
 import store from '../redux_create_store.js';
 
 export default class TodoListEdit extends Component {
@@ -15,6 +15,10 @@ export default class TodoListEdit extends Component {
       updating: false
     };
   }
+
+  componentWillMount() {
+     loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
+   }
 
   componentDidMount() {
     this.updateComponentState(); //keep in sync with redux
@@ -73,7 +77,9 @@ export default class TodoListEdit extends Component {
   };
 
   render() {
-    console.log(store.getState().todoList.name);
+    if (this.state.updating === true) {
+      return <b>Please wait, updating...</b>;
+    } 
     return (
       <TodoListEditView
         onSave={this.onSave}

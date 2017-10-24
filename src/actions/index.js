@@ -14,11 +14,12 @@ export const UPDATE_LIST_SUCCESS = 'UPDATE_LIST_SUCCESS'
 export const UPDATE_LIST_FAILURE = 'UPDATE_LIST_FAILURE'
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS'
 export const LOAD_LIST_FAILURE = 'LOAD_LIST_FAILURE'
+export const LOAD_ALL_LISTS_SUCCESS = 'LOAD_ALL_LISTS_SUCCESS'
+export const LOAD_ALL_LISTS_FAILURE = 'LOAD_ALL_LISTS_FAILURE'
 export const DELETE_LIST_SUCCESS = 'DELETE_ALL_TODO_SUCCESS'
 export const DELETE_ALL_TODO_SUCCESS = 'DELETE_ALL_TODO_SUCCESS'
 export const DELETE_COMPLETED_TODO_SUCCESS = 'DELETE_COMPLETED_TODO_SUCCESS'
 export const DELETE_FAILURE = 'DELETE_FAILURE'
-
 /*
  * other constants
  */
@@ -45,7 +46,7 @@ export function addTodo(dispatch, listName, todoObj) {
   return callJSON('POST', `list/${listName}`, todoObj)
     .then(res => res.json())
     .then(
-      data => dispatch({ type: ADD_TODO_SUCCESS, data }),
+      data => dispatch({ type: ADD_TODO_SUCCESS, data, listName }),
       err => dispatch({ type: ADD_TODO_FAILURE, err })
     );
 }
@@ -77,7 +78,6 @@ export function deleteCompletedTodos(dispatch, listName) {
     );
 }
 
-
 export function toggleTodo(index) {
   //index to become id
   return {
@@ -101,6 +101,18 @@ export function loadTodoListData(dispatch, listName) { // needs to dispatch, so 
       err => dispatch({ type: LOAD_LIST_FAILURE, err })
     );
 }
+
+
+export function loadAllTodoLists(dispatch) { // needs to dispatch, so it is first argument
+  return callJSON('GET', `lists`)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: LOAD_ALL_LISTS_SUCCESS, data }),
+      err => dispatch({ type: LOAD_ALL_LISTS_FAILURE, err })
+    );
+}
+
+
 
 
 

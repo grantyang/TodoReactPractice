@@ -4,8 +4,22 @@ import NavBar from './components/nav_bar.js';
 import Input from './presentational/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
 import {callJSON} from './ajax_utility.js';
+import {loadAllTodoLists} from './actions/index.js';
 
 class App extends Component {
+  // componentWillMount() {
+  //    loadTodoListData(store.dispatch);
+  //  }
+ 
+  //  componentDidMount() {
+  //    this.unsubscribe = store.subscribe(() =>
+  //      this.setState({ name: this.getTodoList().name })
+  //    );
+  //  }
+   
+  //  componentWillUnmount() {
+  //    this.unsubscribe();
+  //  }
 
   componentDidMount() {
     callJSON('GET','user')

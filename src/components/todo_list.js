@@ -7,13 +7,19 @@ import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
 import { Link } from 'react-router-dom';
 import { callJSON } from '../ajax_utility.js';
-import { addTodo, loadTodoListData, deleteAllTodos, deleteCompletedTodos } from '../actions/index.js';
-import store from '../redux_create_store.js'
+import {
+  addTodo,
+  loadTodoListData,
+  deleteAllTodos,
+  deleteCompletedTodos
+} from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      listName: '',
       filter: 'ALL',
       searchTerm: '',
       otherAuthoredLists: []
@@ -21,16 +27,20 @@ class TodoList extends Component {
   }
 
   componentWillMount() {
-   console.log(`getting list named ${this.props.match.params.listName}`)
     loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
 
   componentDidMount() {
-    this.unsubscribe = store.subscribe(() =>
-      this.setState({ name: this.getTodoList().name })
-    );
+    this.updateComponentState(); //keep in sync with redux
+    this.unsubscribe = store.subscribe(this.updateComponentState);
   }
-  
+
+  updateComponentState = () => {
+    return this.setState({
+      listName: store.getState().todoList[0].name
+    });
+  };
+
   componentWillUnmount() {
     this.unsubscribe();
   }
@@ -40,39 +50,45 @@ class TodoList extends Component {
       return alert('Please input a value');
     }
     //if there is a duplicate
-    if (this.getTodoList().todos.find(item => item.text.toLowerCase() === todoText.toLowerCase())
+    if (
+      this.getTodoList().todos.find(
+        item => item.text.toLowerCase() === todoText.toLowerCase()
+      )
     ) {
       return alert('Todo item already exists');
-    } 
-    else {
-      const todoObj = { //create new object
+    } else {
+      const todoObj = {
+        //create new object
         text: todoText,
         completed: false,
         tag: '',
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 }
       };
-      return addTodo( //dispatch async action
+      return addTodo(
+        //dispatch async action
         store.dispatch,
-        this.props.match.params.listName,
+        this.state.listName,
         todoObj
       );
     }
   };
 
   clearAll = () => {
-    //clear all todo items from this list  
-    return deleteAllTodos( //dispatch async action
+    //clear all todo items from this list
+    return deleteAllTodos(
+      //dispatch async action
       store.dispatch,
-      this.props.match.params.listName
+      this.state.listName
     );
   };
 
   clearComplete = () => {
     //clear completed todo items from this list
-    return deleteCompletedTodos( //dispatch async action
+    return deleteCompletedTodos(
+      //dispatch async action
       store.dispatch,
-      this.props.match.params.listName
+      this.state.listName
     );
   };
 
@@ -127,16 +143,15 @@ class TodoList extends Component {
   };
 
   getTodoList = () => {
-    return store.getState().todoList;
+    return store.getState().todoList[0];
   };
 
   getOtherAuthoredLists = () => {
-    return // other lists authored by me (filter redux state) store.getState().todoList;
+    return; // other lists authored by me (filter redux state) store.getState().todoList;
   };
 
   render() {
-    const loading = store.getState().meta.loading;    
-    const name = this.getTodoList().name;
+    const loading = store.getState().meta.loading;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
     return (
@@ -151,7 +166,7 @@ class TodoList extends Component {
           className=""
           location={this.props.location}
           otherAuthoredLists={this.state.otherAuthoredLists}
-          listName={name}
+          listName={this.state.listName}
           todos={filteredTodos}
           loading={loading}
         />
@@ -166,7 +181,7 @@ class TodoList extends Component {
         />
         <Link
           className="btn col-sm-4 btn-item btn-warning"
-          to={`/list/${name}/edit`}>
+          to={`/list/${this.state.listName}/edit`}>
           Edit List
         </Link>
         <Link className="btn col-sm-4 btn-item btn-primary " to="/">

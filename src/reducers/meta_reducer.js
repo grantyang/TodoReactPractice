@@ -14,6 +14,13 @@ const MetaReducer = (
   action
 ) => {
   switch (action.type) {
+    
+    case 'LOAD_ALL_LISTS_SUCCESS':
+    return { ...state, loading: false };
+
+    case 'LOAD_ALL_LISTS_FAILURE':
+    return { ...state, loading: false };
+
     case 'LOAD_LIST_SUCCESS':
       return { ...state, loading: false };
 

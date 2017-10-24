@@ -6,7 +6,7 @@
 // Call non-pure functions, e.g. Date.now() or Math.random().
 
 const TodoListReducer = (
-  state = {
+  state = [{
     // The actual data (model)
     name: 'initial list DO NOT SHOW',
     creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
@@ -25,20 +25,30 @@ const TodoListReducer = (
       }
     ],
     filter: 'ALL',
-    searchTerm: ''
-  },
+    searchTerm: '',
+    id: '10c31d60-b678-11e7-9684-ad5a4358b7aa'
+  }],
   action
 ) => {
   console.log(`${action.type} detected by reducer`);
 
   switch (action.type) {
     case 'LOAD_LIST_SUCCESS':
-      return action.data;
+      return [action.data];
 
-    case 'ADD_TODO_SUCCESS':
-      return { ...state, todos: [action.data, ...state.todos] };
+    // case 'ADD_TODO_SUCCESS':
+    //   return { ...state, todos: [action.data, ...state.todos] };
 
-
+      case 'ADD_TODO_SUCCESS':
+      return state.map((todoList) => {
+        if (todoList.name === action.listName) {
+          return Object.assign({}, todoList, {
+            todos: [...todoList.todos, action.data]
+          })
+        }
+        return todoList
+      })
+      
     case 'UPDATE_LIST_SUCCESS':
       return action.data;
 
