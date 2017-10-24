@@ -27,8 +27,9 @@ export const CREATE_LIST_FAILURE = 'CREATE_LIST_FAILURE';
 export const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS';
 export const UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST';
 export const UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE';
-
-
+export const UPDATE_PASSWORD_REQUEST = 'UPDATE_PASSWORD_REQUEST';
+export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
+export const UPDATE_PASSWORD_FAILURE = 'UPDATE_PASSWORD_FAILURE';
 /*
  * other constants
  */
@@ -77,6 +78,15 @@ export function updateUserProfile(dispatch, newUser) {
     .then(
       data => dispatch({ type: UPDATE_PROFILE_SUCCESS, data }),
       err => dispatch({ type: UPDATE_PROFILE_FAILURE, err })
+    );
+}
+export function updateUserPassword(dispatch, passwordObj) {
+  dispatch({ type: UPDATE_PASSWORD_REQUEST });  
+  return callJSON('PUT', `user?changepassword=true`, passwordObj)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: UPDATE_PASSWORD_SUCCESS, data }),
+      err => dispatch({ type: UPDATE_PASSWORD_FAILURE, err })
     );
 }
 

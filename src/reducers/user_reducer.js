@@ -30,20 +30,25 @@ const UserReducer = (
         }
       };
 
-      case 'UPDATE_PROFILE_REQUEST':
+    case 'UPDATE_PASSWORD_REQUEST':
+    case 'UPDATE_PROFILE_REQUEST':
       return { ...state, meta: { ...state.meta, updating: true } };
 
+    case 'UPDATE_PASSWORD_SUCCESS':
     case 'UPDATE_PROFILE_SUCCESS':
       return { meta: { ...state.meta, updating: false }, model: action.data };
 
-      case 'UPDATE_PROFILE_FAILURE':
-      alert('Update Profile Error.');      
+    case 'UPDATE_PASSWORD_FAILURE':
+      alert('Incorrect Current Password');
       return { ...state, meta: { ...state.meta, updating: false } };
 
-      case 'GET_PROFILE_FAILURE':
+    case 'UPDATE_PROFILE_FAILURE':
+      alert('Update Profile Error.');
+      return { ...state, meta: { ...state.meta, updating: false } };
+
+    case 'GET_PROFILE_FAILURE':
       alert('Please Log In.');
       return { ...state, meta: { ...state.meta, loading: false } };
-
 
     default:
       return state;

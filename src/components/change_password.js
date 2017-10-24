@@ -1,14 +1,39 @@
 import React, { Component } from 'react';
 import ChangePasswordView from '../presentational/change_password_view.js';
 import { callJSON } from '../ajax_utility.js';
+import store from '../redux_create_store.js';
+import { loadCurrentUser, updateUserPassword } from '../actions/index.js';
 
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       oldPasswordInput: '',
-      newPasswordInput: ''
+      newPasswordInput: '',
+      updating: false
     };
+  }
+
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
+  }
+
+  componentDidMount() {
+    this.updateComponentState(); //keep in sync with redux
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    if (this.state.updating && store.getState().user.meta.updating === false) {
+      return this.props.history.push(`/profile`); //redirect back to profile
+    }
+    return this.setState({
+      updating: store.getState().user.meta.updating
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   saveNewPassword = event => {
@@ -25,6 +50,13 @@ class ChangePassword extends Component {
       alert('Please input a new password.');
       return;
     }
+    const passwordObj = {
+      oldPassword: oldPasswordInput,
+      newPassword: newPasswordInput
+    }
+    return updateUserPassword(store.dispatch, passwordObj)
+
+
     callJSON('PUT','user?changepassword=true', {
       oldPassword: oldPasswordInput,
       newPassword: newPasswordInput
