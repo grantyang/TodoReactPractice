@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ProfileView from '../presentational/profile_view.js';
-import {callJSON} from '../ajax_utility.js';
+import { callJSON } from '../ajax_utility.js';
+import { loadCurrentUser } from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 class Profile extends Component {
   constructor(props) {
@@ -12,23 +14,27 @@ class Profile extends Component {
     };
   }
 
-  componentDidMount() {
-    callJSON('GET', 'user')
-      .then(res => {
-        if (res.status === 403) return alert('Please Log In');
-        if (res.status === 401) return alert('Invalid Token');
-        return res.json();
-      })
-      .then(returnedUser => {
-        if (returnedUser) {
-          this.setState({
-            name: returnedUser.name,
-            email: returnedUser.email,
-            loading: false
-          });
-        }
-      });
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
   }
+
+  componentDidMount() {
+    this.updateComponentState(); //keep in sync with redux
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    return this.setState({
+      name: store.getState().user.model.name,
+      email: store.getState().user.model.email,
+      loading: store.getState().user.meta.loading
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
 
   render() {
     if (this.state.loading === true) {

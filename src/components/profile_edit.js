@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ProfileEditView from '../presentational/profile_edit_view.js';
-import {callJSON} from '../ajax_utility.js';
-
+import { callJSON } from '../ajax_utility.js';
+import store from '../redux_create_store.js';
+import { loadCurrentUser, updateUserProfile } from '../actions/index.js';
 
 class ProfileEdit extends Component {
   constructor(props) {
@@ -10,50 +11,52 @@ class ProfileEdit extends Component {
       nameInputValue: '',
       emailInputValue: '',
       loading: true,
-      saving: false
+      updating: false
     };
   }
-  
-  componentDidMount() {
-    callJSON('GET', 'user')    
-      .then(res => {
-        if (res.status === 403) return alert('Please Log In');
-        if (res.status === 401) return alert('Invalid Token');
-        return res.json();
-      })
-      .then(returnedUser => {
-        if (returnedUser) {
-          this.setState({
-            nameInputValue: returnedUser.name,
-            emailInputValue: returnedUser.email,
-            loading: false
-          });
-        }
-      });
+
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
   }
+
+  componentDidMount() {
+    this.updateComponentState(); //keep in sync with redux
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    if (this.state.updating && store.getState().user.meta.updating === false) {
+      return this.props.history.push(`/profile`); //redirect back to profile
+    }
+    return this.setState({
+      nameInputValue: store.getState().user.model.name,
+      emailInputValue: store.getState().user.model.email,
+      loading: store.getState().user.meta.loading,
+      updating: store.getState().user.meta.updating
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
 
   onUserInfoUpdate = event => {
     event.preventDefault();
     // when input is submitted, add to database
     const newName = this.state.nameInputValue;
     const newEmail = this.state.emailInputValue;
-
-    this.setState({
-      saving: true
-    });
-    callJSON('PUT', 'user', {
+    if (!newName) {
+      return alert('Please input a name');
+    }
+    if (!newEmail) {
+      return alert('Please input an email');
+    }
+    const newUser = {
       name: newName,
       email: newEmail
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(() => {
-        this.setState({
-          saving: false
-        });
-        this.props.history.push(`/profile`);
-      });
+    };
+    return updateUserProfile(store.dispatch, newUser);
   };
 
   onNameChange = event => {
@@ -67,8 +70,8 @@ class ProfileEdit extends Component {
   render() {
     if (this.state.loading === true) {
       return <b>Please wait, loading...</b>;
-    } else if (this.state.saving === true) {
-      return <b>Please wait, saving...</b>;
+    } else if (this.state.updating === true) {
+      return <b>Please wait, updating...</b>;
     }
     return (
       <ProfileEditView

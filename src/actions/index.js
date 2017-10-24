@@ -20,10 +20,15 @@ export const DELETE_LIST_SUCCESS = 'DELETE_ALL_TODO_SUCCESS';
 export const DELETE_ALL_TODO_SUCCESS = 'DELETE_ALL_TODO_SUCCESS';
 export const DELETE_COMPLETED_TODO_SUCCESS = 'DELETE_COMPLETED_TODO_SUCCESS';
 export const DELETE_FAILURE = 'DELETE_FAILURE';
-export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
-export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
+export const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS';
+export const GET_PROFILE_FAILURE = 'GET_PROFILE_FAILURE';
 export const CREATE_LIST_SUCCESS = 'CREATE_LIST_SUCCESS';
 export const CREATE_LIST_FAILURE = 'CREATE_LIST_FAILURE';
+export const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS';
+export const UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST';
+export const UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE';
+
+
 /*
  * other constants
  */
@@ -45,6 +50,7 @@ export function createList(dispatch, newList) {
     );
 }
 
+
 export function updateTodoList(dispatch, listName, todoList, callback) {
   dispatch({ type: UPDATE_LIST_REQUEST });
   return callJSON('PUT', `list/${listName}`, todoList)
@@ -61,6 +67,16 @@ export function addTodo(dispatch, listName, todoObj) {
     .then(
       data => dispatch({ type: ADD_TODO_SUCCESS, data, listName }),
       err => dispatch({ type: ADD_TODO_FAILURE, err })
+    );
+}
+
+export function updateUserProfile(dispatch, newUser) {
+  dispatch({ type: UPDATE_PROFILE_REQUEST });  
+  return callJSON('PUT', `user`, newUser)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: UPDATE_PROFILE_SUCCESS, data }),
+      err => dispatch({ type: UPDATE_PROFILE_FAILURE, err })
     );
 }
 
@@ -125,7 +141,7 @@ export function loadCurrentUser(dispatch) {
   return callJSON('GET', 'user')
     .then(res => res.json())
     .then(
-      data => dispatch({ type: USER_LOGIN_SUCCESS, data }),
-      err => dispatch({ type: USER_LOGIN_FAILURE, err })
+      data => dispatch({ type: GET_PROFILE_SUCCESS, data }),
+      err => dispatch({ type: GET_PROFILE_FAILURE, err })
     );
 }

@@ -37,7 +37,7 @@ class TodoList extends Component {
 
   updateComponentState = () => {
     return this.setState({
-      listName: store.getState().todoLists[0].name
+      listName: this.getTodoList().name
     });
   };
 
@@ -143,7 +143,7 @@ class TodoList extends Component {
   };
 
   getTodoList = () => {
-    return store.getState().todoLists[0];
+    return store.getState().todoLists.model[0];
   };
 
   getOtherAuthoredLists = () => {
@@ -151,7 +151,7 @@ class TodoList extends Component {
   };
 
   render() {
-    const loading = store.getState().meta.loading;
+    const loading = store.getState().todoLists.meta.loading;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
     return (

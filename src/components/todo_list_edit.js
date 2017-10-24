@@ -30,14 +30,14 @@ export default class TodoListEdit extends Component {
   }
 
   updateComponentState = () => {
-    if (this.state.updating && store.getState().meta.updating === false) {
-      return this.props.history.push(`/list/${store.getState().todoLists[0].name}`); //redirect to new name list if just updated
+    if (this.state.updating && store.getState().todoLists.meta.updating === false) {
+      return this.props.history.push(`/list/${store.getState().todoLists.model[0].name}`); //redirect to new name list if just updated
     }
     return this.setState({
-      updating: store.getState().meta.updating,
-      listName: store.getState().todoLists[0].name,
-      textInputValue: store.getState().todoLists[0].name,
-      privacyInput: store.getState().todoLists[0].privacy
+      updating: store.getState().todoLists.meta.updating,
+      listName: store.getState().todoLists.model[0].name,
+      textInputValue: store.getState().todoLists.model[0].name,
+      privacyInput: store.getState().todoLists.model[0].privacy
     });
   };
 
