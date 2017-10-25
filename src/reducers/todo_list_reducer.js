@@ -55,7 +55,7 @@ const TodoListReducer = (
       return { meta: { ...state.meta, updating: false }, model: action.data };
 
     case 'DELETE_LIST_SUCCESS':
-      return { ...state, model: {} };
+      return { ...state, meta: { ...state.meta, loading: true } , model: {todos:[]} };
 
     case 'DELETE_ALL_TODO_SUCCESS':
       return { ...state, model: { ...state.model, todos: [] } };

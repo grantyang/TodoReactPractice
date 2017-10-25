@@ -9,8 +9,6 @@ const TodoListView = ({
   location,
   refreshTodoListData
 }) => {
-  //done: ({loading, completed, id}) destructuring
-  if (loading) return <h1>Please wait, loading...</h1>;
   //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
   return (
     <div>

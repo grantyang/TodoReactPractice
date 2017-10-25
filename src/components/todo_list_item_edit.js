@@ -10,22 +10,6 @@ import {
 import store from '../redux_create_store.js';
 
 export default class TodoListItemEdit extends Component {
-  componentDidMount() {
-    const itemId = this.props.match.params.itemId;
-    callJSON('GET', `list/${this.getListName()}/todo/${itemId}`)
-      .then(res => {
-        return res.json();
-      })
-      .then(returnedItem => {
-        this.setState({
-          todoId: returnedItem.id, // load in initial list from server
-          textInputValue: returnedItem.text,
-          dateInput: returnedItem.dueDate,
-          tagInput: returnedItem.tag,
-          loading: false
-        });
-      });
-  }
 
   constructor(props) {
     super(props);

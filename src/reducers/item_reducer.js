@@ -44,7 +44,7 @@ const ItemReducer = (
       };
 
       case 'DELETE_ITEM_SUCCESS':
-      return { ...state, model: {} };
+      return state;
 
 
     case 'UPDATE_TODO_FAILURE':

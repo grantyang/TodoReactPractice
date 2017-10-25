@@ -34,7 +34,6 @@ class TodoListItem extends Component {
   }
 
   componentDidMount() {
-    //this.updateComponentState(); //CW location
     this.unsubscribe = store.subscribe(this.updateComponentState);
   }
 
@@ -94,9 +93,6 @@ class TodoListItem extends Component {
   };
 
   render() {
-    // console.log(`rendering with location:`)
-    // console.log(this.state.todo.location)
-
     if (this.state.loading === true) return <b>Please wait, loading...</b>;
     return (
       <TodoListItemView

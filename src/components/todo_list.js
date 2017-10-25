@@ -32,9 +32,9 @@ class TodoList extends Component {
   }
 
   componentWillMount() {
+    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch    
     loadCurrentUser(store.dispatch);
     loadAllTodoLists(store.dispatch);
-    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
 
   componentDidMount() {
@@ -162,9 +162,8 @@ class TodoList extends Component {
   };
 
   render() {
-    const loading = this.state.loading;
-    const filteredTodos = this.applyCompletedFilter(this.searchResults());
-
+    let filteredTodos = this.applyCompletedFilter(this.searchResults());
+    if (this.state.loading === true) return <b>Please wait, loading...</b>;
     return (
       <div className="List">
         <NavBar />
@@ -179,7 +178,6 @@ class TodoList extends Component {
           otherAuthoredLists={this.state.otherAuthoredLists}
           listName={this.state.listName}
           todos={filteredTodos}
-          loading={loading}
           refreshTodoListData={this.refreshTodoListData} //ask CW
         />
         <Footer
