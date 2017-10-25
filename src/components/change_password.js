@@ -55,17 +55,6 @@ class ChangePassword extends Component {
       newPassword: newPasswordInput
     }
     return updateUserPassword(store.dispatch, passwordObj)
-
-
-    callJSON('PUT','user?changepassword=true', {
-      oldPassword: oldPasswordInput,
-      newPassword: newPasswordInput
-    })
-      .then(res => res.text())
-      .then(data => {
-        if (data === 'password') return alert('Incorrect Current Password');
-        return this.props.history.push(`/profile`);
-      });
   };
 
   onOldPasswordChange = event => {

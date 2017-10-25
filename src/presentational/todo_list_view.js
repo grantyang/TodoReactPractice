@@ -6,7 +6,8 @@ const TodoListView = ({
   listName,
   todos,
   otherAuthoredLists,
-  location
+  location,
+  refreshTodoListData
 }) => {
   //done: ({loading, completed, id}) destructuring
   if (loading) return <h1>Please wait, loading...</h1>;
@@ -24,6 +25,7 @@ const TodoListView = ({
               <Link
                 key={list.name}
                 className={`list-group-item`}
+                onClick={(event) => refreshTodoListData(event, list.name)}
                 to={`/list/${list.name}`}>
                 {list.name}
               </Link>

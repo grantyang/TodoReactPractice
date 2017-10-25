@@ -15,8 +15,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,      
       listOfLists: [],
-      loading: true,
       currentUser: null
     };
   }
@@ -33,9 +33,9 @@ class App extends Component {
 
   updateComponentState = () => {
     return this.setState({
-      currentUser: store.getState().user,
-      loading: store.getState().todoLists.meta.loading,
-      listOfLists: store.getState().todoLists.model
+      loading: store.getState().listOfLists.meta.loading,
+      listOfLists: store.getState().listOfLists.model,
+      currentUser: store.getState().user.model
     });
   };
 

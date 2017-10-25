@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import '../App.css';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
-import { updateTodoList, deleteList, loadTodoListData } from '../actions/index.js';
+import {
+  updateTodoList,
+  deleteList,
+  loadTodoListData
+} from '../actions/index.js';
 import store from '../redux_create_store.js';
 
 export default class TodoListEdit extends Component {
@@ -10,15 +14,15 @@ export default class TodoListEdit extends Component {
     super(props);
     this.state = {
       listName: '',
-      textInputValue: '',
+      textInputValue: store.getState().todoList.model.name,
       privacyInput: '',
       updating: false
     };
   }
 
   componentWillMount() {
-     loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
-   }
+    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
+  }
 
   componentDidMount() {
     this.updateComponentState(); //keep in sync with redux
@@ -30,14 +34,18 @@ export default class TodoListEdit extends Component {
   }
 
   updateComponentState = () => {
-    if (this.state.updating && store.getState().todoLists.meta.updating === false) {
-      return this.props.history.push(`/list/${store.getState().todoLists.model[0].name}`); //redirect to new name list if just updated
+    if (
+      this.state.updating &&
+      store.getState().todoList.meta.updating === false
+    ) {
+      return this.props.history.push(
+        `/list/${store.getState().todoList.model.name}`
+      ); //redirect to new name list if just updated
     }
     return this.setState({
-      updating: store.getState().todoLists.meta.updating,
-      listName: store.getState().todoLists.model[0].name,
-      textInputValue: store.getState().todoLists.model[0].name,
-      privacyInput: store.getState().todoLists.model[0].privacy
+      updating: store.getState().todoList.meta.updating,
+      listName: store.getState().todoList.model.name,
+      privacyInput: store.getState().todoList.model.privacy
     });
   };
 
@@ -79,7 +87,7 @@ export default class TodoListEdit extends Component {
   render() {
     if (this.state.updating === true) {
       return <b>Please wait, updating...</b>;
-    } 
+    }
     return (
       <TodoListEditView
         onSave={this.onSave}

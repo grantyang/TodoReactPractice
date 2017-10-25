@@ -10,6 +10,8 @@ import { callJSON } from '../ajax_utility.js';
 import {
   addTodo,
   loadTodoListData,
+  loadCurrentUser,
+  loadAllTodoLists,
   deleteAllTodos,
   deleteCompletedTodos
 } from '../actions/index.js';
@@ -22,11 +24,16 @@ class TodoList extends Component {
       listName: '',
       filter: 'ALL',
       searchTerm: '',
-      otherAuthoredLists: []
+      todos: [],
+      otherAuthoredLists: [],
+      currentUserId: null,
+      loading: true
     };
   }
 
   componentWillMount() {
+    loadCurrentUser(store.dispatch);
+    loadAllTodoLists(store.dispatch);
     loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
   }
 
@@ -35,15 +42,27 @@ class TodoList extends Component {
     this.unsubscribe = store.subscribe(this.updateComponentState);
   }
 
-  updateComponentState = () => {
-    return this.setState({
-      listName: this.getTodoList().name
-    });
-  };
-
   componentWillUnmount() {
     this.unsubscribe();
   }
+
+  updateComponentState = () => {
+    return this.setState({
+      currentUserId: store.getState().user.model.userId,
+      listName: store.getState().todoList.model.name,
+      todos: store.getState().todoList.model.todos,
+      loading: store.getState().todoList.meta.loading,
+      otherAuthoredLists: store
+        .getState()
+        .listOfLists.model.filter(
+          list => list.creator === this.state.currentUserId
+        )
+    });
+  };
+
+  refreshTodoListData = (event, targetName) => {
+    loadTodoListData(store.dispatch, targetName);
+  };
 
   addToList = todoText => {
     if (!todoText) {
@@ -51,7 +70,7 @@ class TodoList extends Component {
     }
     //if there is a duplicate
     if (
-      this.getTodoList().todos.find(
+      this.state.todos.find(
         item => item.text.toLowerCase() === todoText.toLowerCase()
       )
     ) {
@@ -95,7 +114,7 @@ class TodoList extends Component {
   countCompleted = () => {
     //count number of tood items not yet completed in this list
     let total = 0;
-    this.getTodoList().todos.forEach(element => {
+    this.state.todos.forEach(element => {
       if (element.completed === false) {
         total++;
       }
@@ -134,7 +153,7 @@ class TodoList extends Component {
 
   searchResults = () => {
     //searches for searchterm
-    return this.getTodoList().todos.filter(todo => {
+    return this.state.todos.filter(todo => {
       if (this.state.searchTerm === '') return todo;
       if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
         return todo;
@@ -142,16 +161,8 @@ class TodoList extends Component {
     });
   };
 
-  getTodoList = () => {
-    return store.getState().todoLists.model[0];
-  };
-
-  getOtherAuthoredLists = () => {
-    return; // other lists authored by me (filter redux state) store.getState().todoList;
-  };
-
   render() {
-    const loading = store.getState().todoLists.meta.loading;
+    const loading = this.state.loading;
     const filteredTodos = this.applyCompletedFilter(this.searchResults());
 
     return (
@@ -169,6 +180,7 @@ class TodoList extends Component {
           listName={this.state.listName}
           todos={filteredTodos}
           loading={loading}
+          refreshTodoListData={this.refreshTodoListData} //ask CW
         />
         <Footer
           className="list-group"
