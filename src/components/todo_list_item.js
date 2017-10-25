@@ -1,78 +1,102 @@
 import React, { Component } from 'react';
 import TodoListItemView from '../presentational/todo_list_item_view';
-import {callJSON} from '../ajax_utility.js';
+import { callJSON } from '../ajax_utility.js';
+import {
+  loadItemData,
+  loadCurrentUser,
+  loadAllTodoLists,
+  loadTodoListData,
+  updateTodoNoRedirect,
+  deleteItem
+} from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 class TodoListItem extends Component {
-  componentDidMount() {
-    const itemId = this.props.match.params.itemId;
-    callJSON('GET', `list/${this.getListName()}/todo/${itemId}`)
-      .then(res => {
-        return res.json();
-      })
-      .then(returnedItem => {
-        this.setState({
-					todo: returnedItem, // load in todo from server
-					location: returnedItem.location,					
-					loading: false
-          //get location data from server
-          //search enabled, click map to set location, click to clear location
-        });
-      });
-  }
-
   constructor(props) {
     super(props);
     this.state = {
+      location: {
+        lat: 0,
+        lng: 0
+      },
       loading: true,
+      otherAuthoredLists: [],
+      currentUserId: '',
       todo: {}
     };
   }
+  componentWillMount() {
+    const itemId = this.props.match.params.itemId;
+    const listName = this.props.match.params.listName;
+    loadCurrentUser(store.dispatch);
+    loadAllTodoLists(store.dispatch);
+    loadItemData(store.dispatch, listName, itemId);
+  }
+
+  componentDidMount() {
+    //this.updateComponentState(); //CW location
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  updateComponentState = () => {
+    return this.setState({
+      todo: store.getState().item.model,
+      location: store.getState().item.model.location,
+      loading: store.getState().item.meta.loading,
+      currentUserId: store.getState().user.model.userId,
+      otherAuthoredLists: store
+        .getState()
+        .listOfLists.model.filter(
+          list => list.creator === this.state.currentUserId
+        )
+    });
+  };
+
+  refreshTodoListData = (event, targetName) => {
+    loadTodoListData(store.dispatch, targetName);
+  };
 
   getListName = () => {
     return this.props.match.params.listName;
   };
 
   toggleCompleted = todo => {
-    callJSON('PUT', `list/${this.getListName()}/todo/${todo.id}`,{completed: !todo.completed })
-      .then(res => {
-        return res.json();
-      })
-      .then(newTodo => {
-        this.setState({
-          todo: {
-            ...todo,
-            completed: !todo.completed
-          }
-        });
-      });
-  };
-
-  delete = () => {
-    callJSON('DELETE', `list/${this.getListName()}/todo/${this.state.todo.id}`)
-      .then(() => {
-        this.props.history.push(`/list/${this.getListName()}`);
-      })
-      .catch(error => {
-        return error;
-      });
+    updateTodoNoRedirect(
+      store.dispatch,
+      this.getListName(),
+      this.state.todo.id,
+      {
+        ...todo,
+        completed: !todo.completed
+      }
+    );
   };
 
   saveLocation = location => {
-    callJSON('PUT', `list/${this.getListName()}/todo/${this.state.todo.id}`,{location: location})
-      .then(res => {
-        return res.json();
-      })
-      .then(newTodo => {
-        this.setState({
-          todo: {
-            ...this.state.todo,
-            location: location
-          }
-        });
-      });
+    console.log(`updating ${this.state.todo.text}`);
+    updateTodoNoRedirect(
+      store.dispatch,
+      this.getListName(),
+      this.state.todo.id,
+      {
+        location
+      }
+    );
+  };
+
+  delete = () => {
+    this.props.history.push(`/list/${this.getListName()}`);
+    return deleteItem(store.dispatch, this.getListName(), this.state.todo.id);
   };
 
   render() {
+    // console.log(`rendering with location:`)
+    // console.log(this.state.todo.location)
+
     if (this.state.loading === true) return <b>Please wait, loading...</b>;
     return (
       <TodoListItemView
@@ -81,8 +105,10 @@ class TodoListItem extends Component {
         toggleCompleted={this.toggleCompleted}
         delete={this.delete}
         getListName={this.getListName}
-        location={this.state.location}
+        location={this.state.todo.location}
         saveLocation={this.saveLocation}
+        otherAuthoredLists={this.state.otherAuthoredLists}
+        refreshTodoListData={this.refreshTodoListData}
       />
     );
   }

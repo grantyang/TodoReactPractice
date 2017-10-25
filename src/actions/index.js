@@ -12,11 +12,14 @@ export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 export const UPDATE_LIST_REQUEST = 'UPDATE_LIST_REQUEST';
 export const UPDATE_LIST_SUCCESS = 'UPDATE_LIST_SUCCESS';
 export const UPDATE_LIST_FAILURE = 'UPDATE_LIST_FAILURE';
+export const LOAD_ITEM_SUCCESS = 'LOAD_ITEM_SUCCESS';
+export const LOAD_ITEM_FAILURE = 'LOAD_ITEM_FAILURE';
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS';
 export const LOAD_LIST_FAILURE = 'LOAD_LIST_FAILURE';
 export const LOAD_ALL_LISTS_SUCCESS = 'LOAD_ALL_LISTS_SUCCESS';
 export const LOAD_ALL_LISTS_FAILURE = 'LOAD_ALL_LISTS_FAILURE';
 export const DELETE_LIST_SUCCESS = 'DELETE_LIST_SUCCESS';
+export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
 export const DELETE_ALL_TODO_SUCCESS = 'DELETE_ALL_TODO_SUCCESS';
 export const DELETE_COMPLETED_TODO_SUCCESS = 'DELETE_COMPLETED_TODO_SUCCESS';
 export const DELETE_FAILURE = 'DELETE_FAILURE';
@@ -30,6 +33,10 @@ export const UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE';
 export const UPDATE_PASSWORD_REQUEST = 'UPDATE_PASSWORD_REQUEST';
 export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
 export const UPDATE_PASSWORD_FAILURE = 'UPDATE_PASSWORD_FAILURE';
+export const UPDATE_TODO_SUCCESS = 'UPDATE_TODO_SUCCESS';
+export const UPDATE_TODO_REQUEST = 'UPDATE_TODO_REQUEST';
+export const UPDATE_TODO_FAILURE = 'UPDATE_TODO_FAILURE';
+
 /*
  * other constants
  */
@@ -71,6 +78,25 @@ export function addTodo(dispatch, listName, todoObj) {
     );
 }
 
+export function updateTodoNoRedirect(dispatch, listName, todoId, newTodo) {
+  return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
+      err => dispatch({ type: UPDATE_TODO_FAILURE, err })
+    );
+}
+
+export function updateTodo(dispatch, listName, todoId, newTodo) {
+  dispatch({ type: UPDATE_TODO_REQUEST });  
+  return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
+      err => dispatch({ type: UPDATE_TODO_FAILURE, err })
+    );
+}
+
 export function updateUserProfile(dispatch, newUser) {
   dispatch({ type: UPDATE_PROFILE_REQUEST });  
   return callJSON('PUT', `user`, newUser)
@@ -90,6 +116,15 @@ export function updateUserPassword(dispatch, passwordObj) {
     );
 }
 
+export function deleteItem(dispatch, listName, todoId) {
+  console.log(listName)
+  console.log(todoId)
+  
+  return callJSON('DELETE', `list/${listName}/todo/${todoId}`).then(
+    () => dispatch({ type: DELETE_ITEM_SUCCESS }),
+    err => dispatch({ type: DELETE_FAILURE, err })
+  );
+}
 export function deleteList(dispatch, listName) {
   return callJSON('DELETE', `list/${listName}`).then(
     () => dispatch({ type: DELETE_LIST_SUCCESS }),
@@ -135,6 +170,17 @@ export function loadTodoListData(dispatch, listName) {
       err => dispatch({ type: LOAD_LIST_FAILURE, err })
     );
 }
+
+export function loadItemData(dispatch, listName, itemId) {
+  // needs to dispatch, so it is first argument
+  return callJSON('GET', `list/${listName}/todo/${itemId}`)
+    .then(res => res.json())
+    .then(
+      data => dispatch({ type: LOAD_ITEM_SUCCESS, data }),
+      err => dispatch({ type: LOAD_ITEM_FAILURE, err })
+    );
+}
+
 
 export function loadAllTodoLists(dispatch) {
   // needs to dispatch, so it is first argument

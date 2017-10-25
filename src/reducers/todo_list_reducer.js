@@ -74,12 +74,6 @@ const TodoListReducer = (
     case 'ADD_TODO_FAILURE':
       alert('Error from Server');
       return { ...state, meta: { ...state.meta, loading: false } };
-    // case 'TOGGLE_TODO':
-    //   return state.map(todo =>
-    //     (todo.id === action.id)
-    //       ? {...todo, completed: !todo.completed}
-    //       : todo
-    //   )
     default:
       return state;
   }

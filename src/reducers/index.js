@@ -2,6 +2,8 @@ import { combineReducers } from 'redux'
 import TodoListReducer from './todo_list_reducer.js'
 import UserReducer from './user_reducer.js'
 import ListsReducer from './lists_reducer.js'
+import ItemReducer from './item_reducer.js'
+
 
 //Actions describe the fact that something happened, but don't specify how the application's state changes in response. 
 //This is the job of reducers.
@@ -11,6 +13,7 @@ import ListsReducer from './lists_reducer.js'
 const allReducers = combineReducers({
   todoList: TodoListReducer,
   listOfLists: ListsReducer,
+  item: ItemReducer,
   user: UserReducer
 })
 
