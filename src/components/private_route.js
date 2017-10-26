@@ -1,58 +1,57 @@
-import React, {Component} from 'react';
-import {callJSON} from '../ajax_utility.js';
-import {
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import React, { Component } from 'react';
+import { callJSON } from '../ajax_utility.js';
+import { Route, Redirect } from 'react-router-dom';
+import { loadCurrentUser } from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 export default class PrivateRoute extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       loading: true,
-      activeSession: false,
-    };
-  }
-
-  componentDidMount() {
-    callJSON('GET', 'user')
-      .then(res => {
-        if (res.status===403) { //if error code is returned, then user is not logged in
-          this.setState({
-            loading: false,
-            activeSession: false
-          })
-          return alert('Please log in to view that page')        
-        }
-        return res.json();          
-      })
-      .then(user => {
-        if (user) { //otherwise, there is a valid user logged in
-          return this.setState({
-            loading: false,            
-            activeSession: true
-          })
-        }
-      })
-    }
-
-//https://github.com/ReactTraining/react-router/issues/4105  
-    privateRoute = ({ component: Component, ...rest }) => {     
-      if (this.state.activeSession) {
-        return <Route {...rest} render={props => ( <Component {...props} store={this.props.store}/>)}/>
-      }
-      else{
-        return <Route {...rest} render={props => ( <Redirect to={{pathname: '/login'}}/>)}/>            
-      }
-    }
-
-    render(){
-      const newRoute = this.privateRoute(this.props); 
-      if (this.state.loading){ 
-        return <h1>Please wait, loading...</h1>;   }   
-      return (
-        newRoute
-      )
-    }
+      activeSession: true
+    };
   }
 
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    return this.setState({
+      activeSession: store.getState().user.meta.activeSession
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  //https://github.com/ReactTraining/react-router/issues/4105
+  privateRoute = ({ component: Component, ...rest }) => {
+    if (this.state.activeSession) {
+      return (
+        <Route
+          {...rest}
+          render={props => <Component {...props} store={this.props.store} />}
+        />
+      );
+    } else {     
+      return (
+        <Route
+          {...rest}
+          render={props => <Redirect to={{ pathname: '/login' }} />}
+        />
+      );
+    }
+  };
+
+  render() {
+    const newRoute = this.privateRoute(this.props);
+    return newRoute;
+  }
+}

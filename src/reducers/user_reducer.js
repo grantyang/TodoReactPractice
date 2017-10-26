@@ -19,6 +19,19 @@ const UserReducer = (
   action
 ) => {
   switch (action.type) {
+    case 'USER_SIGNUP_SUCCESS':
+    return state;
+    
+    case 'DUPLICATE_USER':  
+    alert('User already exists')
+    return state;
+
+    case 'USER_SIGNUP_FAILURE':  
+    alert('Server Signup Failure')
+    return state;
+    
+    
+
     case 'GET_PROFILE_SUCCESS':
       return {
         meta: { ...state.meta, loading: false, activeSession: true },

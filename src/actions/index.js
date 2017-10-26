@@ -40,6 +40,9 @@ export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_EMAIL_FAILURE = 'LOGIN_USER_EMAIL_FAILURE';
 export const LOGIN_USER_PASSWORD_FAILURE = 'LOGIN_USER_PASSWORD_FAILURE';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
+export const USER_SIGNUP_FAILURE= 'USER_SIGNUP_FAILURE';
+export const USER_SIGNUP_SUCCESS= 'USER_SIGNUP_SUCCESS';
+export const DUPLICATE_USER= 'DUPLICATE_USER'
 
 /*
  * other constants
@@ -67,14 +70,27 @@ export function loginUser(dispatch, loginData) {
     .then(res => res.text())
     .then(
       data => {
-        if (data === 'email') dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data })      
-        if (data === 'password') dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data })
-        dispatch({ type: LOGIN_USER_SUCCESS, data })
-    },
+        if (data === 'email')
+          dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data });
+        if (data === 'password')
+          dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data });
+        dispatch({ type: LOGIN_USER_SUCCESS, data });
+      },
       err => dispatch({ type: LOGIN_USER_FAILURE, err })
     );
 }
 
+export function createNewUser(dispatch, newUser) {
+  return callJSON('POST', `signup`, newUser)
+    .then(res => {
+      if (res.status === 401) dispatch({ type: DUPLICATE_USER }); 
+      else res.json();
+    })
+    .then(
+      data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),
+      err => dispatch({ type: USER_SIGNUP_FAILURE, err })
+    );
+}
 
 export function updateTodoList(dispatch, listName, todoList, callback) {
   dispatch({ type: UPDATE_LIST_REQUEST });
@@ -105,7 +121,7 @@ export function updateTodoNoRedirect(dispatch, listName, todoId, newTodo) {
 }
 
 export function updateTodo(dispatch, listName, todoId, newTodo) {
-  dispatch({ type: UPDATE_TODO_REQUEST });  
+  dispatch({ type: UPDATE_TODO_REQUEST });
   return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
     .then(res => res.json())
     .then(
@@ -115,7 +131,7 @@ export function updateTodo(dispatch, listName, todoId, newTodo) {
 }
 
 export function updateUserProfile(dispatch, newUser) {
-  dispatch({ type: UPDATE_PROFILE_REQUEST });  
+  dispatch({ type: UPDATE_PROFILE_REQUEST });
   return callJSON('PUT', `user`, newUser)
     .then(res => res.json())
     .then(
@@ -124,7 +140,7 @@ export function updateUserProfile(dispatch, newUser) {
     );
 }
 export function updateUserPassword(dispatch, passwordObj) {
-  dispatch({ type: UPDATE_PASSWORD_REQUEST });  
+  dispatch({ type: UPDATE_PASSWORD_REQUEST });
   return callJSON('PUT', `user?changepassword=true`, passwordObj)
     .then(res => res.json())
     .then(
@@ -194,7 +210,6 @@ export function loadItemData(dispatch, listName, itemId) {
       err => dispatch({ type: LOAD_ITEM_FAILURE, err })
     );
 }
-
 
 export function loadAllTodoLists(dispatch) {
   // needs to dispatch, so it is first argument
