@@ -36,6 +36,10 @@ export const UPDATE_PASSWORD_FAILURE = 'UPDATE_PASSWORD_FAILURE';
 export const UPDATE_TODO_SUCCESS = 'UPDATE_TODO_SUCCESS';
 export const UPDATE_TODO_REQUEST = 'UPDATE_TODO_REQUEST';
 export const UPDATE_TODO_FAILURE = 'UPDATE_TODO_FAILURE';
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER_EMAIL_FAILURE = 'LOGIN_USER_EMAIL_FAILURE';
+export const LOGIN_USER_PASSWORD_FAILURE = 'LOGIN_USER_PASSWORD_FAILURE';
+export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 
 /*
  * other constants
@@ -55,6 +59,19 @@ export function createList(dispatch, newList) {
     .then(
       data => dispatch({ type: CREATE_LIST_SUCCESS, data }),
       err => dispatch({ type: CREATE_LIST_FAILURE, err })
+    );
+}
+
+export function loginUser(dispatch, loginData) {
+  return callJSON('POST', `login`, loginData)
+    .then(res => res.text())
+    .then(
+      data => {
+        if (data === 'email') dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data })      
+        if (data === 'password') dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data })
+        dispatch({ type: LOGIN_USER_SUCCESS, data })
+    },
+      err => dispatch({ type: LOGIN_USER_FAILURE, err })
     );
 }
 
@@ -117,9 +134,6 @@ export function updateUserPassword(dispatch, passwordObj) {
 }
 
 export function deleteItem(dispatch, listName, todoId) {
-  console.log(listName)
-  console.log(todoId)
-  
   return callJSON('DELETE', `list/${listName}/todo/${todoId}`).then(
     () => dispatch({ type: DELETE_ITEM_SUCCESS }),
     err => dispatch({ type: DELETE_FAILURE, err })

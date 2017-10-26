@@ -49,7 +49,6 @@ const ItemReducer = (
 
     case 'UPDATE_TODO_FAILURE':
     case 'LOAD_ITEM_FAILURE':
-      alert('Error from Server');
       return { ...state, meta: { ...state.meta, loading: false } };
     default:
       return state;

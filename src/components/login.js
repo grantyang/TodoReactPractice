@@ -1,15 +1,44 @@
 import React, { Component } from 'react';
 import LoginView from '../presentational/login_view.js';
 import { callJSON } from '../ajax_utility.js';
+import { loginUser , loadCurrentUser} from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       emailInput: '',
-      passwordInput: ''
+      passwordInput: '',
+      activeSession:false
     };
   }
+
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    if (
+      !this.state.activeSession &&
+      store.getState().user.meta.activeSession === true
+    ) {
+      return this.props.history.push(`/`);
+    }
+    return this.setState({
+      activeSession: store.getState().user.meta.activeSession,
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+
   onEmailChange = date => {
     //when email is changed, update state
     this.setState({
@@ -29,18 +58,11 @@ class Login extends Component {
     const passwordInput = this.state.passwordInput;
     if (!emailInput) return alert('Please input an email.');
     if (!passwordInput) return alert('Please input a password.');
-
     const loginData = {
       email: emailInput,
       password: passwordInput
     };
-    callJSON('POST', 'login', loginData)
-      .then(res => res.text())
-      .then(data => {
-        if (data === 'email') return alert('Incorrect Email');
-        if (data === 'password') return alert('Incorrect Password');
-        return this.props.history.push(`/`);
-      });
+    loginUser(store.dispatch, loginData)
   };
 
   render() {

@@ -47,7 +47,6 @@ const ListsReducer = (
 
     case 'CREATE_LIST_FAILURE':
     case 'LOAD_ALL_LISTS_FAILURE':
-      alert('Error from Server');
       return { ...state, meta: { ...state.meta, loading: false } };
     default:
       return state;

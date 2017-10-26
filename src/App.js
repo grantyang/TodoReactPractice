@@ -17,6 +17,7 @@ class App extends Component {
     this.state = {
       loading: true,      
       listOfLists: [],
+      activeSession: false,
       currentUser: null
     };
   }
@@ -33,6 +34,7 @@ class App extends Component {
 
   updateComponentState = () => {
     return this.setState({
+      activeSession: store.getState().user.meta.activeSession,
       loading: store.getState().listOfLists.meta.loading,
       listOfLists: store.getState().listOfLists.model,
       currentUser: store.getState().user.model
@@ -75,10 +77,10 @@ class App extends Component {
     return (
       <div className="List">
         <NavBar />
-        {!this.state.currentUser && (
+        {!this.state.activeSession && (
           <h3 className="mt-4">Please log in to view lists.</h3>
         )}
-        {this.state.currentUser && (
+        {this.state.activeSession && (
           <div className="container">
             <Input fxToRun={this.create} />
             <ListOfLists

@@ -8,7 +8,7 @@
 const UserReducer = (
   // Information about the model
   state = {
-    meta: { loading: true, updating: false },
+    meta: { loading: true, updating: false, activeSession: false },
     model: {
       name: '',
       email: '',
@@ -21,7 +21,7 @@ const UserReducer = (
   switch (action.type) {
     case 'GET_PROFILE_SUCCESS':
       return {
-        meta: { ...state.meta, loading: false },
+        meta: { ...state.meta, loading: false, activeSession: true },
         model: {
           name: action.data.name,
           email: action.data.email,
@@ -29,6 +29,21 @@ const UserReducer = (
           userId: action.data.userId
         }
       };
+
+    case 'LOGIN_USER_SUCCESS':
+      return { ...state, meta: { ...state.meta, activeSession: true } };
+
+    case 'LOGIN_USER_EMAIL_FAILURE':
+      alert('Incorrect Email');
+      return state;
+
+    case 'LOGIN_USER_PASSWORD_FAILURE':
+      alert('Incorrect Email');
+      return state;
+
+    case 'LOGIN_USER_FAILURE':
+      alert('Login Server Error');
+      return state;
 
     case 'UPDATE_PASSWORD_REQUEST':
     case 'UPDATE_PROFILE_REQUEST':
@@ -47,7 +62,6 @@ const UserReducer = (
       return { ...state, meta: { ...state.meta, updating: false } };
 
     case 'GET_PROFILE_FAILURE':
-      alert('Please Log In.');
       return { ...state, meta: { ...state.meta, loading: false } };
 
     default:

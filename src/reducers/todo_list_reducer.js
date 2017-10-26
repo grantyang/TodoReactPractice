@@ -72,7 +72,6 @@ const TodoListReducer = (
     case 'DELETE_FAILURE':
     case 'LOAD_LIST_FAILURE':
     case 'ADD_TODO_FAILURE':
-      alert('Error from Server');
       return { ...state, meta: { ...state.meta, loading: false } };
     default:
       return state;

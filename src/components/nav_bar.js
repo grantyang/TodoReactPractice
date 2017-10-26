@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavBarView from '../presentational/nav_bar_view.js';
 import {callJSON} from '../ajax_utility.js';
+import { loadCurrentUser} from '../actions/index.js';
+import store from '../redux_create_store.js';
 
 class NavBar extends Component {
   constructor(props) {
@@ -9,25 +11,23 @@ class NavBar extends Component {
       activeSession: false
     };
   }
-  //if user's cookie is correct, show
+
+  componentWillMount() {
+    loadCurrentUser(store.dispatch);
+  }
+
   componentDidMount() {
-    callJSON('GET', 'user')
-      .then(res => {
-        if (res.status === 403) {
-          this.setState({
-            activeSession: false
-          });
-          return null
-        }
-        return res.json();
-      })
-      .then(user => {
-        if (user) {
-          this.setState({
-            activeSession: true
-          });
-        }
-      });
+    this.unsubscribe = store.subscribe(this.updateComponentState);
+  }
+
+  updateComponentState = () => {
+    return this.setState({
+      activeSession: store.getState().user.meta.activeSession,
+    });
+  };
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   deleteCookie = () => {
