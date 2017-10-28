@@ -21,7 +21,7 @@ export default class TodoListEdit extends Component {
   }
 
   componentWillMount() {
-    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch
+    store.dispatch(loadTodoListData(this.props.match.params.listName)); // don't forget to pass dispatch
   }
 
   componentDidMount() {
@@ -58,10 +58,12 @@ export default class TodoListEdit extends Component {
       return alert('Please input a name');
     }
     // when input is submitted, add to database
-    return updateTodoList(store.dispatch, this.state.listName, {
-      name: newText,
-      privacy: newPrivacy
-    });
+    return store.dispatch(
+      updateTodoList(this.state.listName, {
+        name: newText,
+        privacy: newPrivacy
+      })
+    );
   };
 
   onPrivacyChange = event => {
@@ -81,7 +83,7 @@ export default class TodoListEdit extends Component {
   delete = () => {
     //delete this list and return to homepage
     this.props.history.push('');
-    return deleteList(store.dispatch, this.state.listName);
+    return store.dispatch(deleteList(this.state.listName));
   };
 
   render() {

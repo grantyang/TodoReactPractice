@@ -5,7 +5,6 @@ import {
   loadItemData,
   loadCurrentUser,
   loadAllTodoLists,
-  loadTodoListData,
   updateTodoNoRedirect,
   deleteItem
 } from '../actions/index.js';
@@ -28,9 +27,9 @@ class TodoListItem extends Component {
   componentWillMount() {
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
-    loadCurrentUser(store.dispatch);
-    loadAllTodoLists(store.dispatch);
-    loadItemData(store.dispatch, listName, itemId);
+    store.dispatch(loadCurrentUser());
+    store.dispatch(loadAllTodoLists());
+    store.dispatch(loadItemData(listName, itemId));
   }
 
   componentDidMount() {
@@ -55,41 +54,36 @@ class TodoListItem extends Component {
     });
   };
 
-  refreshTodoListData = (event, targetName) => {
-    loadTodoListData(store.dispatch, targetName);
-  };
-
   getListName = () => {
     return this.props.match.params.listName;
   };
 
   toggleCompleted = todo => {
-    updateTodoNoRedirect(
-      store.dispatch,
-      this.getListName(),
-      this.state.todo.id,
-      {
+    store.dispatch(
+      updateTodoNoRedirect(this.getListName(), this.state.todo.id, {
         ...todo,
         completed: !todo.completed
-      }
+      })
     );
   };
 
   saveLocation = location => {
     console.log(`updating ${this.state.todo.text}`);
-    updateTodoNoRedirect(
-      store.dispatch,
-      this.getListName(),
-      this.state.todo.id,
-      {
-        location
-      }
+    store.dispatch(
+      updateTodoNoRedirect(
+        store.dispatch,
+        this.getListName(),
+        this.state.todo.id,
+        {
+          location
+        }
+      )
     );
   };
 
   delete = () => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return deleteItem(store.dispatch, this.getListName(), this.state.todo.id);
+    return store.dispatch(deleteItem( this.getListName(), this.state.todo.id));
   };
 
   render() {
@@ -104,7 +98,6 @@ class TodoListItem extends Component {
         location={this.state.todo.location}
         saveLocation={this.saveLocation}
         otherAuthoredLists={this.state.otherAuthoredLists}
-        refreshTodoListData={this.refreshTodoListData}
       />
     );
   }

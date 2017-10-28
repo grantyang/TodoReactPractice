@@ -21,7 +21,7 @@ const UserReducer = (
   switch (action.type) {
     case 'USER_SIGNUP_SUCCESS':
     return state;
-    
+
     case 'DUPLICATE_USER':  
     alert('User already exists')
     return state;
@@ -68,14 +68,14 @@ const UserReducer = (
 
     case 'UPDATE_PASSWORD_FAILURE':
       alert('Incorrect Current Password');
-      return { ...state, meta: { ...state.meta, updating: false } };
+      return state;
 
     case 'UPDATE_PROFILE_FAILURE':
       alert('Update Profile Error.');
       return { ...state, meta: { ...state.meta, updating: false } };
 
     case 'GET_PROFILE_FAILURE':
-      return { ...state, meta: { ...state.meta, loading: false } };
+      return { ...state, meta: { ...state.meta, activeSession:false, loading: false } };
 
     default:
       return state;

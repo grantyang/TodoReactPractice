@@ -30,8 +30,8 @@ const LoginView = props => {
           <button
             type="submit"
             className="btn btn-outline-primary"
-            onClick={() => {
-              props.login();
+            onClick={(event) => {
+              props.login(event);
             }}>
             Login
           </button>

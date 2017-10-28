@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 import { callJSON } from '../ajax_utility.js';
-import {
-  loadItemData,
-  loadTodoListData,
-  updateTodo,
-  deleteItem
-} from '../actions/index.js';
+import { loadItemData, updateTodo, deleteItem } from '../actions/index.js';
 import store from '../redux_create_store.js';
 
 export default class TodoListItemEdit extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +22,7 @@ export default class TodoListItemEdit extends Component {
     const listName = this.props.match.params.listName;
     //loadCurrentUser(store.dispatch);
     //loadAllTodoLists(store.dispatch);
-    loadItemData(store.dispatch, listName, itemId);
+    store.dispatch(loadItemData( listName, itemId));
   }
 
   componentDidMount() {
@@ -90,16 +84,18 @@ export default class TodoListItemEdit extends Component {
     const newText = this.state.textInputValue;
     const newDate = this.state.dateInput;
     const newTag = this.state.tagInput;
-    updateTodo(store.dispatch, this.getListName(), this.state.todoId, {
-      text: newText,
-      dueDate: newDate,
-      tag: newTag
-    });
+    store.dispatch(
+      updateTodo(this.getListName(), this.state.todoId, {
+        text: newText,
+        dueDate: newDate,
+        tag: newTag
+      })
+    );
   };
 
   delete = event => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return deleteItem(store.dispatch, this.getListName(), this.state.todoId);
+    return store.dispatch(deleteItem(this.getListName(), this.state.todoId));
   };
 
   render() {

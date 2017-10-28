@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ReduxThunk from 'redux-thunk'
 
 import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';

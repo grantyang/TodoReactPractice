@@ -13,7 +13,7 @@ class NavBar extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {

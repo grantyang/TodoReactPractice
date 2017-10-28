@@ -7,21 +7,6 @@ const TodoListItemView = props => {
   return (
     <div>
       <div className=" justify-content-sm-center">
-        {/* <div className="col-sm-3 list-group">
-          Lists Owned by You
-          {props.otherAuthoredLists.map(list => {
-            return (
-              <Link
-                key={list.name}
-                className={`list-group-item`}
-                onClick={event => props.refreshTodoListData(event, list.name)}
-                to={`/list/${list.name}`}>
-                {list.name}
-              </Link>
-            );
-          })}
-        </div> */}
-
         <div className="row justify-content-sm-center">
           <span className={`col-sm-6`}>
             <span

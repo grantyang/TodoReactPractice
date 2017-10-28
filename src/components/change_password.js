@@ -15,7 +15,7 @@ class ChangePassword extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {
@@ -53,8 +53,8 @@ class ChangePassword extends Component {
     const passwordObj = {
       oldPassword: oldPasswordInput,
       newPassword: newPasswordInput
-    }
-    return updateUserPassword(store.dispatch, passwordObj)
+    };
+    return store.dispatch(updateUserPassword(passwordObj));
   };
 
   onOldPasswordChange = event => {

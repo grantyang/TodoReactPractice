@@ -15,7 +15,7 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {

@@ -56,9 +56,7 @@ class SignUp extends Component {
       email: emailInput,
       password: passwordInput
     };
-
-    createNewUser(store.dispatch, newUser)
-
+    store.dispatch(createNewUser(newUser))
     return this.props.history.push(`/login`);
     
 

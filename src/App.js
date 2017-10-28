@@ -15,7 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,      
+      loading: true,
       listOfLists: [],
       activeSession: false,
       currentUser: null
@@ -23,8 +23,8 @@ class App extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
-    loadAllTodoLists(store.dispatch); // don't forget to pass dispatch
+    store.dispatch(loadCurrentUser());
+    store.dispatch(loadAllTodoLists()); // don't forget to pass dispatch
   }
 
   componentDidMount() {
@@ -47,21 +47,13 @@ class App extends Component {
 
   //GY only validate against user's own lists
   create = newName => {
-    if (!newName) {
-      alert('Please input a value.');
-      return;
-    }
-
+    if (!newName) return alert('Please input a value.');
     if (
       this.state.listOfLists.find(
         item => item.name.toLowerCase() === newName.toLowerCase()
       )
-    ) {
-      //if there is a duplicate
-      alert('Todo List already exists.');
-      return;
-    }
-
+    )
+      return alert('Todo List already exists.');
     const newList = {
       name: newName,
       creator: this.state.currentUser.userId,
@@ -70,7 +62,7 @@ class App extends Component {
       filter: 'ALL',
       searchTerm: ''
     };
-    return createList(store.dispatch, newList);
+    return store.dispatch(createList(newList));
   };
 
   render() {

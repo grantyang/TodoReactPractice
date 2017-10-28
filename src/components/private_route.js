@@ -14,7 +14,7 @@ export default class PrivateRoute extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {

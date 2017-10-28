@@ -15,7 +15,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {
@@ -53,7 +53,8 @@ class Login extends Component {
     });
   };
 
-  login = () => {
+  login = (event) => {
+    event.preventDefault();
     const emailInput = this.state.emailInput;
     const passwordInput = this.state.passwordInput;
     if (!emailInput) return alert('Please input an email.');
@@ -62,7 +63,7 @@ class Login extends Component {
       email: emailInput,
       password: passwordInput
     };
-    loginUser(store.dispatch, loginData)
+    return store.dispatch(loginUser(loginData))
   };
 
   render() {

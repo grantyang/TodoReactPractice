@@ -40,193 +40,210 @@ export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_EMAIL_FAILURE = 'LOGIN_USER_EMAIL_FAILURE';
 export const LOGIN_USER_PASSWORD_FAILURE = 'LOGIN_USER_PASSWORD_FAILURE';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
-export const USER_SIGNUP_FAILURE= 'USER_SIGNUP_FAILURE';
-export const USER_SIGNUP_SUCCESS= 'USER_SIGNUP_SUCCESS';
-export const DUPLICATE_USER= 'DUPLICATE_USER'
-
-/*
- * other constants
- */
-export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
-  SHOW_COMPLETED: 'SHOW_COMPLETED',
-  SHOW_ACTIVE: 'SHOW_ACTIVE'
-};
+export const USER_SIGNUP_FAILURE = 'USER_SIGNUP_FAILURE';
+export const USER_SIGNUP_SUCCESS = 'USER_SIGNUP_SUCCESS';
+export const DUPLICATE_USER = 'DUPLICATE_USER';
 
 /*
  * action creators
- */
-export function createList(dispatch, newList) {
-  return callJSON('POST', `create`, newList)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: CREATE_LIST_SUCCESS, data }),
-      err => dispatch({ type: CREATE_LIST_FAILURE, err })
-    );
-}
+//  */
+// export function createList(dispatch, newList) { //WITHOUT THUNK
+//   return callJSON('POST', `create`, newList)
+//     .then(res => res.json())
+//     .then(
+//       data => dispatch({ type: CREATE_LIST_SUCCESS, data }),
+//       err => dispatch({ type: CREATE_LIST_FAILURE, err })
+//     );
+// }
 
-export function loginUser(dispatch, loginData) {
-  return callJSON('POST', `login`, loginData)
-    .then(res => res.text())
-    .then(
-      data => {
-        if (data === 'email')
-          dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data });
-        if (data === 'password')
-          dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data });
-        dispatch({ type: LOGIN_USER_SUCCESS, data });
-      },
-      err => dispatch({ type: LOGIN_USER_FAILURE, err })
-    );
-}
-
-export function createNewUser(dispatch, newUser) {
-  return callJSON('POST', `signup`, newUser)
-    .then(res => {
-      if (res.status === 401) dispatch({ type: DUPLICATE_USER }); 
-      else res.json();
-    })
-    .then(
-      data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),
-      err => dispatch({ type: USER_SIGNUP_FAILURE, err })
-    );
-}
-
-export function updateTodoList(dispatch, listName, todoList, callback) {
-  dispatch({ type: UPDATE_LIST_REQUEST });
-  return callJSON('PUT', `list/${listName}`, todoList)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),
-      err => dispatch({ type: UPDATE_LIST_FAILURE, err })
-    );
-}
-
-export function addTodo(dispatch, listName, todoObj) {
-  return callJSON('POST', `list/${listName}`, todoObj)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: ADD_TODO_SUCCESS, data, listName }),
-      err => dispatch({ type: ADD_TODO_FAILURE, err })
-    );
-}
-
-export function updateTodoNoRedirect(dispatch, listName, todoId, newTodo) {
-  return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
-      err => dispatch({ type: UPDATE_TODO_FAILURE, err })
-    );
-}
-
-export function updateTodo(dispatch, listName, todoId, newTodo) {
-  dispatch({ type: UPDATE_TODO_REQUEST });
-  return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
-      err => dispatch({ type: UPDATE_TODO_FAILURE, err })
-    );
-}
-
-export function updateUserProfile(dispatch, newUser) {
-  dispatch({ type: UPDATE_PROFILE_REQUEST });
-  return callJSON('PUT', `user`, newUser)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: UPDATE_PROFILE_SUCCESS, data }),
-      err => dispatch({ type: UPDATE_PROFILE_FAILURE, err })
-    );
-}
-export function updateUserPassword(dispatch, passwordObj) {
-  dispatch({ type: UPDATE_PASSWORD_REQUEST });
-  return callJSON('PUT', `user?changepassword=true`, passwordObj)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: UPDATE_PASSWORD_SUCCESS, data }),
-      err => dispatch({ type: UPDATE_PASSWORD_FAILURE, err })
-    );
-}
-
-export function deleteItem(dispatch, listName, todoId) {
-  return callJSON('DELETE', `list/${listName}/todo/${todoId}`).then(
-    () => dispatch({ type: DELETE_ITEM_SUCCESS }),
-    err => dispatch({ type: DELETE_FAILURE, err })
-  );
-}
-export function deleteList(dispatch, listName) {
-  return callJSON('DELETE', `list/${listName}`).then(
-    () => dispatch({ type: DELETE_LIST_SUCCESS }),
-    err => dispatch({ type: DELETE_FAILURE, err })
-  );
-}
-
-export function deleteAllTodos(dispatch, listName) {
-  return callJSON('DELETE', `list/${listName}?all=true`).then(
-    () => dispatch({ type: DELETE_ALL_TODO_SUCCESS }),
-    err => dispatch({ type: DELETE_FAILURE, err })
-  );
-}
-
-export function deleteCompletedTodos(dispatch, listName) {
-  return callJSON('DELETE', `list/${listName}?completed=true`).then(
-    () => dispatch({ type: DELETE_COMPLETED_TODO_SUCCESS }),
-    err => dispatch({ type: DELETE_FAILURE, err })
-  );
-}
-
-export function toggleTodo(index) {
-  //index to become id
-  return {
-    type: TOGGLE_TODO,
-    index
+export function createList(newList) {
+  return dispatch => {
+    callJSON('POST', `create`, newList)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: CREATE_LIST_SUCCESS, data }),
+        err => dispatch({ type: CREATE_LIST_FAILURE, err })
+      );
   };
 }
 
-export function setVisibilityFilter(filter) {
-  return {
-    type: SET_VISIBILITY_FILTER,
-    filter
+export function loginUser(loginData) {
+  return dispatch => {
+    callJSON('POST', `login`, loginData)
+      .then(res => res.text())
+      .then(
+        data => {
+          if (data === 'email')
+            dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data });
+          if (data === 'password')
+            dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data });
+          dispatch({ type: LOGIN_USER_SUCCESS, data });
+        },
+        err => dispatch({ type: LOGIN_USER_FAILURE, err })
+      );
   };
 }
 
-export function loadTodoListData(dispatch, listName) {
-  // needs to dispatch, so it is first argument
-  return callJSON('GET', `list/${listName}`)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: LOAD_LIST_SUCCESS, data }),
-      err => dispatch({ type: LOAD_LIST_FAILURE, err })
-    );
+export function createNewUser(newUser) {
+  return dispatch => {
+    callJSON('POST', `signup`, newUser)
+      .then(res => {
+        if (res.status === 401) dispatch({ type: DUPLICATE_USER });
+        else res.json();
+      })
+      .then(
+        data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),
+        err => dispatch({ type: USER_SIGNUP_FAILURE, err })
+      );
+  };
 }
 
-export function loadItemData(dispatch, listName, itemId) {
-  // needs to dispatch, so it is first argument
-  return callJSON('GET', `list/${listName}/todo/${itemId}`)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: LOAD_ITEM_SUCCESS, data }),
-      err => dispatch({ type: LOAD_ITEM_FAILURE, err })
-    );
+export function updateTodoList(listName, todoList, callback) {
+  return dispatch => {
+    dispatch({ type: UPDATE_LIST_REQUEST });
+    callJSON('PUT', `list/${listName}`, todoList)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),
+        err => dispatch({ type: UPDATE_LIST_FAILURE, err })
+      );
+  };
 }
 
-export function loadAllTodoLists(dispatch) {
-  // needs to dispatch, so it is first argument
-  return callJSON('GET', `lists`)
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: LOAD_ALL_LISTS_SUCCESS, data }),
-      err => dispatch({ type: LOAD_ALL_LISTS_FAILURE, err })
-    );
+export function addTodo(listName, todoObj) {
+  return dispatch => {
+    callJSON('POST', `list/${listName}`, todoObj)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: ADD_TODO_SUCCESS, data }),
+        err => dispatch({ type: ADD_TODO_FAILURE, err })
+      );
+  };
 }
 
-export function loadCurrentUser(dispatch) {
-  // needs to dispatch, so it is first argument
-  return callJSON('GET', 'user')
-    .then(res => res.json())
-    .then(
-      data => dispatch({ type: GET_PROFILE_SUCCESS, data }),
-      err => dispatch({ type: GET_PROFILE_FAILURE, err })
+export function updateTodoNoRedirect(listName, todoId, newTodo) {
+  return dispatch => {
+    callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
+        err => dispatch({ type: UPDATE_TODO_FAILURE, err })
+      );
+  };
+}
+
+export function updateTodo(listName, todoId, newTodo) {
+  return dispatch => {
+    dispatch({ type: UPDATE_TODO_REQUEST });
+    return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),
+        err => dispatch({ type: UPDATE_TODO_FAILURE, err })
+      );
+  };
+}
+
+export function updateUserProfile(newUser) {
+  return dispatch => {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+    return callJSON('PUT', `user`, newUser)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPDATE_PROFILE_SUCCESS, data }),
+        err => dispatch({ type: UPDATE_PROFILE_FAILURE, err })
+      );
+  };
+}
+
+export function updateUserPassword(passwordObj) {
+  return dispatch => {
+    dispatch({ type: UPDATE_PASSWORD_REQUEST });
+    return callJSON('PUT', `user?changepassword=true`, passwordObj)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPDATE_PASSWORD_SUCCESS, data }),
+        err => dispatch({ type: UPDATE_PASSWORD_FAILURE, err })
+      );
+  };
+}
+
+export function deleteItem(listName, todoId) {
+  return dispatch => {
+    return callJSON('DELETE', `list/${listName}/todo/${todoId}`).then(
+      () => dispatch({ type: DELETE_ITEM_SUCCESS }),
+      err => dispatch({ type: DELETE_FAILURE, err })
     );
+  };
+}
+
+export function deleteList(listName) {
+  return dispatch => {
+    return callJSON('DELETE', `list/${listName}`).then(
+      () => dispatch({ type: DELETE_LIST_SUCCESS }),
+      err => dispatch({ type: DELETE_FAILURE, err })
+    );
+  };
+}
+
+export function deleteAllTodos(listName) {
+  return dispatch => {
+    return callJSON('DELETE', `list/${listName}?all=true`).then(
+      () => dispatch({ type: DELETE_ALL_TODO_SUCCESS }),
+      err => dispatch({ type: DELETE_FAILURE, err })
+    );
+  };
+}
+
+export function deleteCompletedTodos(listName) {
+  return dispatch => {
+    return callJSON('DELETE', `list/${listName}?completed=true`).then(
+      () => dispatch({ type: DELETE_COMPLETED_TODO_SUCCESS }),
+      err => dispatch({ type: DELETE_FAILURE, err })
+    );
+  };
+}
+
+export function loadTodoListData(listName) {
+  return dispatch => {
+    return callJSON('GET', `list/${listName}`)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: LOAD_LIST_SUCCESS, data }),
+        err => dispatch({ type: LOAD_LIST_FAILURE, err })
+      );
+  };
+}
+
+export function loadItemData(listName, itemId) {
+  return dispatch => {
+    return callJSON('GET', `list/${listName}/todo/${itemId}`)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: LOAD_ITEM_SUCCESS, data }),
+        err => dispatch({ type: LOAD_ITEM_FAILURE, err })
+      );
+  };
+}
+
+export function loadAllTodoLists() {
+  return dispatch => {
+    return callJSON('GET', `lists`)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: LOAD_ALL_LISTS_SUCCESS, data }),
+        err => dispatch({ type: LOAD_ALL_LISTS_FAILURE, err })
+      );
+  };
+}
+
+export function loadCurrentUser() {
+  return dispatch => {
+    return callJSON('GET', 'user')
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: GET_PROFILE_SUCCESS, data }),
+        err => dispatch({ type: GET_PROFILE_FAILURE, err })
+      );
+  };
 }

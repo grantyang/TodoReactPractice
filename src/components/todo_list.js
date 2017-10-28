@@ -32,9 +32,9 @@ class TodoList extends Component {
   }
 
   componentWillMount() {
-    loadTodoListData(store.dispatch, this.props.match.params.listName); // don't forget to pass dispatch    
-    loadCurrentUser(store.dispatch);
-    loadAllTodoLists(store.dispatch);
+    store.dispatch(loadTodoListData(this.props.match.params.listName)); // don't forget to pass dispatch
+    store.dispatch(loadCurrentUser());
+    store.dispatch(loadAllTodoLists());
   }
 
   componentDidMount() {
@@ -47,6 +47,7 @@ class TodoList extends Component {
   }
 
   updateComponentState = () => {
+    //why don't we always getState? CW
     return this.setState({
       currentUserId: store.getState().user.model.userId,
       listName: store.getState().todoList.model.name,
@@ -61,7 +62,8 @@ class TodoList extends Component {
   };
 
   refreshTodoListData = (event, targetName) => {
-    loadTodoListData(store.dispatch, targetName);
+    //why is this necessary CW
+    store.dispatch(loadTodoListData(targetName));
   };
 
   addToList = todoText => {
@@ -84,31 +86,18 @@ class TodoList extends Component {
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 }
       };
-      return addTodo(
-        //dispatch async action
-        store.dispatch,
-        this.state.listName,
-        todoObj
-      );
+      return store.dispatch(addTodo(this.state.listName, todoObj));
     }
   };
 
   clearAll = () => {
     //clear all todo items from this list
-    return deleteAllTodos(
-      //dispatch async action
-      store.dispatch,
-      this.state.listName
-    );
+    return store.dispatch(deleteAllTodos(this.state.listName));
   };
 
   clearComplete = () => {
     //clear completed todo items from this list
-    return deleteCompletedTodos(
-      //dispatch async action
-      store.dispatch,
-      this.state.listName
-    );
+    return store.dispatch(deleteCompletedTodos(this.state.listName));
   };
 
   countCompleted = () => {

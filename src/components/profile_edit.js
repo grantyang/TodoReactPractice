@@ -16,7 +16,7 @@ class ProfileEdit extends Component {
   }
 
   componentWillMount() {
-    loadCurrentUser(store.dispatch);
+    store.dispatch(loadCurrentUser());
   }
 
   componentDidMount() {
@@ -40,7 +40,6 @@ class ProfileEdit extends Component {
     this.unsubscribe();
   }
 
-
   onUserInfoUpdate = event => {
     event.preventDefault();
     // when input is submitted, add to database
@@ -56,7 +55,7 @@ class ProfileEdit extends Component {
       name: newName,
       email: newEmail
     };
-    return updateUserProfile(store.dispatch, newUser);
+    return store.dispatch(updateUserProfile(newUser));
   };
 
   onNameChange = event => {
