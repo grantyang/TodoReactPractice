@@ -58,8 +58,8 @@ export const DUPLICATE_USER = 'DUPLICATE_USER';
 
 export function createList(newList) {
   return dispatch => {
-    callJSON('POST', `create`, newList)
-      .then(res => res.json())
+    return callJSON('POST', `create`, newList)
+      .then(res => res.json()) // Implicit return, if expanding out to .then(res => { /some code/ }) make sure to add return statement!
       .then(
         data => dispatch({ type: CREATE_LIST_SUCCESS, data }),
         err => dispatch({ type: CREATE_LIST_FAILURE, err })
@@ -69,7 +69,7 @@ export function createList(newList) {
 
 export function loginUser(loginData) {
   return dispatch => {
-    callJSON('POST', `login`, loginData)
+    return callJSON('POST', `login`, loginData)
       .then(res => res.text())
       .then(
         data => {
@@ -86,7 +86,7 @@ export function loginUser(loginData) {
 
 export function createNewUser(newUser) {
   return dispatch => {
-    callJSON('POST', `signup`, newUser)
+    return callJSON('POST', `signup`, newUser)
       .then(res => {
         if (res.status === 401) dispatch({ type: DUPLICATE_USER });
         else res.json();
@@ -101,7 +101,7 @@ export function createNewUser(newUser) {
 export function updateTodoList(listName, todoList, callback) {
   return dispatch => {
     dispatch({ type: UPDATE_LIST_REQUEST });
-    callJSON('PUT', `list/${listName}`, todoList)
+    return callJSON('PUT', `list/${listName}`, todoList)
       .then(res => res.json())
       .then(
         data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),
@@ -112,7 +112,7 @@ export function updateTodoList(listName, todoList, callback) {
 
 export function addTodo(listName, todoObj) {
   return dispatch => {
-    callJSON('POST', `list/${listName}`, todoObj)
+    return callJSON('POST', `list/${listName}`, todoObj)
       .then(res => res.json())
       .then(
         data => dispatch({ type: ADD_TODO_SUCCESS, data }),
@@ -123,7 +123,7 @@ export function addTodo(listName, todoObj) {
 
 export function updateTodoNoRedirect(listName, todoId, newTodo) {
   return dispatch => {
-    callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
+    return callJSON('PUT', `list/${listName}/todo/${todoId}`, newTodo)
       .then(res => res.json())
       .then(
         data => dispatch({ type: UPDATE_TODO_SUCCESS, data }),

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 class GoogleMap extends Component {
   componentDidMount() {
+    console.log('getting map stuff')
     var myLatLng = this.props.location;
     const map = new google.maps.Map(
       this.refs.map, //embedded google map - renders map into input

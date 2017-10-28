@@ -33,6 +33,9 @@ const ItemReducer = (
         model: action.data
       };
 
+    case 'LOAD_LIST_SUCCESS':
+      return {...state, meta: { ...state.meta, loading: true } };
+
     case 'UPDATE_TODO_REQUEST':
       return { ...state, meta: { ...state.meta, updating: true } };
 
@@ -43,9 +46,8 @@ const ItemReducer = (
         model: action.data
       };
 
-      case 'DELETE_ITEM_SUCCESS':
+    case 'DELETE_ITEM_SUCCESS':
       return state;
-
 
     case 'UPDATE_TODO_FAILURE':
     case 'LOAD_ITEM_FAILURE':

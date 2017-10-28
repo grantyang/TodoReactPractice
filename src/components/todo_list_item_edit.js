@@ -26,7 +26,6 @@ export default class TodoListItemEdit extends Component {
   }
 
   componentDidMount() {
-    //this.updateComponentState();
     this.unsubscribe = store.subscribe(this.updateComponentState);
   }
 
