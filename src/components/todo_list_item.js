@@ -19,10 +19,6 @@ class TodoListItem extends Component {
         lat: 0,
         lng: 0
       },
-      loading: true,
-      otherAuthoredLists: [],
-      currentUserId: '',
-      todo: {}
     };
   }
   componentWillMount() {
@@ -33,31 +29,13 @@ class TodoListItem extends Component {
     store.dispatch(loadItemData(listName, itemId));
   }
 
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  updateComponentState = () => {
-    return this.setState({
-      todo: this.props.todo,
-      location: this.props.location,
-      loading: this.props.loading,
-      currentUserId: this.props.currentUserId,
-      otherAuthoredLists: this.props.otherAuthoredLists
-    });
-  };
-
   getListName = () => {
     return this.props.match.params.listName;
   };
 
   toggleCompleted = todo => {
     store.dispatch(
-      updateTodoNoRedirect(this.getListName(), this.state.todo.id, {
+      updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
         ...todo,
         completed: !todo.completed
       })
@@ -67,9 +45,8 @@ class TodoListItem extends Component {
   saveLocation = location => {
     store.dispatch(
       updateTodoNoRedirect(
-        store.dispatch,
         this.getListName(),
-        this.state.todo.id,
+        this.props.todo.id,
         {
           location
         }
@@ -79,26 +56,25 @@ class TodoListItem extends Component {
 
   delete = () => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return store.dispatch(deleteItem( this.getListName(), this.state.todo.id));
+    return store.dispatch(deleteItem( this.getListName(), this.props.todo.id));
   };
 
   render() {
-    if (this.state.loading === true) return <b>Please wait, loading...</b>;
+    if (this.props.loading === true) return <b>Please wait, loading...</b>;
     return (
       <TodoListItemView
-        todo={this.state.todo}
+        todo={this.props.todo}
         listName={this.props.match.params.listName}
         toggleCompleted={this.toggleCompleted}
         delete={this.delete}
         getListName={this.getListName}
-        location={this.state.todo.location}
+        location={this.props.todo.location}
         saveLocation={this.saveLocation}
-        otherAuthoredLists={this.state.otherAuthoredLists}
+        otherAuthoredLists={this.props.otherAuthoredLists}
       />
     );
   }
 }
-
 
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
@@ -106,7 +82,6 @@ function mapStateToProps(state) {
     todo: state.item.model,
     location: state.item.model.location,
     loading: state.item.meta.loading,
-    currentUserId: state.user.model.userId,
     otherAuthoredLists: state.listOfLists.model.filter(
       list => list.creator === state.user.model.userId
     )

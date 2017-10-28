@@ -9,40 +9,35 @@ class ProfileEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameInputValue: '',
-      emailInputValue: '',
-      loading: true,
-      updating: false
+      nameInputValue: '', 
+      emailInputValue: ''
     };
   }
 
   componentWillMount() {
+    console.log('componentWillMount')
     store.dispatch(loadCurrentUser());
   }
 
-  componentDidMount() {
-    this.updateComponentState(); //keep in sync with redux
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-  updateComponentState = () => {
-    if (this.state.updating && store.getState().user.meta.updating === false) {
-      return this.props.history.push(`/profile`); //redirect back to profile
-    }
-    console.log(store.getState().user.model.name)
-    console.log(this.props.name)
-    
+  componentDidMount(){
+    console.log('componentDidMount')
     return this.setState({
       nameInputValue: this.props.nameInputValue,
       emailInputValue: this.props.emailInputValue,
-      loading: this.props.loading,
-      updating: store.getState().user.meta.updating
     });
-  };
-
-  componentWillUnmount() {
-    this.unsubscribe();
   }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps')
+    if (this.state.updating && nextProps.updating === false) {
+      return this.props.history.push(`/profile`); //redirect back to profile
+    }
+    return this.setState({
+      nameInputValue: nextProps.nameInputValue,
+      emailInputValue: nextProps.emailInputValue,
+    });
+  }
+
 
   onUserInfoUpdate = event => {
     event.preventDefault();
@@ -71,9 +66,10 @@ class ProfileEdit extends Component {
   };
 
   render() {
-    if (this.state.loading === true) {
+    console.log(`render, this.props.name is ${this.props.name}`)
+    if (this.props.loading === true) {
       return <b>Please wait, loading...</b>;
-    } else if (this.state.updating === true) {
+    } else if (this.props.updating === true) {
       return <b>Please wait, updating...</b>;
     }
     return (
@@ -88,6 +84,8 @@ class ProfileEdit extends Component {
   }
 }
 function mapStateToProps(state) {
+  console.log('mapStateToProps')
+  
   //Whatever is returned will show up as props inside of this component
   return {
     nameInputValue: state.user.model.name,

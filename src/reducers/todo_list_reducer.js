@@ -40,7 +40,11 @@ const TodoListReducer = (
 
   switch (action.type) {
     case 'LOAD_LIST_SUCCESS':
-      return { meta: { ...state.meta, loading: false }, model: action.data };
+      return {
+        ...state,
+        meta: { ...state.meta, loading: false },
+        model: action.data
+      };
 
     case 'ADD_TODO_SUCCESS':
       return {
@@ -52,10 +56,18 @@ const TodoListReducer = (
       return { ...state, meta: { ...state.meta, updating: true } };
 
     case 'UPDATE_LIST_SUCCESS':
-      return { meta: { ...state.meta, updating: false }, model: action.data };
+      return {
+        ...state,
+        meta: { ...state.meta, updating: false },
+        model: action.data
+      };
 
     case 'DELETE_LIST_SUCCESS':
-      return { ...state, meta: { ...state.meta, loading: true } , model: {todos:[]} };
+      return {
+        ...state,
+        meta: { ...state.meta, loading: true },
+        model: { todos: [] }
+      };
 
     case 'DELETE_ALL_TODO_SUCCESS':
       return { ...state, model: { ...state.model, todos: [] } };

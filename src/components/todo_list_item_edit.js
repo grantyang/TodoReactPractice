@@ -11,49 +11,32 @@ class TodoListItemEdit extends Component {
     this.state = {
       textInputValue: '',
       tagInput: '',
-      dateInput: '',
-      loading: true,
-      updating: false,
-      todoId: ''
+      dateInput: ''
     };
   }
 
   componentWillMount() {
+    console.log('componentWillMount')
+    
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
-    //loadCurrentUser(store.dispatch);
-    //loadAllTodoLists(store.dispatch);
     store.dispatch(loadItemData(listName, itemId));
   }
-
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  updateComponentState = () => {
-    //console.log('updating state')
-    //console.log(`this.state.updating is ${this.state.updating}, redux updating is ${store.getState().item.meta.updating}`)
     
-    if (this.state.updating && store.getState().item.meta.updating === false) {
-      //console.log('redirect here')
+  componentWillReceiveProps(nextProps) { //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
+    console.log('componentWillReceiveProps')
+    if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/list/${this.getListName()}`);
     }
     return this.setState({
-      todoId: this.props.todoId, // load in initial todo from server
-      textInputValue: this.props.textInputValue,
-      dateInput: this.props.dateInput,
-      tagInput: this.props.tagInput,
-      loading: store.getState().item.meta.loading,
-      updating: store.getState().item.meta.updating
+      textInputValue: nextProps.textInputValue,
+      dateInput: nextProps.dateInput,
+      tagInput: nextProps.tagInput,
+      updating: nextProps.updating
       // currentUserId: this.props.currentUserId,
       // otherAuthoredLists: this.props.otherAuthoredLists
     });
-  };
+  }
 
   getListName = () => {
     return this.props.match.params.listName;
@@ -86,7 +69,7 @@ class TodoListItemEdit extends Component {
     const newDate = this.state.dateInput;
     const newTag = this.state.tagInput;
     store.dispatch(
-      updateTodo(this.getListName(), this.state.todoId, {
+      updateTodo(this.getListName(), this.props.todoId, {
         text: newText,
         dueDate: newDate,
         tag: newTag
@@ -96,13 +79,15 @@ class TodoListItemEdit extends Component {
 
   delete = event => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return store.dispatch(deleteItem(this.getListName(), this.state.todoId));
+    return store.dispatch(deleteItem(this.getListName(), this.props.todoId));
   };
 
   render() {
-    if (this.state.loading === true) {
+    console.log('render')
+    
+    if (this.props.loading === true) {
       return <b>Please wait, loading...</b>;
-    } else if (this.state.updating === true) {
+    } else if (this.props.updating === true) {
       return <b>Please wait, updating...</b>;
     }
     return (
@@ -122,6 +107,7 @@ class TodoListItemEdit extends Component {
 
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
+  console.log('mapStateToProps')
   return {
     todoId: state.item.model.id,
     textInputValue: state.item.model.text,

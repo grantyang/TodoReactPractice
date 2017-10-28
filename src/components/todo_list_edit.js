@@ -14,41 +14,37 @@ class TodoListEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listName: '',
-      textInputValue: store.getState().todoList.model.name,
-      privacyInput: '',
-      updating: false
+      textInputValue: '',
+      privacyInput: ''
     };
   }
 
   componentWillMount() {
-    store.dispatch(loadTodoListData(this.props.match.params.listName)); // don't forget to pass dispatch
+    console.log('componentWillMount')    
+    store.dispatch(loadTodoListData(this.props.match.params.listName)); 
   }
 
   componentDidMount() {
-    this.updateComponentState(); //keep in sync with redux
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
+    console.log('componentDidMount')    
+    return this.setState({
+      textInputValue: this.props.listName,
+      privacyInput: this.props.privacyInput
+    });
+  }    
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  updateComponentState = () => {
-    if (
-      this.state.updating &&
-      store.getState().todoList.meta.updating === false
-    ) {
+  componentWillReceiveProps(nextProps) { //Ask CW why this isn't called after mapStateToProps in this component but is in todo_list_item_edit
+    console.log('componentWillReceiveProps')
+    //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
+    if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(
-        `/list/${store.getState().todoList.model.name}`
+        `/list/${this.props.listName}`
       ); //redirect to new name list if just updated
     }
     return this.setState({
-      updating: store.getState().todoList.meta.updating,
-      listName: this.props.listName,
-      privacyInput: this.props.privacyInput
+      textInputValue: nextProps.listName,
+      privacyInput: nextProps.privacyInput
     });
-  };
+  }
 
   onSave = event => {
     event.preventDefault();
@@ -60,7 +56,7 @@ class TodoListEdit extends Component {
     }
     // when input is submitted, add to database
     return store.dispatch(
-      updateTodoList(this.state.listName, {
+      updateTodoList(this.props.listName, {
         name: newText,
         privacy: newPrivacy
       })
@@ -84,11 +80,12 @@ class TodoListEdit extends Component {
   delete = () => {
     //delete this list and return to homepage
     this.props.history.push('');
-    return store.dispatch(deleteList(this.state.listName));
+    return store.dispatch(deleteList(this.props.listName));
   };
 
   render() {
-    if (this.state.updating === true) {
+    console.log('render')
+    if (this.props.updating === true) {
       return <b>Please wait, updating...</b>;
     }
     return (
@@ -97,7 +94,7 @@ class TodoListEdit extends Component {
         onTextChange={this.onTextChange}
         textInputValue={this.state.textInputValue}
         privacyInput={this.state.privacyInput}
-        listName={this.state.listName}
+        listName={this.props.listName}
         changeName={this.changeName}
         delete={this.delete}
         onPrivacyChange={this.onPrivacyChange}
@@ -108,6 +105,7 @@ class TodoListEdit extends Component {
 
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
+  console.log('mapStateToProps')
   return {
     updating: state.todoList.meta.updating,
     listName: state.todoList.model.name,

@@ -37,7 +37,6 @@ const ListsReducer = (
   },
   action
 ) => {
-
   switch (action.type) {
     case 'CREATE_LIST_SUCCESS':
       return { ...state, model: [action.data, ...state.model] };

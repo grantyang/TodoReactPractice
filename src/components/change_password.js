@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ChangePasswordView from '../presentational/change_password_view.js';
-import { callJSON } from '../ajax_utility.js';
-import store from '../redux_create_store.js';
 import { loadCurrentUser, updateUserPassword } from '../actions/index.js';
+import { callJSON } from '../ajax_utility.js';
+import { connect } from 'react-redux';
+import store from '../redux_create_store.js';
 
 class ChangePassword extends Component {
   constructor(props) {

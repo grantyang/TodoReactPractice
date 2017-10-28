@@ -22,49 +22,40 @@ class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listName: '',
       filter: 'ALL',
       searchTerm: '',
-      todos: [],
-      otherAuthoredLists: [],
-      currentUserId: null,
       loading: true
     };
   }
 
   componentWillMount() {
-    store.dispatch(loadTodoListData(this.props.match.params.listName)); // don't forget to pass dispatch
+    store.dispatch(loadTodoListData(this.props.match.params.listName)); 
     store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
     store.dispatch(loadAllTodoLists());
   }
 
-  componentDidMount() {
-    this.updateComponentState(); //keep in sync with redux
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
+  // componentDidMount() {
+  //   this.updateComponentState(); //keep in sync with redux
+  //   this.unsubscribe = store.subscribe(this.updateComponentState);
+  // }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
-  updateComponentState = () => {
-    //why don't we always getState? CW
-    //situation where this method is setting the state after redux state is updated 
-    //but before mapPropsToState maps redux store to this.props.
-    //whe to use getState and when to use this.props.____?
-    // console.log('updating here')
-    // console.log(store.getState().todoList.model.name)
-    // console.log(this.props.listName)
-    return this.setState({
-      currentUserId: this.props.currentUserId,
-      listName: store.getState().todoList.model.name,
-      todos: store.getState().todoList.model.todos,
-      loading: this.props.loading, 
-      otherAuthoredLists: this.props.otherAuthoredLists
-    });
-  };
+  // updateComponentState = () => {
+  //   //why don't we always getState? CW
+  //   //situation where this method is setting the state after redux state is updated 
+  //   //but before mapPropsToState maps redux store to this.props.
+  //   //whe to use getState and when to use this.props.____?
+  //   // console.log('updating here')
+  //   // console.log(store.getState().todoList.model.name)
+  //   // console.log(this.props.listName)
+  //   return this.setState({
+  //     loading: this.props.loading, 
+  //   });
+  // };
   
-
   refreshTodoListData = (event, targetName) => {
     store.dispatch(loadTodoListData(targetName));
   };
@@ -75,7 +66,7 @@ class TodoList extends Component {
     }
     //if there is a duplicate
     if (
-      this.state.todos.find(
+      this.props.todos.find(
         item => item.text.toLowerCase() === todoText.toLowerCase()
       )
     ) {
@@ -89,24 +80,24 @@ class TodoList extends Component {
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 }
       };
-      return store.dispatch(addTodo(this.state.listName, todoObj));
+      return store.dispatch(addTodo(this.props.listName, todoObj));
     }
   };
 
   clearAll = () => {
     //clear all todo items from this list
-    return store.dispatch(deleteAllTodos(this.state.listName));
+    return store.dispatch(deleteAllTodos(this.props.listName));
   };
 
   clearComplete = () => {
     //clear completed todo items from this list
-    return store.dispatch(deleteCompletedTodos(this.state.listName));
+    return store.dispatch(deleteCompletedTodos(this.props.listName));
   };
 
   countCompleted = () => {
     //count number of tood items not yet completed in this list
     let total = 0;
-    this.state.todos.forEach(element => {
+    this.props.todos.forEach(element => {
       if (element.completed === false) {
         total++;
       }
@@ -145,7 +136,7 @@ class TodoList extends Component {
 
   searchResults = () => {
     //searches for searchterm
-    return this.state.todos.filter(todo => {
+    return this.props.todos.filter(todo => {
       if (this.state.searchTerm === '') return todo;
       if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
         return todo;
@@ -167,8 +158,8 @@ class TodoList extends Component {
         <TodoListView
           className=""
           location={this.props.location}
-          otherAuthoredLists={this.state.otherAuthoredLists}
-          listName={this.state.listName}
+          otherAuthoredLists={this.props.otherAuthoredLists}
+          listName={this.props.listName}
           todos={filteredTodos}
           refreshTodoListData={this.refreshTodoListData}
         />
@@ -183,7 +174,7 @@ class TodoList extends Component {
         />
         <Link
           className="btn col-sm-4 btn-item btn-warning"
-          to={`/list/${this.state.listName}/edit`}>
+          to={`/list/${this.props.listName}/edit`}>
           Edit List
         </Link>
         <Link className="btn col-sm-4 btn-item btn-primary " to="/">
@@ -197,7 +188,6 @@ class TodoList extends Component {
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
   return {
-    currentUserId: state.user.model.userId,
     listName: state.todoList.model.name,
     todos: state.todoList.model.todos,
     loading: state.todoList.meta.loading,
@@ -206,7 +196,6 @@ function mapStateToProps(state) {
     )
   };
 }
-
 
 export default connect(mapStateToProps)(TodoList);
 //export default TodoList;

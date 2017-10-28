@@ -72,9 +72,6 @@ class SignUp extends Component {
       onEmailChange={this.onEmailChange}
       onPasswordChange={this.onPasswordChange}
       createUser={this.createUser}
-
-
-      
       />
     );
   }
