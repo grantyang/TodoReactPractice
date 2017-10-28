@@ -4,6 +4,7 @@ import NavBar from './components/nav_bar.js';
 import Input from './presentational/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
 import { callJSON } from './ajax_utility.js';
+import { connect } from 'react-redux';
 import {
   loadAllTodoLists,
   loadCurrentUser,
@@ -34,10 +35,10 @@ class App extends Component {
 
   updateComponentState = () => {
     return this.setState({
-      activeSession: store.getState().user.meta.activeSession,
-      loading: store.getState().listOfLists.meta.loading,
-      listOfLists: store.getState().listOfLists.model,
-      currentUser: store.getState().user.model
+      activeSession: this.props.activeSession,
+      loading: this.props.loading,
+      listOfLists: this.props.listOfLists,
+      currentUser: this.props.currentUser
     });
   };
 
@@ -86,4 +87,15 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    listOfLists: state.listOfLists.model,
+    activeSession: state.user.meta.activeSession,
+    currentUser: state.user.model,
+    loading: state.listOfLists.meta.loading
+  };
+}
+
+export default connect(mapStateToProps)(App);
+//export default App;

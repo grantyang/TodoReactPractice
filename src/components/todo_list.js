@@ -15,6 +15,7 @@ import {
   deleteAllTodos,
   deleteCompletedTodos
 } from '../actions/index.js';
+import { connect } from 'react-redux';
 import store from '../redux_create_store.js';
 
 class TodoList extends Component {
@@ -33,7 +34,7 @@ class TodoList extends Component {
 
   componentWillMount() {
     store.dispatch(loadTodoListData(this.props.match.params.listName)); // don't forget to pass dispatch
-    store.dispatch(loadCurrentUser());
+    store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
     store.dispatch(loadAllTodoLists());
   }
 
@@ -48,21 +49,23 @@ class TodoList extends Component {
 
   updateComponentState = () => {
     //why don't we always getState? CW
+    //situation where this method is setting the state after redux state is updated 
+    //but before mapPropsToState maps redux store to this.props.
+    //whe to use getState and when to use this.props.____?
+    // console.log('updating here')
+    // console.log(store.getState().todoList.model.name)
+    // console.log(this.props.listName)
     return this.setState({
-      currentUserId: store.getState().user.model.userId,
+      currentUserId: this.props.currentUserId,
       listName: store.getState().todoList.model.name,
       todos: store.getState().todoList.model.todos,
-      loading: store.getState().todoList.meta.loading,
-      otherAuthoredLists: store
-        .getState()
-        .listOfLists.model.filter(
-          list => list.creator === this.state.currentUserId
-        )
+      loading: this.props.loading, 
+      otherAuthoredLists: this.props.otherAuthoredLists
     });
   };
+  
 
   refreshTodoListData = (event, targetName) => {
-    //why is this necessary CW
     store.dispatch(loadTodoListData(targetName));
   };
 
@@ -152,7 +155,7 @@ class TodoList extends Component {
 
   render() {
     let filteredTodos = this.applyCompletedFilter(this.searchResults());
-    if (this.state.loading === true) return <b>Please wait, loading...</b>;
+    if (this.props.loading === true) return <b>Please wait, loading...</b>;
     return (
       <div className="List">
         <NavBar />
@@ -167,7 +170,7 @@ class TodoList extends Component {
           otherAuthoredLists={this.state.otherAuthoredLists}
           listName={this.state.listName}
           todos={filteredTodos}
-          refreshTodoListData={this.refreshTodoListData} //ask CW
+          refreshTodoListData={this.refreshTodoListData}
         />
         <Footer
           className="list-group"
@@ -191,4 +194,19 @@ class TodoList extends Component {
   }
 }
 
-export default TodoList;
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    currentUserId: state.user.model.userId,
+    listName: state.todoList.model.name,
+    todos: state.todoList.model.todos,
+    loading: state.todoList.meta.loading,
+    otherAuthoredLists: state.listOfLists.model.filter(
+      list => list.creator === state.user.model.userId
+    )
+  };
+}
+
+
+export default connect(mapStateToProps)(TodoList);
+//export default TodoList;

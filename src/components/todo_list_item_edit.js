@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 import { callJSON } from '../ajax_utility.js';
 import { loadItemData, updateTodo, deleteItem } from '../actions/index.js';
+import { connect } from 'react-redux';
 import store from '../redux_create_store.js';
 
-export default class TodoListItemEdit extends Component {
+class TodoListItemEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,34 +23,35 @@ export default class TodoListItemEdit extends Component {
     const listName = this.props.match.params.listName;
     //loadCurrentUser(store.dispatch);
     //loadAllTodoLists(store.dispatch);
-    store.dispatch(loadItemData( listName, itemId));
+    store.dispatch(loadItemData(listName, itemId));
   }
 
   componentDidMount() {
     this.unsubscribe = store.subscribe(this.updateComponentState);
   }
 
+
   componentWillUnmount() {
     this.unsubscribe();
   }
 
   updateComponentState = () => {
+    //console.log('updating state')
+    //console.log(`this.state.updating is ${this.state.updating}, redux updating is ${store.getState().item.meta.updating}`)
+    
     if (this.state.updating && store.getState().item.meta.updating === false) {
+      //console.log('redirect here')
       return this.props.history.push(`/list/${this.getListName()}`);
     }
     return this.setState({
-      todoId: store.getState().item.model.id, // load in initial list from server
-      textInputValue: store.getState().item.model.text,
-      dateInput: store.getState().item.model.dueDate,
-      tagInput: store.getState().item.model.tag,
+      todoId: this.props.todoId, // load in initial todo from server
+      textInputValue: this.props.textInputValue,
+      dateInput: this.props.dateInput,
+      tagInput: this.props.tagInput,
       loading: store.getState().item.meta.loading,
       updating: store.getState().item.meta.updating
-      // currentUserId: store.getState().user.model.userId,
-      // otherAuthoredLists: store
-      //   .getState()
-      //   .listOfLists.model.filter(
-      //     list => list.creator === this.state.currentUserId
-      //   )
+      // currentUserId: this.props.currentUserId,
+      // otherAuthoredLists: this.props.otherAuthoredLists
     });
   };
 
@@ -117,3 +119,21 @@ export default class TodoListItemEdit extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    todoId: state.item.model.id,
+    textInputValue: state.item.model.text,
+    dateInput: state.item.model.dueDate,
+    tagInput: state.item.model.tag,
+    loading: state.item.meta.loading,
+    updating: state.item.meta.updating,
+    currentUserId: state.user.model.userId,
+    otherAuthoredLists: state.listOfLists.model.filter(
+      list => list.creator === state.user.model.userId
+    )
+  };
+}
+
+export default connect(mapStateToProps)(TodoListItemEdit);

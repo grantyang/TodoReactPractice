@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ProfileEditView from '../presentational/profile_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
-import store from '../redux_create_store.js';
 import { loadCurrentUser, updateUserProfile } from '../actions/index.js';
+import { connect } from 'react-redux';
+import store from '../redux_create_store.js';
 
 class ProfileEdit extends Component {
   constructor(props) {
@@ -28,10 +29,13 @@ class ProfileEdit extends Component {
     if (this.state.updating && store.getState().user.meta.updating === false) {
       return this.props.history.push(`/profile`); //redirect back to profile
     }
+    console.log(store.getState().user.model.name)
+    console.log(this.props.name)
+    
     return this.setState({
-      nameInputValue: store.getState().user.model.name,
-      emailInputValue: store.getState().user.model.email,
-      loading: store.getState().user.meta.loading,
+      nameInputValue: this.props.nameInputValue,
+      emailInputValue: this.props.emailInputValue,
+      loading: this.props.loading,
       updating: store.getState().user.meta.updating
     });
   };
@@ -83,5 +87,14 @@ class ProfileEdit extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    nameInputValue: state.user.model.name,
+    emailInputValue: state.user.model.email,
+    loading: state.user.meta.loading,
+    updating: state.user.meta.updating
+  };
+}
 
-export default ProfileEdit;
+export default connect(mapStateToProps)(ProfileEdit);

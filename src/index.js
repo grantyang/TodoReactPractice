@@ -21,11 +21,11 @@ import Profile from './components/profile.js';
 import ProfileEdit from './components/profile_edit.js';
 import ChangePassword from './components/change_password.js';
 import PrivateRoute from './components/private_route.js';
-
+import store from './redux_create_store.js';
 import { Provider } from 'react-redux';
 
 ReactDOM.render(
-   // <Provider store={store}>
+    <Provider store={store}>
         <BrowserRouter>
             <div  /*if user is on path, show component  <App /> */>
                 <Switch /*Takes in Routes and will render only the first match*/>
@@ -43,7 +43,7 @@ ReactDOM.render(
                 </Switch>   
             </div>
         </BrowserRouter>
-    //</Provider>
+    </Provider>
     ,
     document.getElementById('root'));
 registerServiceWorker();

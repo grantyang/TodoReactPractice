@@ -7,9 +7,10 @@ import {
   deleteList,
   loadTodoListData
 } from '../actions/index.js';
+import { connect } from 'react-redux';
 import store from '../redux_create_store.js';
 
-export default class TodoListEdit extends Component {
+class TodoListEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,8 +45,8 @@ export default class TodoListEdit extends Component {
     }
     return this.setState({
       updating: store.getState().todoList.meta.updating,
-      listName: store.getState().todoList.model.name,
-      privacyInput: store.getState().todoList.model.privacy
+      listName: this.props.listName,
+      privacyInput: this.props.privacyInput
     });
   };
 
@@ -104,3 +105,14 @@ export default class TodoListEdit extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    updating: state.todoList.meta.updating,
+    listName: state.todoList.model.name,
+    privacyInput: state.todoList.model.privacy
+  };
+}
+
+export default connect(mapStateToProps)(TodoListEdit);

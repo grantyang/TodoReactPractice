@@ -8,6 +8,7 @@ import {
   updateTodoNoRedirect,
   deleteItem
 } from '../actions/index.js';
+import { connect } from 'react-redux';
 import store from '../redux_create_store.js';
 
 class TodoListItem extends Component {
@@ -42,15 +43,11 @@ class TodoListItem extends Component {
 
   updateComponentState = () => {
     return this.setState({
-      todo: store.getState().item.model,
-      location: store.getState().item.model.location,
-      loading: store.getState().item.meta.loading,
-      currentUserId: store.getState().user.model.userId,
-      otherAuthoredLists: store
-        .getState()
-        .listOfLists.model.filter(
-          list => list.creator === this.state.currentUserId
-        )
+      todo: this.props.todo,
+      location: this.props.location,
+      loading: this.props.loading,
+      currentUserId: this.props.currentUserId,
+      otherAuthoredLists: this.props.otherAuthoredLists
     });
   };
 
@@ -68,7 +65,6 @@ class TodoListItem extends Component {
   };
 
   saveLocation = location => {
-    console.log(`updating ${this.state.todo.text}`);
     store.dispatch(
       updateTodoNoRedirect(
         store.dispatch,
@@ -103,4 +99,20 @@ class TodoListItem extends Component {
   }
 }
 
-export default TodoListItem;
+
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+    todo: state.item.model,
+    location: state.item.model.location,
+    loading: state.item.meta.loading,
+    currentUserId: state.user.model.userId,
+    otherAuthoredLists: state.listOfLists.model.filter(
+      list => list.creator === state.user.model.userId
+    )
+  };
+}
+
+
+export default connect(mapStateToProps)(TodoListItem);
+//export default TodoListItem;
