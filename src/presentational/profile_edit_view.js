@@ -1,8 +1,13 @@
 import React from 'react';
-import NavBar from '../components/nav_bar.js';
+import NavBar from '../containers/nav_bar.js';
 import { Link } from 'react-router-dom';
 
 const ProfileEditView = (props) => {
+  if (props.loading === true) {
+    return <b>Please wait, loading...</b>;
+  } else if (props.updating === true) {
+    return <b>Please wait, updating...</b>;
+  }
   return (
     <div>
         <NavBar />

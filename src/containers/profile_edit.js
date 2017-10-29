@@ -3,7 +3,7 @@ import ProfileEditView from '../presentational/profile_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
 import { loadCurrentUser, updateUserProfile } from '../actions/index.js';
 import { connect } from 'react-redux';
-import store from '../redux_create_store.js';
+import { bindActionCreators } from 'redux';
 
 class ProfileEdit extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class ProfileEdit extends Component {
 
   componentWillMount() {
     console.log('componentWillMount')
-    store.dispatch(loadCurrentUser());
+    this.props.loadCurrentUser();
   }
 
   componentDidMount(){
@@ -38,7 +38,6 @@ class ProfileEdit extends Component {
     });
   }
 
-
   onUserInfoUpdate = event => {
     event.preventDefault();
     // when input is submitted, add to database
@@ -54,7 +53,8 @@ class ProfileEdit extends Component {
       name: newName,
       email: newEmail
     };
-    return store.dispatch(updateUserProfile(newUser));
+    this.props.updateUserProfile(newUser);
+    return this.props.history.push(`/profile`);
   };
 
   onNameChange = event => {
@@ -66,14 +66,10 @@ class ProfileEdit extends Component {
   };
 
   render() {
-    console.log(`render, this.props.name is ${this.props.name}`)
-    if (this.props.loading === true) {
-      return <b>Please wait, loading...</b>;
-    } else if (this.props.updating === true) {
-      return <b>Please wait, updating...</b>;
-    }
     return (
       <ProfileEditView
+        loading={this.props.loading}
+        updating={this.props.updating}
         onUserInfoUpdate={this.onUserInfoUpdate}
         onNameChange={this.onNameChange}
         onEmailChange={this.onEmailChange}
@@ -83,10 +79,10 @@ class ProfileEdit extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   console.log('mapStateToProps')
-  
-  //Whatever is returned will show up as props inside of this component
+  //Whatever is returned will show up as props inside of the component
   return {
     nameInputValue: state.user.model.name,
     emailInputValue: state.user.model.email,
@@ -95,4 +91,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(ProfileEdit);
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadCurrentUser: loadCurrentUser,
+      updateUserProfile:updateUserProfile,
+    },
+    dispatch
+  );
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdit);

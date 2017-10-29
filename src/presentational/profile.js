@@ -1,8 +1,12 @@
 import React from 'react';
-import NavBar from '../components/nav_bar.js';
+import NavBar from '../containers/nav_bar.js';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const ProfileView = ({ name, email }) => {
+const Profile = ({ name, email, loading }) => {
+  if (loading === true) {
+    return <b>Please wait, loading...</b>;
+  }
   return (
     <div>
       <NavBar />
@@ -10,17 +14,17 @@ const ProfileView = ({ name, email }) => {
         <div className="justify-content-sm-left row mt-2 ">
           <h6>Name</h6>
         </div>
-
         <div className="justify-content-sm-left row">
           <span className="col-sm-4 list-group-item">{name}</span>
         </div>
+
         <div className="justify-content-sm-left row mt-2">
           <h6>Email</h6>
         </div>
-
         <div className="justify-content-sm-left row">
           <span className="col-sm-4 list-group-item">{email}</span>
         </div>
+
         <div className="justify-content-sm-left row">
           <Link
             className="col-sm-2 btn btn-item btn-warning"
@@ -33,4 +37,14 @@ const ProfileView = ({ name, email }) => {
   );
 };
 
-export default ProfileView;
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of this component
+  return {
+     name: state.user.model.name,
+     email: state.user.model.email,
+     loading: state.user.meta.loading
+  };
+}
+
+export default connect(mapStateToProps)(Profile);
+

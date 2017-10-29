@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const TodoListEditView = props => {
+  if (props.loading === true) {
+    return <b>Please wait, loading...</b>;
+  } else if (props.updating === true) {
+    return <b>Please wait, updating...</b>;
+  }
   return (
     <div className="List">
       <div>

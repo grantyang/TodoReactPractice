@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import LoginView from '../presentational/login_view.js';
 import { callJSON } from '../ajax_utility.js';
 import { loginUser , loadCurrentUser} from '../actions/index.js';
-import store from '../redux_create_store.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class Login extends Component {
   constructor(props) {
@@ -10,34 +11,21 @@ class Login extends Component {
     this.state = {
       emailInput: '',
       passwordInput: '',
-      activeSession:false
     };
   }
 
   componentWillMount() {
-    store.dispatch(loadCurrentUser());
+    this.props.loadCurrentUser();
   }
 
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-  updateComponentState = () => {
+  componentWillReceiveProps(nextProps){
     if (
-      !this.state.activeSession &&
-      store.getState().user.meta.activeSession === true
+      !this.props.activeSession &&
+      nextProps.activeSession === true
     ) {
       return this.props.history.push(`/`);
     }
-    return this.setState({
-      activeSession: store.getState().user.meta.activeSession,
-    });
-  };
-
-  componentWillUnmount() {
-    this.unsubscribe();
   }
-
 
   onEmailChange = date => {
     //when email is changed, update state
@@ -63,7 +51,7 @@ class Login extends Component {
       email: emailInput,
       password: passwordInput
     };
-    return store.dispatch(loginUser(loginData))
+    return this.props.loginUser(loginData);
   };
 
   render() {
@@ -79,4 +67,22 @@ class Login extends Component {
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of the component
+  return {
+    activeSession: state.user.meta.activeSession
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadCurrentUser: loadCurrentUser,
+      loginUser:loginUser
+    },
+    dispatch
+  );
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+

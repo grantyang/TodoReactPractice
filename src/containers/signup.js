@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import SignUpView from '../presentational/signup_view.js';
 import {callJSON} from '../ajax_utility.js';
 import { createNewUser } from '../actions/index.js';
-import store from '../redux_create_store.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -56,10 +58,8 @@ class SignUp extends Component {
       email: emailInput,
       password: passwordInput
     };
-    store.dispatch(createNewUser(newUser))
+    this.props.createNewUser(newUser)
     return this.props.history.push(`/login`);
-    
-
   };
 
   render() {
@@ -77,4 +77,14 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      createNewUser: createNewUser,
+    },
+    dispatch
+  );
+}
+
+export default connect(null, mapDispatchToProps)(SignUp);

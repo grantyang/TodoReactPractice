@@ -10,17 +10,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'whatwg-fetch';
 
 import App from './App.js';
-import TodoList from './components/todo_list.js';
+import TodoList from './containers/todo_list.js';
 import About from './presentational/about.js';
-import TodoListItem from './components/todo_list_item.js';
-import TodoListEdit from './components/todo_list_edit.js'
-import TodoListItemEdit from './components/todo_list_item_edit.js';
-import SignUp from './components/signup.js';
-import Login from './components/login.js';
-import Profile from './components/profile.js';
-import ProfileEdit from './components/profile_edit.js';
-import ChangePassword from './components/change_password.js';
-import PrivateRoute from './components/private_route.js';
+import TodoListItem from './containers/todo_list_item.js';
+import TodoListEdit from './containers/todo_list_edit.js'
+import TodoListItemEdit from './containers/todo_list_item_edit.js';
+import SignUp from './containers/signup.js';
+import Login from './containers/login.js';
+import Profile from './presentational/profile.js';
+import ProfileEdit from './containers/profile_edit.js';
+import ChangePassword from './containers/change_password.js';
+import PrivateRoute from './containers/private_route.js';
 import store from './redux_create_store.js';
 import { Provider } from 'react-redux';
 

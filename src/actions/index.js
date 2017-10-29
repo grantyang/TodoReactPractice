@@ -74,9 +74,9 @@ export function loginUser(loginData) {
       .then(
         data => {
           if (data === 'email')
-            dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data });
+            return dispatch({ type: LOGIN_USER_EMAIL_FAILURE, data });
           if (data === 'password')
-            dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data });
+            return dispatch({ type: LOGIN_USER_PASSWORD_FAILURE, data });
           dispatch({ type: LOGIN_USER_SUCCESS, data });
         },
         err => dispatch({ type: LOGIN_USER_FAILURE, err })
@@ -88,8 +88,11 @@ export function createNewUser(newUser) {
   return dispatch => {
     return callJSON('POST', `signup`, newUser)
       .then(res => {
-        if (res.status === 401) dispatch({ type: DUPLICATE_USER });
-        else res.json();
+        if (res.status === 401) {
+          res.end();
+          return dispatch({ type: DUPLICATE_USER });
+        }
+        res.json();
       })
       .then(
         data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),

@@ -3,7 +3,7 @@ import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 import { callJSON } from '../ajax_utility.js';
 import { loadItemData, updateTodo, deleteItem } from '../actions/index.js';
 import { connect } from 'react-redux';
-import store from '../redux_create_store.js';
+import { bindActionCreators } from 'redux';
 
 class TodoListItemEdit extends Component {
   constructor(props) {
@@ -16,13 +16,19 @@ class TodoListItemEdit extends Component {
   }
 
   componentWillMount() {
-    console.log('componentWillMount')
-    
+    const listName = this.props.match.params.listName;    
     const itemId = this.props.match.params.itemId;
-    const listName = this.props.match.params.listName;
-    store.dispatch(loadItemData(listName, itemId));
+    this.props.loadItemData(listName, itemId);
   }
     
+  componentDidMount() {
+    return this.setState({
+      textInputValue: this.props.textInputValue,
+      tagInput: this.props.tagInput,      
+      dateInput: this.props.dateInput,
+    });
+  }
+
   componentWillReceiveProps(nextProps) { //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
     console.log('componentWillReceiveProps')
     if (this.props.updating && nextProps.updating === false) {
@@ -30,11 +36,8 @@ class TodoListItemEdit extends Component {
     }
     return this.setState({
       textInputValue: nextProps.textInputValue,
-      dateInput: nextProps.dateInput,
       tagInput: nextProps.tagInput,
-      updating: nextProps.updating
-      // currentUserId: this.props.currentUserId,
-      // otherAuthoredLists: this.props.otherAuthoredLists
+      dateInput: nextProps.dateInput,      
     });
   }
 
@@ -68,30 +71,24 @@ class TodoListItemEdit extends Component {
     const newText = this.state.textInputValue;
     const newDate = this.state.dateInput;
     const newTag = this.state.tagInput;
-    store.dispatch(
-      updateTodo(this.getListName(), this.props.todoId, {
+    this.props.updateTodo(this.getListName(), this.props.todoId, {
         text: newText,
         dueDate: newDate,
         tag: newTag
       })
-    );
   };
 
   delete = event => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return store.dispatch(deleteItem(this.getListName(), this.props.todoId));
+    return this.props.deleteItem(this.getListName(), this.props.todoId);
   };
 
   render() {
     console.log('render')
-    
-    if (this.props.loading === true) {
-      return <b>Please wait, loading...</b>;
-    } else if (this.props.updating === true) {
-      return <b>Please wait, updating...</b>;
-    }
     return (
       <TodoListItemEditView
+        loading={this.props.loading}
+        updating={this.props.updating}
         textInputValue={this.state.textInputValue}
         dateInput={this.state.dateInput}
         tagInput={this.state.tagInput}
@@ -106,20 +103,28 @@ class TodoListItemEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  //Whatever is returned will show up as props inside of this component
+  //Whatever is returned will show up as props inside of the component
   console.log('mapStateToProps')
   return {
-    todoId: state.item.model.id,
+    loading: state.item.meta.loading,
+    updating: state.item.meta.updating,    
     textInputValue: state.item.model.text,
     dateInput: state.item.model.dueDate,
     tagInput: state.item.model.tag,
-    loading: state.item.meta.loading,
-    updating: state.item.meta.updating,
-    currentUserId: state.user.model.userId,
-    otherAuthoredLists: state.listOfLists.model.filter(
-      list => list.creator === state.user.model.userId
-    )
+    todoId: state.item.model.id,    
   };
 }
 
-export default connect(mapStateToProps)(TodoListItemEdit);
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadItemData: loadItemData,      
+      updateTodo: updateTodo,
+      deleteItem: deleteItem
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListItemEdit);

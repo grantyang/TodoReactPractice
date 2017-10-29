@@ -8,7 +8,6 @@ export default class PrivateRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       activeSession: true
     };
   }

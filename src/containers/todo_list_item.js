@@ -3,13 +3,12 @@ import TodoListItemView from '../presentational/todo_list_item_view';
 import { callJSON } from '../ajax_utility.js';
 import {
   loadItemData,
-  loadCurrentUser,
   loadAllTodoLists,
   updateTodoNoRedirect,
   deleteItem
 } from '../actions/index.js';
 import { connect } from 'react-redux';
-import store from '../redux_create_store.js';
+import { bindActionCreators } from 'redux';
 
 class TodoListItem extends Component {
   constructor(props) {
@@ -18,15 +17,14 @@ class TodoListItem extends Component {
       location: {
         lat: 0,
         lng: 0
-      },
+      }
     };
   }
   componentWillMount() {
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
-    store.dispatch(loadCurrentUser());
-    store.dispatch(loadAllTodoLists());
-    store.dispatch(loadItemData(listName, itemId));
+    this.props.loadAllTodoLists();
+    this.props.loadItemData(listName, itemId);
   }
 
   getListName = () => {
@@ -34,29 +32,21 @@ class TodoListItem extends Component {
   };
 
   toggleCompleted = todo => {
-    store.dispatch(
-      updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
-        ...todo,
-        completed: !todo.completed
-      })
-    );
+    this.props.updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
+      ...todo,
+      completed: !todo.completed
+    });
   };
 
   saveLocation = location => {
-    store.dispatch(
-      updateTodoNoRedirect(
-        this.getListName(),
-        this.props.todo.id,
-        {
-          location
-        }
-      )
-    );
+    this.props.updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
+      location
+    });
   };
 
   delete = () => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return store.dispatch(deleteItem( this.getListName(), this.props.todo.id));
+    return this.props.deleteItem(this.getListName(), this.props.todo.id);
   };
 
   render() {
@@ -88,6 +78,17 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadItemData: loadItemData,
+      loadAllTodoLists: loadAllTodoLists,
+      updateTodoNoRedirect:updateTodoNoRedirect,
+      deleteItem: deleteItem
+    },
+    dispatch
+  );
+}
 
-export default connect(mapStateToProps)(TodoListItem);
-//export default TodoListItem;
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListItem);

@@ -3,7 +3,7 @@ import ChangePasswordView from '../presentational/change_password_view.js';
 import { loadCurrentUser, updateUserPassword } from '../actions/index.js';
 import { callJSON } from '../ajax_utility.js';
 import { connect } from 'react-redux';
-import store from '../redux_create_store.js';
+import { bindActionCreators } from 'redux';
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -11,31 +11,18 @@ class ChangePassword extends Component {
     this.state = {
       oldPasswordInput: '',
       newPasswordInput: '',
-      updating: false
     };
   }
 
   componentWillMount() {
-    store.dispatch(loadCurrentUser());
+    this.props.loadCurrentUser();
   }
 
-  componentDidMount() {
-    this.updateComponentState(); //keep in sync with redux
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-  updateComponentState = () => {
-    if (this.state.updating && store.getState().user.meta.updating === false) {
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/profile`); //redirect back to profile
     }
-    return this.setState({
-      updating: store.getState().user.meta.updating
-    });
   };
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
 
   saveNewPassword = event => {
     // when input is submitted, add to database
@@ -55,7 +42,7 @@ class ChangePassword extends Component {
       oldPassword: oldPasswordInput,
       newPassword: newPasswordInput
     };
-    return store.dispatch(updateUserPassword(passwordObj));
+    return this.props.updateUserPassword(passwordObj);
   };
 
   onOldPasswordChange = event => {
@@ -79,4 +66,21 @@ class ChangePassword extends Component {
   }
 }
 
-export default ChangePassword;
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of the component
+  return {
+    updating: state.user.meta.updating
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadCurrentUser: loadCurrentUser,
+      updateUserPassword:updateUserPassword
+    },
+    dispatch
+  );
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

@@ -16,7 +16,7 @@ import {
   deleteCompletedTodos
 } from '../actions/index.js';
 import { connect } from 'react-redux';
-import store from '../redux_create_store.js';
+import { bindActionCreators } from 'redux';
 
 class TodoList extends Component {
   constructor(props) {
@@ -29,20 +29,24 @@ class TodoList extends Component {
   }
 
   componentWillMount() {
-    store.dispatch(loadTodoListData(this.props.match.params.listName)); 
-    store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
-    store.dispatch(loadAllTodoLists());
+    this.props.loadTodoListData(this.props.match.params.listName); 
+    this.props.loadCurrentUser(); // remember, if using THUNK, to call store.dispatch, not just loadCurrentUser().
+    this.props.loadAllTodoLists();
   }
+
+  // componentWillMount() { //THUNK no redux-router connect mapDispatchToProps
+  //   store.dispatch(loadTodoListData(this.props.match.params.listName)); 
+  //   store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
+  //   store.dispatch(loadAllTodoLists());
+  // }
 
   // componentDidMount() {
   //   this.updateComponentState(); //keep in sync with redux
   //   this.unsubscribe = store.subscribe(this.updateComponentState);
   // }
-
   // componentWillUnmount() {
   //   this.unsubscribe();
   // }
-
   // updateComponentState = () => {
   //   //why don't we always getState? CW
   //   //situation where this method is setting the state after redux state is updated 
@@ -57,7 +61,7 @@ class TodoList extends Component {
   // };
   
   refreshTodoListData = (event, targetName) => {
-    store.dispatch(loadTodoListData(targetName));
+    this.props.loadTodoListData(targetName);
   };
 
   addToList = todoText => {
@@ -80,22 +84,22 @@ class TodoList extends Component {
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 }
       };
-      return store.dispatch(addTodo(this.props.listName, todoObj));
+      return this.props.addTodo(this.props.listName, todoObj);
     }
   };
 
   clearAll = () => {
     //clear all todo items from this list
-    return store.dispatch(deleteAllTodos(this.props.listName));
+    return this.props.deleteAllTodos(this.props.listName);
   };
 
   clearComplete = () => {
     //clear completed todo items from this list
-    return store.dispatch(deleteCompletedTodos(this.props.listName));
+    return this.props.deleteCompletedTodos(this.props.listName);
   };
 
   countCompleted = () => {
-    //count number of tood items not yet completed in this list
+    //count number of todo items not yet completed in this list
     let total = 0;
     this.props.todos.forEach(element => {
       if (element.completed === false) {
@@ -197,5 +201,19 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TodoList);
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadTodoListData: loadTodoListData,
+      loadAllTodoLists: loadAllTodoLists,
+      loadCurrentUser:loadCurrentUser,
+      addTodo: addTodo,
+      deleteAllTodos:deleteAllTodos,
+      deleteCompletedTodos:deleteCompletedTodos,
+    },
+    dispatch
+  );
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
 //export default TodoList;
