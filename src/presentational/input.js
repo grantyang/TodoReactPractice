@@ -15,7 +15,7 @@ export default class Input extends Component {
 
   onInputSubmit = event => {
     // when input is submitted, run fx
-    
+
     event.preventDefault();
     this.props.fxToRun(this.state.text);
     this.setState({ text: '' }); //clears out input after submit
@@ -23,23 +23,23 @@ export default class Input extends Component {
 
   render() {
     return (
-      <div className="row justify-content-sm-center">
-        <div className="col-sm-7">
-          <form className="input input-group" onSubmit={this.onInputSubmit}>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter new todo here"
-              value={this.state.text} // grab value from state
-              onChange={this.onInputChange} // update state on change
-            />
-            <span className="input-group-btn">
-              <button className="btn btn-success" type="submit">
-                Create
-              </button>
-            </span>
-          </form>
-        </div>
+      <div className="row">
+        <form
+          className="input input-group justify-content-center"
+          onSubmit={this.onInputSubmit}>
+          <input
+            type="text"
+            className="form-control col-sm-7"
+            placeholder="Enter new todo here"
+            value={this.state.text} // grab value from state
+            onChange={this.onInputChange} // update state on change
+          />
+          <span className="input-group-btn">
+            <button className="btn btn-success" type="submit">
+              Create
+            </button>
+          </span>
+        </form>
       </div>
     );
   }

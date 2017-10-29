@@ -6,7 +6,7 @@ const ListOfLists = props => {
   return (
     <div className="row justify-content-sm-center">
       <span className="col-sm-8">Your Private Lists</span>
-      <div className="col-sm-8 list-group">
+      <div className="col-md-8 list-group">
         {props.listOfLists.map(list => {
           if (list.privacy === 'private') {
             return (
@@ -24,7 +24,7 @@ const ListOfLists = props => {
         })}
       </div>
       <span className="col-sm-8">Public Lists</span>
-      <div className="col-sm-8 list-group">
+      <div className="col-md-8 list-group">
         {props.listOfLists.map(list => {
           if (list.privacy === 'public') {
             return (

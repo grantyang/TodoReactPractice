@@ -10,24 +10,25 @@ const Profile = ({ name, email, loading }) => {
   return (
     <div>
       <NavBar />
+
       <div className="container mt-2">
-        <div className="justify-content-sm-left row mt-2 ">
+        <div className="justify-content-md-left row mt-2 ">
           <h6>Name</h6>
         </div>
-        <div className="justify-content-sm-left row">
+        <div className="justify-content-md-left row">
           <span className="col-sm-4 list-group-item">{name}</span>
         </div>
 
-        <div className="justify-content-sm-left row mt-2">
+        <div className="justify-content-md-left row mt-2">
           <h6>Email</h6>
         </div>
-        <div className="justify-content-sm-left row">
+        <div className="justify-content-md-left row">
           <span className="col-sm-4 list-group-item">{email}</span>
         </div>
 
-        <div className="justify-content-sm-left row">
+        <div className="justify-content-md-left row">
           <Link
-            className="col-sm-2 btn btn-item btn-warning"
+            className="col-sm-3 btn mt-2 btn-warning"
             to={`/profile/edit`}>
             Edit Profile
           </Link>
@@ -40,11 +41,10 @@ const Profile = ({ name, email, loading }) => {
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
   return {
-     name: state.user.model.name,
-     email: state.user.model.email,
-     loading: state.user.meta.loading
+    name: state.user.model.name,
+    email: state.user.model.email,
+    loading: state.user.meta.loading
   };
 }
 
 export default connect(mapStateToProps)(Profile);
-

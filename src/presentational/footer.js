@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = props => {
   return (
     <div>
-      <div className="row justify-content-sm-center">
+      <div className="row justify-content-center">
         <button className="btn btn-footer btn-secondary" onClick={props.clear}>
           Clear All
         </button>
@@ -13,7 +13,7 @@ const Footer = props => {
           Clear Completed
         </button>
       </div>
-      <div className="row justify-content-sm-center">
+      <div className="row justify-content-center">
         <button
           className="btn btn-footer btn-secondary"
           onClick={props.showAll}>
@@ -30,7 +30,7 @@ const Footer = props => {
           Show Active
         </button>
       </div>
-      <div className="row justify-content-sm-center">
+      <div className="row justify-content-center">
         <p className="counter">Items Left: {props.countCompleted()}</p>
       </div>
     </div>

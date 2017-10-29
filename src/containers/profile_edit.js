@@ -14,8 +14,8 @@ class ProfileEdit extends Component {
     };
   }
 
-  componentWillMount() {
-    console.log('componentWillMount')
+  componentDidMount() {
+    console.log('componentDidMount')
     this.props.loadCurrentUser();
   }
 

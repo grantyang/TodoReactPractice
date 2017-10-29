@@ -14,7 +14,7 @@ class ChangePassword extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadCurrentUser();
   }
 

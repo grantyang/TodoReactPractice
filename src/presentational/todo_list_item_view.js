@@ -20,26 +20,26 @@ const TodoListItemView = props => {
         </div>
         <div className="row justify-content-sm-center">
           <Link
-            className="col-sm-2 btn btn-item btn-warning"
+            className="col-md-2 btn btn-item btn-warning"
             to={`/list/${props.getListName()}/todo/${todo.id}/edit`}>
             Edit
           </Link>
 
           <button
-            className="col-sm-2 btn btn-item btn-info"
+            className="col-md-2 btn btn-item btn-info"
             onClick={() => props.toggleCompleted(todo)}>
             Toggle Completed
           </button>
 
           <button
-            className="col-sm-2 btn btn-item  btn-danger"
+            className="col-md-2 btn btn-item  btn-danger"
             onClick={() => props.delete()}>
             Delete
           </button>
         </div>
         <div className="row justify-content-sm-center">
           <Link
-            className="col-sm-4 btn btn-item btn-primary"
+            className="col-md-4 btn btn-item btn-primary"
             to={`/list/${props.getListName()}`}>
             Return to List
           </Link>

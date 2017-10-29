@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TodoListItemView from '../presentational/todo_list_item_view';
+import NavBar from './nav_bar.js';
 import { callJSON } from '../ajax_utility.js';
 import {
   loadItemData,
@@ -11,16 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class TodoListItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: {
-        lat: 0,
-        lng: 0
-      }
-    };
-  }
-  componentWillMount() {
+  componentDidMount() {
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
     this.props.loadAllTodoLists();
@@ -52,16 +44,19 @@ class TodoListItem extends Component {
   render() {
     if (this.props.loading === true) return <b>Please wait, loading...</b>;
     return (
-      <TodoListItemView
-        todo={this.props.todo}
-        listName={this.props.match.params.listName}
-        toggleCompleted={this.toggleCompleted}
-        delete={this.delete}
-        getListName={this.getListName}
-        location={this.props.todo.location}
-        saveLocation={this.saveLocation}
-        otherAuthoredLists={this.props.otherAuthoredLists}
-      />
+      <div>
+        <NavBar />
+        <TodoListItemView
+          todo={this.props.todo}
+          listName={this.props.match.params.listName}
+          toggleCompleted={this.toggleCompleted}
+          delete={this.delete}
+          getListName={this.getListName}
+          location={this.props.todo.location}
+          saveLocation={this.saveLocation}
+          otherAuthoredLists={this.props.otherAuthoredLists}
+        />
+      </div>
     );
   }
 }
@@ -70,7 +65,6 @@ function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
   return {
     todo: state.item.model,
-    location: state.item.model.location,
     loading: state.item.meta.loading,
     otherAuthoredLists: state.listOfLists.model.filter(
       list => list.creator === state.user.model.userId
@@ -84,7 +78,7 @@ function mapDispatchToProps(dispatch) {
     {
       loadItemData: loadItemData,
       loadAllTodoLists: loadAllTodoLists,
-      updateTodoNoRedirect:updateTodoNoRedirect,
+      updateTodoNoRedirect: updateTodoNoRedirect,
       deleteItem: deleteItem
     },
     dispatch

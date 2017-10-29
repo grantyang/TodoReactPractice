@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class NavBar extends Component {
-
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadCurrentUser();
   }
 

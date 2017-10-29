@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import NavBar from './nav_bar.js';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
 import {
@@ -18,14 +19,10 @@ class TodoListEdit extends Component {
       privacyInput: ''
     };
   }
-
-  componentWillMount() {
-    console.log('componentWillMount');
-    this.props.loadTodoListData(this.props.match.params.listName);
-  }
-
+  
   componentDidMount() {
     console.log('componentDidMount');
+    this.props.loadTodoListData(this.props.match.params.listName);
     return this.setState({
       textInputValue: this.props.listName,
       privacyInput: this.props.privacyInput
@@ -86,16 +83,19 @@ class TodoListEdit extends Component {
       return <b>Please wait, updating...</b>;
     }
     return (
-      <TodoListEditView
-        onSave={this.onSave}
-        onTextChange={this.onTextChange}
-        textInputValue={this.state.textInputValue}
-        privacyInput={this.state.privacyInput}
-        listName={this.props.listName}
-        changeName={this.changeName}
-        delete={this.delete}
-        onPrivacyChange={this.onPrivacyChange}
-      />
+      <div>
+        <NavBar />
+        <TodoListEditView
+          onSave={this.onSave}
+          onTextChange={this.onTextChange}
+          textInputValue={this.state.textInputValue}
+          privacyInput={this.state.privacyInput}
+          listName={this.props.listName}
+          changeName={this.changeName}
+          delete={this.delete}
+          onPrivacyChange={this.onPrivacyChange}
+        />
+      </div>
     );
   }
 }
@@ -116,7 +116,7 @@ function mapDispatchToProps(dispatch) {
     {
       loadTodoListData: loadTodoListData,
       updateTodoList: updateTodoList,
-      deleteList: deleteList,
+      deleteList: deleteList
     },
     dispatch
   );

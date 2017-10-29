@@ -2,37 +2,16 @@ import React, { Component } from 'react';
 import { callJSON } from '../ajax_utility.js';
 import { Route, Redirect } from 'react-router-dom';
 import { loadCurrentUser } from '../actions/index.js';
-import store from '../redux_create_store.js';
-
-export default class PrivateRoute extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeSession: true
-    };
-  }
-
-  componentWillMount() {
-    store.dispatch(loadCurrentUser());
-  }
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+class PrivateRoute extends Component {
   componentDidMount() {
-    this.unsubscribe = store.subscribe(this.updateComponentState);
-  }
-
-  updateComponentState = () => {
-    return this.setState({
-      activeSession: store.getState().user.meta.activeSession
-    });
-  };
-
-  componentWillUnmount() {
-    this.unsubscribe();
+    this.props.loadCurrentUser();
   }
 
   //https://github.com/ReactTraining/react-router/issues/4105
   privateRoute = ({ component: Component, ...rest }) => {
-    if (this.state.activeSession) {
+    if (this.props.activeSession) {
       return (
         <Route
           {...rest}
@@ -54,3 +33,21 @@ export default class PrivateRoute extends Component {
     return newRoute;
   }
 }
+
+function mapStateToProps(state) {
+  //Whatever is returned will show up as props inside of the component
+  return {
+    activeSession: state.user.meta.activeSession
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  //Whatever is returned will show up as props inside of the component
+  return bindActionCreators(
+    {
+      loadCurrentUser: loadCurrentUser
+    },
+    dispatch
+  );
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

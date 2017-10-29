@@ -12,11 +12,11 @@ const TodoListView = ({
   //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
   return (
     <div>
-      <div className="row justify-content-sm-center">
+      <div className="row justify-content-center">
         <h3>{listName}</h3>
       </div>
       <div className="row justify-content-sm-center">
-        <div className="col-sm-3 list-group">
+        <div className="col-md-3 list-group">
           Lists Owned by You
           {otherAuthoredLists.map(list => {
             return (
@@ -30,7 +30,7 @@ const TodoListView = ({
             );
           })}
         </div>
-        <div className="col-sm-6 list-group">
+        <div className="col-md-6 list-group">
           List Items
           {todos.map(todo => {
             return (

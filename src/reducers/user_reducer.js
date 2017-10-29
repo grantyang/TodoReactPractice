@@ -8,7 +8,7 @@
 const UserReducer = (
   // Information about the model
   state = {
-    meta: { loading: true, updating: false, activeSession: false },
+    meta: { loading: true, updating: false, activeSession: true },
     model: {
       name: '',
       email: '',
@@ -20,17 +20,14 @@ const UserReducer = (
 ) => {
   switch (action.type) {
     case 'USER_SIGNUP_SUCCESS':
-    return state;
+      return state;
 
-    case 'DUPLICATE_USER':  
-    alert('User already exists')
-    return state;
+    case 'DUPLICATE_USER':
+      alert('User already exists');
+      return state;
 
-    case 'USER_SIGNUP_FAILURE':  
-    alert('Server Signup Failure')
-    return state;
-    
-    
+    case 'USER_SIGNUP_FAILURE':
+      return state;
 
     case 'GET_PROFILE_SUCCESS':
       return {
@@ -75,7 +72,10 @@ const UserReducer = (
       return { ...state, meta: { ...state.meta, updating: false } };
 
     case 'GET_PROFILE_FAILURE':
-      return { ...state, meta: { ...state.meta, activeSession:false, loading: false } };
+      return {
+        ...state,
+        meta: { ...state.meta, activeSession: false, loading: false }
+      };
 
     default:
       return state;

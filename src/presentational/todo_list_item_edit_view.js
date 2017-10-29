@@ -16,13 +16,13 @@ const TodoListItemEditView = props => {
             />
           </form>
         </div>
-        <div className="row justify-content-sm-center input-group">
-          <input className="form-control col-sm-3 mt-2" id="date" type="date" value={props.dateInput} onChange={props.onDateChange}/>
+        <div className="row justify-content-center input-group">
+          <input className="form-control col-3 mt-2" id="date" type="date" value={props.dateInput} onChange={props.onDateChange}/>
           <span className="input-group-addon mt-2" id="basic-addon2">Due Date</span>
         </div>
-        <div className="row justify-content-sm-center mt-2">
+        <div className="row justify-content-center mt-2">
         <span className="btn">Selected Tag:</span>
-          <select className="form-control col-sm-2" onChange={props.onTagChange} value={props.tagInput}>
+          <select className="form-control col-2" onChange={props.onTagChange} value={props.tagInput}>
               <option value="">None</option>
               <option value="school">School</option>
               <option value="work">Work</option>

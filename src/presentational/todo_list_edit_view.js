@@ -20,10 +20,10 @@ const TodoListEditView = props => {
             />
           </form>
         </div>
-        <div className="row justify-content-sm-center mt-2">
+        <div className="row justify-content-center mt-2">
           <span className="btn">Privacy Setting:</span>
           <select
-            className="form-control col-sm-2"
+            className="form-control col-2"
             onChange={props.onPrivacyChange}
             value={props.privacyInput}>
             <option value="private">Private</option>
@@ -36,13 +36,13 @@ const TodoListEditView = props => {
           Save
         </button>
         <button
-          className="btn btn-item col-md-2 col-md-offset-5 btn-danger"
+          className="col-sm-2 btn btn-item btn-danger"
           onClick={() => props.delete()}>
           Delete
         </button>
         <div className="row justify-content-sm-center">
           <Link
-            className="col-md-2 col-md-offset-5 btn btn-item btn-primary"
+            className="col-sm-3 btn btn-item btn-primary"
             to={`/list/${props.listName}`}>
             Return to List
           </Link>

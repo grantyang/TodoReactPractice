@@ -89,8 +89,8 @@ export function createNewUser(newUser) {
     return callJSON('POST', `signup`, newUser)
       .then(res => {
         if (res.status === 401) {
-          res.end();
-          return dispatch({ type: DUPLICATE_USER });
+          dispatch({ type: DUPLICATE_USER });
+          res.end();          
         }
         res.json();
       })

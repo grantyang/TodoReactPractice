@@ -22,4 +22,4 @@ export default createStore(
 );
 
 ///
-//import store from this file, can call as store since referring to this store. not calling the function store directly
+//other files import store from here, can call as store since referring to createStore(). this is not exported as a function that needs to be called

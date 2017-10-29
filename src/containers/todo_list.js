@@ -28,13 +28,13 @@ class TodoList extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadTodoListData(this.props.match.params.listName); 
     this.props.loadCurrentUser(); // remember, if using THUNK, to call store.dispatch, not just loadCurrentUser().
     this.props.loadAllTodoLists();
   }
 
-  // componentWillMount() { //THUNK no redux-router connect mapDispatchToProps
+  // componentDidMount() { //THUNK no redux-router connect mapDispatchToProps
   //   store.dispatch(loadTodoListData(this.props.match.params.listName)); 
   //   store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
   //   store.dispatch(loadAllTodoLists());
