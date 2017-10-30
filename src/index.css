@@ -1,8 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-  background-image: url("cream_pixels.png");  
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  background-image: url('cream_pixels.png');
 }
 
 .btn-footer {
@@ -10,43 +10,38 @@ body {
   margin-top: 6px;
 }
 
-.input{
+.input {
   margin: 6px;
 }
 
-.counter{
+.counter {
   margin-bottom: 0px;
   margin-top: 6px;
 }
 
-.todoItem{
+.todoItem {
   margin-top: 10px;
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
 }
 
-.btn-item{
-  margin-top: 6px; 
-  margin-right: 6px; 
-  
+.btn-item {
+  margin-top: 6px;
+  margin-right: 6px;
 }
 
-.Header-text{
+.about-home {
+  margin-top: 6px;
+}
+
+.Header-text {
   margin-top: 0px;
 }
 
-.about-home{
-  margin-top:6px;
+.list-group {
+  padding-left: 15px !important;
 }
 
-.list-group{
-  padding-left: 15px !important; 
-}
-
-.search{
-  margin-top:6px;
-}
-
-.map{
+.map {
   margin-top: 20px;
   height: 400px;
   width: 550px;
@@ -55,8 +50,17 @@ body {
 #map {
   height: 100%;
 }
+.pusheen {
+  height:500px;
+  width:500px;
+}
+.search {
+  margin-top: 6px;
+}
+
 /* Optional: Makes the sample page fill the window. */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
