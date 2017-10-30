@@ -4,6 +4,7 @@ import GoogleMap from '../presentational/google_map.js';
 
 const TodoListItemView = props => {
   const todo = props.todo;
+  if (props.loading === true) return <b>Please wait, loading...</b>;  
   return (
     <div>
       <div className=" justify-content-sm-center">
@@ -21,7 +22,7 @@ const TodoListItemView = props => {
         <div className="row justify-content-sm-center">
           <Link
             className="col-md-2 btn btn-item btn-warning"
-            to={`/list/${props.getListName()}/todo/${todo.id}/edit`}>
+            to={`/list/${props.listName}/todo/${todo.id}/edit`}>
             Edit
           </Link>
 
@@ -40,7 +41,7 @@ const TodoListItemView = props => {
         <div className="row justify-content-sm-center">
           <Link
             className="col-md-4 btn btn-item btn-primary"
-            to={`/list/${props.getListName()}`}>
+            to={`/list/${props.listName}`}>
             Return to List
           </Link>
         </div>

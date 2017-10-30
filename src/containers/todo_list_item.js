@@ -42,16 +42,15 @@ class TodoListItem extends Component {
   };
 
   render() {
-    if (this.props.loading === true) return <b>Please wait, loading...</b>;
     return (
       <div>
         <NavBar />
         <TodoListItemView
+          loading={this.props.loading}
           todo={this.props.todo}
           listName={this.props.match.params.listName}
           toggleCompleted={this.toggleCompleted}
           delete={this.delete}
-          getListName={this.getListName}
           location={this.props.todo.location}
           saveLocation={this.saveLocation}
           otherAuthoredLists={this.props.otherAuthoredLists}

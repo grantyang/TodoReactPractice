@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBarView from '../presentational/nav_bar_view.js';
-import {callJSON} from '../ajax_utility.js';
-import { loadCurrentUser} from '../actions/index.js';
+import { callJSON } from '../ajax_utility.js';
+import { loadCurrentUser } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -15,8 +15,10 @@ class NavBar extends Component {
   };
 
   render() {
+    const currentPath = window.location.href;
     return (
       <NavBarView
+        currentPath={currentPath}
         activeSession={this.props.activeSession}
         deleteCookie={this.deleteCookie}
       />

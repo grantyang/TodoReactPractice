@@ -92,7 +92,7 @@ export function createNewUser(newUser) {
           dispatch({ type: DUPLICATE_USER });
           res.end();          
         }
-        res.json();
+        return res.json();
       })
       .then(
         data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),
