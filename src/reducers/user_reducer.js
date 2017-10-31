@@ -13,7 +13,8 @@ const UserReducer = (
       name: '',
       email: '',
       password: '',
-      userId: ''
+      userId: '',
+      userCustomTags: []
     }
   },
   action
@@ -36,7 +37,8 @@ const UserReducer = (
           name: action.data.name,
           email: action.data.email,
           password: action.data.password,
-          userId: action.data.userId
+          userId: action.data.userId,
+          userCustomTags: action.data.userCustomTags
         }
       };
 
@@ -74,7 +76,7 @@ const UserReducer = (
     case 'GET_PROFILE_FAILURE':
       return {
         ...state,
-        meta: { ...state.meta, activeSession: false, loading: false }
+        meta: { ...state.meta,  loading: false }
       };
 
     default:

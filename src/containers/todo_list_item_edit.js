@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import NavBar from './nav_bar.js';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
 import { callJSON } from '../ajax_utility.js';
-import { loadItemData, updateTodo, deleteItem } from '../actions/index.js';
+import {
+  loadItemData,
+  updateTodo,
+  deleteItem,
+  loadCurrentUser,
+  updateUserProfile
+} from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -12,13 +18,15 @@ class TodoListItemEdit extends Component {
     this.state = {
       textInputValue: '',
       tagInput: '',
-      dateInput: ''
+      dateInput: '',
+      customTagInput: ''
     };
   }
 
   componentDidMount() {
     const listName = this.props.match.params.listName;
     const itemId = this.props.match.params.itemId;
+    this.props.loadCurrentUser();
     this.props.loadItemData(listName, itemId);
     return this.setState({
       textInputValue: this.props.textInputValue,
@@ -35,7 +43,7 @@ class TodoListItemEdit extends Component {
     }
     return this.setState({
       textInputValue: nextProps.textInputValue,
-      tagInput: nextProps.tagInput,
+      //tagInput: nextProps.tagInput,
       dateInput: nextProps.dateInput
     });
   }
@@ -63,6 +71,28 @@ class TodoListItemEdit extends Component {
     this.setState({
       tagInput: event.target.value
     });
+  };
+
+  //if a public list is tagged with a custom tag,
+  //other users can see this tag (it is stored on the item) and change it but user cannot select that one again unless they create it
+
+  onCustomTagChange = event => {
+    this.setState({
+      customTagInput: event.target.value
+    });
+  };
+
+  onCustomTagSubmit = event => {
+    event.preventDefault();
+    if (this.props.userCustomTags.find(tag => tag.text === this.state.customTagInput)) return alert('Tag already exists')
+    const newCustomTag = { text: this.state.customTagInput };
+    this.props.updateUserProfile({
+      userCustomTags: [...this.props.userCustomTags, newCustomTag]
+    });
+    this.setState({
+      tagInput: this.state.customTagInput
+    });
+    //    document.getElementById('customTag').modal('hide');
   };
 
   onSave = () => {
@@ -98,6 +128,10 @@ class TodoListItemEdit extends Component {
           onTextChange={this.onTextChange}
           onDateChange={this.onDateChange}
           onTagChange={this.onTagChange}
+          userCustomTags={this.props.userCustomTags}
+          customTagInput={this.state.customTagInput}
+          onCustomTagChange={this.onCustomTagChange}
+          onCustomTagSubmit={this.onCustomTagSubmit}
         />
       </div>
     );
@@ -113,7 +147,8 @@ function mapStateToProps(state) {
     textInputValue: state.item.model.text,
     dateInput: state.item.model.dueDate,
     tagInput: state.item.model.tag,
-    todoId: state.item.model.id
+    todoId: state.item.model.id,
+    userCustomTags: state.user.model.userCustomTags
   };
 }
 
@@ -123,7 +158,9 @@ function mapDispatchToProps(dispatch) {
     {
       loadItemData: loadItemData,
       updateTodo: updateTodo,
-      deleteItem: deleteItem
+      deleteItem: deleteItem,
+      loadCurrentUser: loadCurrentUser,
+      updateUserProfile: updateUserProfile
     },
     dispatch
   );

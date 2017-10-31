@@ -56,7 +56,8 @@ class SignUp extends Component {
     const newUser = {
       name: nameInput,
       email: emailInput,
-      password: passwordInput
+      password: passwordInput,
+      userCustomTags: []
     };
     this.props.createNewUser(newUser)
     return this.props.history.push(`/login`);
