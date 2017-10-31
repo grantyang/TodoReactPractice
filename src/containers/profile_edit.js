@@ -15,12 +15,10 @@ class ProfileEdit extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     this.props.loadCurrentUser();
   }
 
   componentDidMount(){
-    console.log('componentDidMount')
     return this.setState({
       nameInputValue: this.props.nameInputValue,
       emailInputValue: this.props.emailInputValue,
@@ -28,7 +26,6 @@ class ProfileEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps')
     if (this.state.updating && nextProps.updating === false) {
       return this.props.history.push(`/profile`); //redirect back to profile
     }
@@ -81,7 +78,6 @@ class ProfileEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps')
   //Whatever is returned will show up as props inside of the component
   return {
     nameInputValue: state.user.model.name,

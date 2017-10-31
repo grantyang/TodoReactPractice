@@ -59,7 +59,7 @@ const TodoListItemEditView = props => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-body">
-                <form onSubmit={props.onCustomTagSubmit} >
+                <form>
                   <div className="form-group">
                     <label className="form-control-label">
                       New Custom Tag:
@@ -68,25 +68,23 @@ const TodoListItemEditView = props => {
                       className="form-control"
                       value={props.customTagInput}
                       onChange={props.onCustomTagChange}
-                      id="message-text"
+                      id="tag-text"
                     />
                   </div>
+                  <button
+                    type="submit"
+                    className="btn btn-success mx-2 float-right"
+                    data-dismiss="modal"
+                    onClick={props.onCustomTagSubmit}>
+                    Create
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary float-right"
+                    data-dismiss="modal">
+                    Close
+                  </button>
                 </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal">
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  data-dismiss="modal"
-                  onClick={props.onCustomTagSubmit}>
-                  Create
-                </button>
               </div>
             </div>
           </div>

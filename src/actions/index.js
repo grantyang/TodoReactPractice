@@ -47,7 +47,7 @@ export const DUPLICATE_USER = 'DUPLICATE_USER';
 /*
  * action creators
 //  */
-// export function createList(dispatch, newList) { //WITHOUT THUNK
+// export function createList(dispatch, newList) { //WITHOUT THUNK, pass in store.dispatch
 //   return callJSON('POST', `create`, newList)
 //     .then(res => res.json())
 //     .then(

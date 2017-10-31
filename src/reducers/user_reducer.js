@@ -76,7 +76,7 @@ const UserReducer = (
     case 'GET_PROFILE_FAILURE':
       return {
         ...state,
-        meta: { ...state.meta,  loading: false }
+        meta: { ...state.meta, activeSession: false, loading: false }
       };
 
     default:
