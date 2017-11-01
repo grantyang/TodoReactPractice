@@ -18,6 +18,7 @@ import {
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import RichTextEditor from 'react-rte';
 
 class TodoList extends Component {
   constructor(props) {
@@ -87,7 +88,8 @@ class TodoList extends Component {
         completed: false,
         tag: '',
         dueDate: '',
-        location: { lat: 52.5200066, lng: 13.404954 }
+        location: { lat: 52.5200066, lng: 13.404954 },
+        richTextComment:''
       };
       return this.props.addTodo(this.props.listName, todoObj);
     }

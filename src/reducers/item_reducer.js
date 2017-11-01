@@ -1,3 +1,5 @@
+import RichTextEditor from 'react-rte';
+
 //The reducer is a pure function that takes the previous state and an action, and returns the next state.
 
 //Things you should never do inside a reducer:
@@ -16,6 +18,7 @@ const ItemReducer = (
       completed: false,
       tag: '',
       dueDate: '',
+      richTextComment: '',
       location: {
         lat: 0,
         lng: 0
@@ -34,7 +37,14 @@ const ItemReducer = (
       };
 
     case 'LOAD_LIST_SUCCESS':
-      return {...state, meta: { ...state.meta, loading: true } };
+      return {
+        ...state,
+        model: {
+          ...state.model,
+          richTextComment: ''
+        },
+        meta: { ...state.meta, loading: true }
+      };
 
     case 'UPDATE_TODO_REQUEST':
       return { ...state, meta: { ...state.meta, updating: true } };

@@ -11,6 +11,7 @@ import {
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import RichTextEditor from 'react-rte';
 
 class TodoListItemEdit extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class TodoListItemEdit extends Component {
       textInputValue: '',
       tagInput: '',
       dateInput: '',
-      customTagInput: ''
+      customTagInput: '',
+      richTextValue: RichTextEditor.createEmptyValue()
     };
   }
 
@@ -33,7 +35,8 @@ class TodoListItemEdit extends Component {
     return this.setState({
       textInputValue: this.props.textInputValue,
       tagInput: this.props.tagInput,
-      dateInput: this.props.dateInput
+      dateInput: this.props.dateInput,
+      richTextValue: RichTextEditor.createValueFromString(this.props.richTextValue, 'html')
     });
   }
 
@@ -43,16 +46,19 @@ class TodoListItemEdit extends Component {
     if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/list/${this.getListName()}`);
     }
-    if (nextProps.userUpdating === true || this.props.userUpdating === true) { //if user created new custom tag, use that as tagInput value
+    if (nextProps.userUpdating === true || this.props.userUpdating === true) {
+      //if user created new custom tag, use that as tagInput value
       return this.setState({
         textInputValue: nextProps.textInputValue,
-        dateInput: nextProps.dateInput
+        dateInput: nextProps.dateInput,
+        richTextValue: RichTextEditor.createValueFromString(nextProps.richTextValue, 'html')
       });
     }
     return this.setState({
       textInputValue: nextProps.textInputValue,
       tagInput: nextProps.tagInput,
-      dateInput: nextProps.dateInput
+      dateInput: nextProps.dateInput,
+      richTextValue: RichTextEditor.createValueFromString(nextProps.richTextValue, 'html')
     });
   }
 
@@ -72,6 +78,16 @@ class TodoListItemEdit extends Component {
     this.setState({
       dateInput: date.target.value
     });
+  };
+
+  onRichTextEditorChange = richTextValue => {
+    this.setState({ richTextValue });
+    if (this.props.onChange) {
+      // Send the changes up to the parent component as an HTML string.
+      // This is here to demonstrate using `.toString()` but in a real app it
+      // would be better to avoid generating a string on each change.
+      //this.props.onChange(value.toString('html'));
+    }
   };
 
   onTagChange = event => {
@@ -113,10 +129,12 @@ class TodoListItemEdit extends Component {
     const newText = this.state.textInputValue;
     const newDate = this.state.dateInput;
     const newTag = this.state.tagInput;
+    const newRichTextValue = this.state.richTextValue.toString('html')
     this.props.updateTodo(this.getListName(), this.props.todoId, {
       text: newText,
       dueDate: newDate,
-      tag: newTag
+      tag: newTag,
+      richTextComment: newRichTextValue
     });
   };
 
@@ -126,8 +144,9 @@ class TodoListItemEdit extends Component {
     return this.props.deleteItem(this.getListName(), this.props.todoId);
   };
 
+
+
   render() {
-    console.log('render');
     return (
       <div>
         <NavBar />
@@ -146,6 +165,9 @@ class TodoListItemEdit extends Component {
           customTagInput={this.state.customTagInput}
           onCustomTagChange={this.onCustomTagChange}
           onCustomTagSubmit={this.onCustomTagSubmit}
+          richTextValue={this.state.richTextValue}
+          onRichTextEditorChange={this.onRichTextEditorChange}
+          
         />
       </div>
     );
@@ -163,7 +185,8 @@ function mapStateToProps(state) {
     tagInput: state.item.model.tag,
     todoId: state.item.model.id,
     userCustomTags: state.user.model.userCustomTags,
-    userUpdating: state.user.meta.updating
+    userUpdating: state.user.meta.updating,
+    richTextValue: state.item.model.richTextComment
   };
 }
 

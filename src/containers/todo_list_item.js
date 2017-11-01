@@ -10,13 +10,30 @@ import {
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import RichTextEditor from 'react-rte';
 
 class TodoListItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      richTextValue: RichTextEditor.createEmptyValue()
+    };
+  }
+
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
     this.props.loadAllTodoLists();
     this.props.loadItemData(listName, itemId);
+    return this.setState({
+      richTextValue: RichTextEditor.createValueFromString(this.props.richTextValue, 'html')
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    return this.setState({
+      richTextValue: RichTextEditor.createValueFromString(nextProps.richTextValue, 'html')
+    });
   }
 
   getListName = () => {
@@ -54,6 +71,7 @@ class TodoListItem extends Component {
           location={this.props.todo.location}
           saveLocation={this.saveLocation}
           otherAuthoredLists={this.props.otherAuthoredLists}
+          richTextValue={this.state.richTextValue}
         />
       </div>
     );
@@ -65,6 +83,7 @@ function mapStateToProps(state) {
   return {
     todo: state.item.model,
     loading: state.item.meta.loading,
+    richTextValue: state.item.model.richTextComment, //set app state (this.state.RTV) to redux state (this.props.RTV) in didMount/willRecProps
     otherAuthoredLists: state.listOfLists.model.filter(
       list => list.creator === state.user.model.userId
     )

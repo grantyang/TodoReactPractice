@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import ReduxThunk from 'redux-thunk'
 import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
+
 import './index.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'whatwg-fetch';
+import 'react-rte';
+
 
 import App from './App.js';
 import TodoList from './containers/todo_list.js';

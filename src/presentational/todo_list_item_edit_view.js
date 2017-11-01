@@ -1,7 +1,7 @@
 import React from 'react';
+import RichTextEditor from 'react-rte';
 
 const TodoListItemEditView = props => {
-  console.log(props.tagInput);
   return (
     <div>
       <div className="row justify-content-sm-center">
@@ -89,6 +89,13 @@ const TodoListItemEditView = props => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="row justify-content-sm-center mt-2">
+      <span className="">Add Comment Below:</span>
+      </div>
+
+      <div className="row justify-content-sm-center">
+      <RichTextEditor className="my-1 col-md-6 "value={props.richTextValue} onChange={props.onRichTextEditorChange} />
       </div>
       <div className="row justify-content-sm-center">
         <button
