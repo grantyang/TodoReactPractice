@@ -13,7 +13,8 @@ import {
   loadCurrentUser,
   loadAllTodoLists,
   deleteAllTodos,
-  deleteCompletedTodos
+  deleteCompletedTodos,
+  updateAuthorizedUserList
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,11 +25,13 @@ class TodoList extends Component {
     this.state = {
       filter: 'ALL',
       searchTerm: '',
-      loading: true
+      loading: true,
+      authorizedUserInput: ''
     };
   }
 
   componentDidMount() {
+    //async actions to populate redux state from server
     this.props.loadTodoListData(this.props.match.params.listName); 
     this.props.loadCurrentUser(); // remember, if using THUNK, to call store.dispatch, not just loadCurrentUser().
     this.props.loadAllTodoLists();
@@ -61,10 +64,12 @@ class TodoList extends Component {
   // };
   
   refreshTodoListData = (event, targetName) => {
+    //fetches and loads data for new todoList from server into redux state when user clicks a new one
     this.props.loadTodoListData(targetName);
   };
 
   addToList = todoText => {
+    //adds new todo item to this list
     if (!todoText) {
       return alert('Please input a value');
     }
@@ -148,6 +153,21 @@ class TodoList extends Component {
     });
   };
 
+  onAuthorizedUserInputChange = event => {
+    this.setState({
+      authorizedUserInput: event.target.value
+    });
+  };
+
+  onAuthorizedUserInputSubmit = event => {
+    //see if user exists. if so, and not a duplicate, add to authed users for this list   
+    event.preventDefault();    
+    this.props.updateAuthorizedUserList(this.props.listName, {email: this.state.authorizedUserInput});
+    this.setState({
+      authorizedUserInput:''
+    });
+  };
+
   render() {
     let filteredTodos = this.applyCompletedFilter(this.searchResults());
     if (this.props.loading === true) return <b>Please wait, loading...</b>;
@@ -175,15 +195,12 @@ class TodoList extends Component {
           showCompleted={this.showCompleted}
           showActive={this.showActive}
           countCompleted={this.countCompleted}
+          listName={this.props.listName}
+          authorizedUserInput={this.state.authorizedUserInput}
+          onAuthorizedUserInputChange={this.onAuthorizedUserInputChange}
+          onAuthorizedUserInputSubmit={this.onAuthorizedUserInputSubmit}
         />
-        <Link
-          className="btn col-sm-4 btn-item btn-warning"
-          to={`/list/${this.props.listName}/edit`}>
-          Edit List
-        </Link>
-        <Link className="btn col-sm-4 btn-item btn-primary " to="/">
-          Return Home
-        </Link>
+
       </div>
     );
   }
@@ -211,6 +228,7 @@ function mapDispatchToProps(dispatch) {
       addTodo: addTodo,
       deleteAllTodos:deleteAllTodos,
       deleteCompletedTodos:deleteCompletedTodos,
+      updateAuthorizedUserList:updateAuthorizedUserList
     },
     dispatch
   );

@@ -79,6 +79,7 @@ const UserReducer = (
         meta: { ...state.meta, activeSession: false, loading: false }
       };
 
+    case 'UPDATE_AUTHORIZED_USER_LIST_FAILURE':
     default:
       return state;
   }

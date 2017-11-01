@@ -30,7 +30,7 @@ export default class Input extends Component {
           <input
             type="text"
             className="form-control col-sm-7"
-            placeholder="Enter new todo here"
+            placeholder="Enter text here"
             value={this.state.text} // grab value from state
             onChange={this.onInputChange} // update state on change
           />

@@ -43,6 +43,10 @@ export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 export const USER_SIGNUP_FAILURE = 'USER_SIGNUP_FAILURE';
 export const USER_SIGNUP_SUCCESS = 'USER_SIGNUP_SUCCESS';
 export const DUPLICATE_USER = 'DUPLICATE_USER';
+export const UPDATE_AUTHORIZED_USER_LIST_SUCCESS =
+  'UPDATE_AUTHORIZED_USER_LIST_SUCCESS';
+export const UPDATE_AUTHORIZED_USER_LIST_FAILURE =
+  'UPDATE_AUTHORIZED_USER_LIST_FAILURE';
 
 /*
  * action creators
@@ -90,7 +94,7 @@ export function createNewUser(newUser) {
       .then(res => {
         if (res.status === 401) {
           dispatch({ type: DUPLICATE_USER });
-          res.end();          
+          res.end();
         }
         return res.json();
       })
@@ -98,6 +102,38 @@ export function createNewUser(newUser) {
         data => dispatch({ type: USER_SIGNUP_SUCCESS, data }),
         err => dispatch({ type: USER_SIGNUP_FAILURE, err })
       );
+  };
+}
+
+export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
+  return dispatch => {
+    return callJSON(
+      'PUT',
+      `list/${listName}?authorizedusers=true`,
+      newAuthorizedUserEmail
+    )
+      .then(res => {
+        var contentType = res.headers.get('content-type');
+        if (contentType && contentType.indexOf('application/json') !== -1) {
+          return res.json().then(data => {
+              dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_SUCCESS, data });
+          });
+        } else {
+          return res.text().then(text => {
+            if (text === 'no user') {
+              dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE });
+              return alert('User not found');
+            }
+            if (text === 'duplicate') {
+              dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE });
+              return alert('User already authorized');
+            }
+          });
+        }
+      })
+      .catch(err => {
+        err => dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE, err });
+      });
   };
 }
 

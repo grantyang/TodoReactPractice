@@ -24,6 +24,8 @@ class TodoListItemEdit extends Component {
   }
 
   componentDidMount() {
+    //async actions to populate redux state from server
+    //also defaults component state for UI
     const listName = this.props.match.params.listName;
     const itemId = this.props.match.params.itemId;
     this.props.loadCurrentUser();
@@ -41,9 +43,15 @@ class TodoListItemEdit extends Component {
     if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/list/${this.getListName()}`);
     }
+    if (nextProps.userUpdating === true || this.props.userUpdating === true) { //if user created new custom tag, use that as tagInput value
+      return this.setState({
+        textInputValue: nextProps.textInputValue,
+        dateInput: nextProps.dateInput
+      });
+    }
     return this.setState({
       textInputValue: nextProps.textInputValue,
-      //tagInput: nextProps.tagInput,
+      tagInput: nextProps.tagInput,
       dateInput: nextProps.dateInput
     });
   }
@@ -75,7 +83,6 @@ class TodoListItemEdit extends Component {
 
   //if a public list is tagged with a custom tag,
   //other users can see this tag (it is stored on the item) and change it but user cannot select that one again unless they create it
-
   onCustomTagChange = event => {
     this.setState({
       customTagInput: event.target.value
@@ -83,16 +90,22 @@ class TodoListItemEdit extends Component {
   };
 
   onCustomTagSubmit = event => {
+    //check to see if custom tag has been created already. If it has not, add it to the user's list of custom tags and
+    //set it as the value for the tagInput
     event.preventDefault();
-    if (this.props.userCustomTags.find(tag => tag.text === this.state.customTagInput)) return alert('Tag already exists')
+    if (
+      this.props.userCustomTags.find(
+        tag => tag.text === this.state.customTagInput
+      )
+    )
+      return alert('Tag already exists');
     const newCustomTag = { text: this.state.customTagInput };
     this.props.updateUserProfile({
       userCustomTags: [...this.props.userCustomTags, newCustomTag]
     });
-    this.setState({
+    return this.setState({
       tagInput: this.state.customTagInput
     });
-    //    document.getElementById('customTag').modal('hide');
   };
 
   onSave = () => {
@@ -108,6 +121,7 @@ class TodoListItemEdit extends Component {
   };
 
   delete = event => {
+    //deletes this todo item and redirects to parent todoList
     this.props.history.push(`/list/${this.getListName()}`);
     return this.props.deleteItem(this.getListName(), this.props.todoId);
   };
@@ -148,7 +162,8 @@ function mapStateToProps(state) {
     dateInput: state.item.model.dueDate,
     tagInput: state.item.model.tag,
     todoId: state.item.model.id,
-    userCustomTags: state.user.model.userCustomTags
+    userCustomTags: state.user.model.userCustomTags,
+    userUpdating: state.user.meta.updating
   };
 }
 

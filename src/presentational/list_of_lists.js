@@ -8,7 +8,31 @@ const ListOfLists = props => {
       <span className="col-sm-8">Your Private Lists</span>
       <div className="col-md-8 list-group">
         {props.listOfLists.map(list => {
-          if (list.privacy === 'private') {
+          if (
+            list.privacy === 'private' &&
+            list.creator === props.currentUserId
+          ) {
+            return (
+              <Link
+                key={list.name}
+                className={`list-group-item justify-content-between`}
+                to={`/list/${list.name}`}>
+                {list.name}{' '}
+                <span className="badge badge-primary badge-pill">
+                  {list.todos.length}
+                </span>
+              </Link>
+            );
+          }
+        })}
+      </div>
+      <span className="col-sm-8">Shared Lists</span>
+      <div className="col-md-8 list-group">
+        {props.listOfLists.map(list => {
+          if (
+            list.privacy === 'private' &&
+            list.creator !== props.currentUserId
+          ) {
             return (
               <Link
                 key={list.name}
@@ -32,7 +56,7 @@ const ListOfLists = props => {
                 key={list.name}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
-                {list.name }{' '}
+                {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
                   {list.todos.length}
                 </span>

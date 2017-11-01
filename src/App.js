@@ -32,6 +32,7 @@ class App extends Component {
       creator: this.props.currentUser.userId,
       privacy: 'private',
       todos: [],
+      authorizedUsers: [],
       filter: 'ALL',
       searchTerm: ''
     };
@@ -51,6 +52,7 @@ class App extends Component {
             <ListOfLists
               listOfLists={this.props.listOfLists}
               loading={this.props.loading}
+              currentUserId={this.props.currentUser.userId}
             />
           </div>
         )}

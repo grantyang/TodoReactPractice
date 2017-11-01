@@ -31,7 +31,8 @@ const TodoListReducer = (
         }
       ],
       filter: 'ALL',
-      searchTerm: ''
+      searchTerm: '',
+      authorizedUsers: [],      
     }
   },
   action
