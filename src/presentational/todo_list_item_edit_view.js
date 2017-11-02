@@ -91,12 +91,33 @@ const TodoListItemEditView = props => {
         </div>
       </div>
       <div className="row justify-content-sm-center mt-2">
-      <span className="">Add Comment Below:</span>
+        <span className="">Add Comment Below:</span>
       </div>
 
       <div className="row justify-content-sm-center">
-      <RichTextEditor className="my-1 col-md-6 "value={props.richTextValue} onChange={props.onRichTextEditorChange} />
+        <RichTextEditor
+          className="my-1 col-md-6 "
+          value={props.richTextValue}
+          onChange={props.onRichTextEditorChange}
+        />
       </div>
+
+      <div className="row justify-content-sm-center mt-2">
+      {/* http://localhost:3000/list/Hi's%20list%202/todo/57818820-bf5d-11e7-ab95-71fc8c621c19/api/Upload/?imgUploader=bw+IMG_2754.jpg&submit=Upload */}
+        <form id="frmUploader" encType="multipart/form-data" onSubmit={props.onFileSubmit} >
+        <input type="file" name="imgUploader" value={props.fileInput} onChange={props.onFileChange}  multiple />
+        <input className="btn btn-success" type="submit" /> 
+        </form>
+          {/* value={props.fileInput}
+          onChange={props.onFileChange} */}
+      </div>
+      <div className="form-group row justify-content-sm-center">
+      <small id="fileHelp" className="form-text text-muted">
+        Upload a photo above to be attached to this todo item.
+      </small>
+      </div>
+
+
       <div className="row justify-content-sm-center">
         <button
           className="col-sm-2 btn btn-item btn-success"

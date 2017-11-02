@@ -18,8 +18,9 @@ class TodoListItemEdit extends Component {
     super(props);
     this.state = {
       textInputValue: '',
-      tagInput: '',
       dateInput: '',
+      fileInput: '',
+      tagInput: '',
       customTagInput: '',
       richTextValue: RichTextEditor.createEmptyValue()
     };
@@ -71,6 +72,23 @@ class TodoListItemEdit extends Component {
     this.setState({
       textInputValue: event.target.value
     });
+  };
+
+  onFileChange = event => {
+    event.preventDefault();
+    // when file is changed, update state
+    this.setState({
+      fileInput: event.target.value
+    });
+    console.log('fileinput is')
+    console.log(event.target.value)
+    console.log(event.target.files)
+    
+    
+  };  onFileSubmit = event => {
+    event.preventDefault();
+    console.log(this.state.fileInput)
+    
   };
 
   onDateChange = date => {
@@ -156,17 +174,23 @@ class TodoListItemEdit extends Component {
           textInputValue={this.state.textInputValue}
           dateInput={this.state.dateInput}
           tagInput={this.state.tagInput}
+          fileInput={this.state.fileInput}
           onSave={this.onSave}
           delete={this.delete}
           onTextChange={this.onTextChange}
           onDateChange={this.onDateChange}
           onTagChange={this.onTagChange}
+
+          onFileChange={this.onFileChange}          
+          onFileSubmit={this.onFileSubmit}      
+
           userCustomTags={this.props.userCustomTags}
           customTagInput={this.state.customTagInput}
           onCustomTagChange={this.onCustomTagChange}
           onCustomTagSubmit={this.onCustomTagSubmit}
           richTextValue={this.state.richTextValue}
           onRichTextEditorChange={this.onRichTextEditorChange}
+          
           
         />
       </div>
