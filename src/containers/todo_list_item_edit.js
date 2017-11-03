@@ -49,8 +49,8 @@ class TodoListItemEdit extends Component {
     if (nextProps.userUpdating === true || this.props.userUpdating === true) {
       //if user created new custom tag, use that as tagInput value
       return this.setState({
-        textInputValue: nextProps.textInputValue,
-        dateInput: nextProps.dateInput,
+        textInputValue: nextProps.initialTextInputValue,
+        dateInput: nextProps.initialDateInput,
         richTextValue: RichTextEditor.createValueFromString(
           nextProps.initialRichTextValue,
           'html'
@@ -58,9 +58,9 @@ class TodoListItemEdit extends Component {
       });
     }
     return this.setState({
-      textInputValue: nextProps.textInputValue,
-      tagInput: nextProps.tagInput,
-      dateInput: nextProps.dateInput,
+      textInputValue: nextProps.initialTextInputValue,
+      tagInput: nextProps.initialTagInput,
+      dateInput: nextProps.initialDateInput,
       richTextValue: RichTextEditor.createValueFromString(
         nextProps.initialRichTextValue,
         'html'
@@ -83,16 +83,31 @@ class TodoListItemEdit extends Component {
     event.preventDefault();
     // when file is changed, update state
     this.setState({
-      fileInput: event.target.value
+      fileInput: event.target.files
     });
-    console.log('fileinput is');
-    console.log(event.target.value);
-    console.log(event.target.files);
   };
-
+ 
   onFileSubmit = event => {
     event.preventDefault();
-    console.log(this.state.fileInput);
+    let data = new FormData();
+    console.log(this.state.fileInput[0])    
+    data.append('photo', this.state.fileInput[0]);
+    data.append('name', 'testname');
+    for (var key of data.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+  }
+    
+    //console.log(event.target.files[0]);
+    fetch(`http://localhost:5000/uploadphoto`, {
+      method: 'POST',
+      body: data,
+      credentials: 'include',
+      contentType: false,
+      
+    });
+    this.setState({
+      fileInput: ''
+    });
   };
 
   onDateChange = date => {
@@ -171,7 +186,6 @@ class TodoListItemEdit extends Component {
           textInputValue={this.state.textInputValue}
           dateInput={this.state.dateInput}
           tagInput={this.state.tagInput}
-          fileInput={this.state.fileInput}
           onSave={this.onSave}
           delete={this.delete}
           onTextChange={this.onTextChange}

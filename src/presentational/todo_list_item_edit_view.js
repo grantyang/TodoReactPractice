@@ -5,7 +5,7 @@ const TodoListItemEditView = props => {
   return (
     <div>
       <div className="row justify-content-sm-center">
-        <form className="col-sm-8" onSubmit={(event) => props.onSave(event)}>
+        <form className="col-sm-8" onSubmit={event => props.onSave(event)}>
           <input
             className="todoItem list-group-item col-sm-12"
             type="text"
@@ -103,20 +103,28 @@ const TodoListItemEditView = props => {
       </div>
 
       <div className="row justify-content-sm-center mt-2">
-      {/* http://localhost:3000/list/Hi's%20list%202/todo/57818820-bf5d-11e7-ab95-71fc8c621c19/api/Upload/?imgUploader=bw+IMG_2754.jpg&submit=Upload */}
-        <form id="frmUploader" encType="multipart/form-data" onSubmit={props.onFileSubmit} >
-        <input type="file" name="imgUploader" value={props.fileInput} onChange={props.onFileChange}  multiple />
-        <input className="btn btn-success" type="submit" /> 
+        <form
+          id="frmUploader"
+          encType="multipart/form-data"
+          onSubmit={event => props.onFileSubmit(event)}>
+          <input type="file" name="photo" onChange={props.onFileChange} />
+          <input
+            className="btn btn-success"
+            value="Upload"
+            type="submit"
+            onClick={event => props.onFileSubmit(event)}
+          />
         </form>
-          {/* value={props.fileInput}
-          onChange={props.onFileChange} */}
+        {/*         <form action="/uploadphoto" enctype="multipart/form-data" method="post">
+          <input type="file" name="photo" />
+          <input type="submit" value="Upload photo" />
+        </form> */}
       </div>
       <div className="form-group row justify-content-sm-center">
-      <small id="fileHelp" className="form-text text-muted">
-        Upload a photo above to be attached to this todo item.
-      </small>
+        <small id="fileHelp" className="form-text text-muted">
+          Upload a photo above to be attached to this todo item.
+        </small>
       </div>
-
 
       <div className="row justify-content-sm-center">
         <button
