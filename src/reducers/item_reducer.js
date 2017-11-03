@@ -18,7 +18,7 @@ const ItemReducer = (
       completed: false,
       tag: '',
       dueDate: '',
-      richTextComment: '',
+      richTextComment: '<p>initial RTC</p>',
       location: {
         lat: 0,
         lng: 0

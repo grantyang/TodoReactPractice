@@ -15,18 +15,14 @@ class TodoListEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textInputValue: '',
-      privacyInput: ''
+      textInputValue: this.props.initialListName,
+      privacyInput: this.props.initialPrivacyInput
     };
   }
   
   componentDidMount() {
     console.log('componentDidMount');
     this.props.loadTodoListData(this.props.match.params.listName);
-    return this.setState({
-      textInputValue: this.props.listName,
-      privacyInput: this.props.privacyInput
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,11 +30,11 @@ class TodoListEdit extends Component {
     console.log('componentWillReceiveProps');
     //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
     if (this.props.updating && nextProps.updating === false) {
-      return this.props.history.push(`/list/${this.props.listName}`); //redirect to new name list if just updated
+      return this.props.history.push(`/list/${nextProps.initialListName}`); //redirect to new name list if just updated
     }
     return this.setState({
-      textInputValue: nextProps.listName,
-      privacyInput: nextProps.privacyInput
+      textInputValue: nextProps.initialListName,
+      privacyInput: nextProps.initialPrivacyInput
     });
   }
 
@@ -51,7 +47,7 @@ class TodoListEdit extends Component {
       return alert('Please input a name');
     }
     // when input is submitted, add to database
-    return this.props.updateTodoList(this.props.listName, {
+    return this.props.updateTodoList(this.props.initialListName, {
       name: newText,
       privacy: newPrivacy
     });
@@ -74,7 +70,7 @@ class TodoListEdit extends Component {
   delete = () => {
     //delete this list and return to homepage
     this.props.history.push('');
-    return this.props.deleteList(this.props.listName);
+    return this.props.deleteList(this.props.initialListName);
   };
 
   render() {
@@ -90,7 +86,7 @@ class TodoListEdit extends Component {
           onTextChange={this.onTextChange}
           textInputValue={this.state.textInputValue}
           privacyInput={this.state.privacyInput}
-          listName={this.props.listName}
+          listName={this.props.initialListName}
           changeName={this.changeName}
           delete={this.delete}
           onPrivacyChange={this.onPrivacyChange}
@@ -105,8 +101,8 @@ function mapStateToProps(state) {
   console.log('mapStateToProps');
   return {
     updating: state.todoList.meta.updating,
-    listName: state.todoList.model.name,
-    privacyInput: state.todoList.model.privacy
+    initialListName: state.todoList.model.name,
+    initialPrivacyInput: state.todoList.model.privacy
   };
 }
 

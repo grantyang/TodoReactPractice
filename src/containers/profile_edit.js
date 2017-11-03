@@ -9,8 +9,8 @@ class ProfileEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameInputValue: '', 
-      emailInputValue: ''
+      nameInputValue: this.props.initialNameInputValue, 
+      emailInputValue: this.props.initialEmailInputValue
     };
   }
 
@@ -18,20 +18,13 @@ class ProfileEdit extends Component {
     this.props.loadCurrentUser();
   }
 
-  componentDidMount(){
-    return this.setState({
-      nameInputValue: this.props.nameInputValue,
-      emailInputValue: this.props.emailInputValue,
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.state.updating && nextProps.updating === false) {
       return this.props.history.push(`/profile`); //redirect back to profile
     }
     return this.setState({
-      nameInputValue: nextProps.nameInputValue,
-      emailInputValue: nextProps.emailInputValue,
+      nameInputValue: nextProps.initialNameInputValue,
+      emailInputValue: nextProps.initialEmailInputValue,
     });
   }
 
@@ -80,8 +73,8 @@ class ProfileEdit extends Component {
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of the component
   return {
-    nameInputValue: state.user.model.name,
-    emailInputValue: state.user.model.email,
+    initialNameInputValue: state.user.model.name,
+    initialEmailInputValue: state.user.model.email,
     loading: state.user.meta.loading,
     updating: state.user.meta.updating
   };

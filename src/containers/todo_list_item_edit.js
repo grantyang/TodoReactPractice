@@ -17,28 +17,24 @@ class TodoListItemEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textInputValue: '',
-      dateInput: '',
+      textInputValue: this.props.initialTextInputValue,
+      dateInput: this.props.initialDateInput,
+      tagInput: this.props.initialTagInput,
       fileInput: '',
-      tagInput: '',
       customTagInput: '',
-      richTextValue: RichTextEditor.createEmptyValue()
+      richTextValue: RichTextEditor.createValueFromString(this.props.initialRichTextValue, 'html')
     };
   }
 
   componentDidMount() {
+    console.log(this.props.initialRichTextValue)
+    
     //async actions to populate redux state from server
     //also defaults component state for UI
     const listName = this.props.match.params.listName;
     const itemId = this.props.match.params.itemId;
     this.props.loadCurrentUser();
     this.props.loadItemData(listName, itemId);
-    return this.setState({
-      textInputValue: this.props.textInputValue,
-      tagInput: this.props.tagInput,
-      dateInput: this.props.dateInput,
-      richTextValue: RichTextEditor.createValueFromString(this.props.richTextValue, 'html')
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,14 +48,14 @@ class TodoListItemEdit extends Component {
       return this.setState({
         textInputValue: nextProps.textInputValue,
         dateInput: nextProps.dateInput,
-        richTextValue: RichTextEditor.createValueFromString(nextProps.richTextValue, 'html')
+        richTextValue: RichTextEditor.createValueFromString(nextProps.initialRichTextValue, 'html')
       });
     }
     return this.setState({
       textInputValue: nextProps.textInputValue,
       tagInput: nextProps.tagInput,
       dateInput: nextProps.dateInput,
-      richTextValue: RichTextEditor.createValueFromString(nextProps.richTextValue, 'html')
+      richTextValue: RichTextEditor.createValueFromString(nextProps.initialRichTextValue, 'html')
     });
   }
 
@@ -204,13 +200,13 @@ function mapStateToProps(state) {
   return {
     loading: state.item.meta.loading,
     updating: state.item.meta.updating,
-    textInputValue: state.item.model.text,
-    dateInput: state.item.model.dueDate,
-    tagInput: state.item.model.tag,
+    initialTextInputValue: state.item.model.text,
+    initialDateInput: state.item.model.dueDate,
+    initialTagInput: state.item.model.tag,
     todoId: state.item.model.id,
     userCustomTags: state.user.model.userCustomTags,
     userUpdating: state.user.meta.updating,
-    richTextValue: state.item.model.richTextComment
+    initialRichTextValue: state.item.model.richTextComment
   };
 }
 
