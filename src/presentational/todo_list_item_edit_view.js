@@ -5,7 +5,7 @@ const TodoListItemEditView = props => {
   return (
     <div>
       <div className="row justify-content-sm-center">
-        <form className="col-sm-8" onSubmit={props.onSave}>
+        <form className="col-sm-8" onSubmit={(event) => props.onSave(event)}>
           <input
             className="todoItem list-group-item col-sm-12"
             type="text"

@@ -22,13 +22,16 @@ class TodoListItemEdit extends Component {
       tagInput: this.props.initialTagInput,
       fileInput: '',
       customTagInput: '',
-      richTextValue: RichTextEditor.createValueFromString(this.props.initialRichTextValue, 'html')
+      richTextValue: RichTextEditor.createValueFromString(
+        this.props.initialRichTextValue,
+        'html'
+      )
     };
   }
 
   componentDidMount() {
-    console.log(this.props.initialRichTextValue)
-    
+    console.log(this.props.initialRichTextValue);
+
     //async actions to populate redux state from server
     //also defaults component state for UI
     const listName = this.props.match.params.listName;
@@ -48,14 +51,20 @@ class TodoListItemEdit extends Component {
       return this.setState({
         textInputValue: nextProps.textInputValue,
         dateInput: nextProps.dateInput,
-        richTextValue: RichTextEditor.createValueFromString(nextProps.initialRichTextValue, 'html')
+        richTextValue: RichTextEditor.createValueFromString(
+          nextProps.initialRichTextValue,
+          'html'
+        )
       });
     }
     return this.setState({
       textInputValue: nextProps.textInputValue,
       tagInput: nextProps.tagInput,
       dateInput: nextProps.dateInput,
-      richTextValue: RichTextEditor.createValueFromString(nextProps.initialRichTextValue, 'html')
+      richTextValue: RichTextEditor.createValueFromString(
+        nextProps.initialRichTextValue,
+        'html'
+      )
     });
   }
 
@@ -76,15 +85,14 @@ class TodoListItemEdit extends Component {
     this.setState({
       fileInput: event.target.value
     });
-    console.log('fileinput is')
-    console.log(event.target.value)
-    console.log(event.target.files)
-    
-    
-  };  onFileSubmit = event => {
+    console.log('fileinput is');
+    console.log(event.target.value);
+    console.log(event.target.files);
+  };
+
+  onFileSubmit = event => {
     event.preventDefault();
-    console.log(this.state.fileInput)
-    
+    console.log(this.state.fileInput);
   };
 
   onDateChange = date => {
@@ -96,12 +104,6 @@ class TodoListItemEdit extends Component {
 
   onRichTextEditorChange = richTextValue => {
     this.setState({ richTextValue });
-    if (this.props.onChange) {
-      // Send the changes up to the parent component as an HTML string.
-      // This is here to demonstrate using `.toString()` but in a real app it
-      // would be better to avoid generating a string on each change.
-      //this.props.onChange(value.toString('html'));
-    }
   };
 
   onTagChange = event => {
@@ -138,12 +140,13 @@ class TodoListItemEdit extends Component {
     });
   };
 
-  onSave = () => {
+  onSave = event => {
     // when input is submitted, add to database
+    event.preventDefault();
     const newText = this.state.textInputValue;
     const newDate = this.state.dateInput;
     const newTag = this.state.tagInput;
-    const newRichTextValue = this.state.richTextValue.toString('html')
+    const newRichTextValue = this.state.richTextValue.toString('html');
     this.props.updateTodo(this.getListName(), this.props.todoId, {
       text: newText,
       dueDate: newDate,
@@ -157,8 +160,6 @@ class TodoListItemEdit extends Component {
     this.props.history.push(`/list/${this.getListName()}`);
     return this.props.deleteItem(this.getListName(), this.props.todoId);
   };
-
-
 
   render() {
     return (
@@ -176,18 +177,14 @@ class TodoListItemEdit extends Component {
           onTextChange={this.onTextChange}
           onDateChange={this.onDateChange}
           onTagChange={this.onTagChange}
-
-          onFileChange={this.onFileChange}          
-          onFileSubmit={this.onFileSubmit}      
-
+          onFileChange={this.onFileChange}
+          onFileSubmit={this.onFileSubmit}
           userCustomTags={this.props.userCustomTags}
           customTagInput={this.state.customTagInput}
           onCustomTagChange={this.onCustomTagChange}
           onCustomTagSubmit={this.onCustomTagSubmit}
           richTextValue={this.state.richTextValue}
           onRichTextEditorChange={this.onRichTextEditorChange}
-          
-          
         />
       </div>
     );

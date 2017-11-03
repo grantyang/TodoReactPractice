@@ -17,7 +17,6 @@ class TodoListItem extends Component {
     super(props);
     this.state = {
       richTextValue: RichTextEditor.createValueFromString(this.props.initialRichTextValue, 'html')
-
     };
   }
 
