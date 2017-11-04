@@ -7,7 +7,8 @@ import {
   updateTodo,
   deleteItem,
   loadCurrentUser,
-  updateUserProfile
+  updateUserProfile,
+  uploadPhoto
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -90,17 +91,17 @@ class TodoListItemEdit extends Component {
   onFileSubmit = event => {
     event.preventDefault();
     if (this.state.fileInput === '') return alert('Please select a photo.');
-    let data = new FormData();
-    data.append('photo', this.state.fileInput[0]);
-    data.append('name', this.state.fileInput[0].name);
-    for (var key of data.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-    }
-    fetch(`http://localhost:5000/uploadPhoto`, {
-      method: 'POST',
-      body: data,
-      credentials: 'include',
-    });
+    let formData = new FormData();
+    formData.append('photo', this.state.fileInput[0]);
+    formData.append('name', this.state.fileInput[0].name);
+
+    this.props.uploadPhoto(
+      formData,
+      'todoitem',
+      this.getListName(),
+      this.props.todoId
+    );
+
     this.setState({
       fileInput: ''
     });
@@ -225,7 +226,8 @@ function mapDispatchToProps(dispatch) {
       updateTodo: updateTodo,
       deleteItem: deleteItem,
       loadCurrentUser: loadCurrentUser,
-      updateUserProfile: updateUserProfile
+      updateUserProfile: updateUserProfile,
+      uploadPhoto: uploadPhoto
     },
     dispatch
   );

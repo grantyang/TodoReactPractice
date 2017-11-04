@@ -73,10 +73,10 @@ export const UPDATE_AUTHORIZED_USER_LIST_FAILURE =
 //       );
 //   };
 // }
-export function uploadPhoto(formData, photoType, listName, todoList) {
+export function uploadPhoto(formData, photoType, listName, todoId) {
   return dispatch => {
     dispatch({ type: UPLOAD_PHOTO_REQUEST });
-    return fetch(`http://localhost:5000/uploadPhoto?type=${photoType}`, {
+    return fetch(`http://localhost:5000/uploadPhoto?type=${photoType}&listname=${listName}&todoid=${todoId}`, {
       method: 'POST',
       body: formData,
       credentials: 'include'

@@ -70,9 +70,6 @@ class ProfileEdit extends Component {
     let formData = new FormData();
     formData.append('photo', this.state.fileInput[0]);
     formData.append('name', this.state.fileInput[0].name);
-    for (var key of formData.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-    }
 
     this.props.uploadPhoto(formData, 'profile');
 

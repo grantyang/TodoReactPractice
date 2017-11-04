@@ -89,7 +89,8 @@ class TodoList extends Component {
         tag: '',
         dueDate: '',
         location: { lat: 52.5200066, lng: 13.404954 },
-        richTextComment:''
+        richTextComment:'',
+        pictureLinks: []
       };
       return this.props.addTodo(this.props.listName, todoObj);
     }

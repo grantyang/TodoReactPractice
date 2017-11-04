@@ -19,6 +19,7 @@ const ItemReducer = (
       tag: '',
       dueDate: '',
       richTextComment: '<p>initial RTC</p>',
+      pictureLinks: [],
       location: {
         lat: 0,
         lng: 0

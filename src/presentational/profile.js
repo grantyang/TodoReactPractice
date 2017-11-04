@@ -3,24 +3,30 @@ import NavBar from '../containers/nav_bar.js';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const Profile = ({ name, email, loading, profilePictureLink}) => {
+const Profile = ({ name, email, loading, profilePictureLink }) => {
   if (loading === true) {
     return <b>Please wait, loading...</b>;
   }
-  console.log(profilePictureLink)
-  
+  console.log(profilePictureLink);
+
   return (
     <div>
       <NavBar />
 
       <div className="container mt-2">
         <div className="justify-content-md-left row mt-2 ">
-        <img
-            src={profilePictureLink}
-            alt="Profile Picture"
-            className='profile-picture img-thumbnail'
-          />
+          {!profilePictureLink && (
+            <h6 className="mt-4">Please upload a profile picture.</h6>
+          )}
+          {profilePictureLink && (
+            <img
+              src={profilePictureLink}
+              alt="Profile Picture"
+              className="profile-picture img-thumbnail"
+            />
+          )}
         </div>
+
         <div className="justify-content-md-left row mt-2 ">
           <h6>Name</h6>
         </div>
