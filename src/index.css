@@ -5,6 +5,11 @@ body {
   background-image: url('cream_pixels.png');
 }
 
+.profile-picture {
+max-height:400px;
+max-width:400px;
+
+}
 .btn-footer {
   margin-right: 6px;
   margin-top: 6px;

@@ -115,10 +115,6 @@ const TodoListItemEditView = props => {
             onClick={event => props.onFileSubmit(event)}
           />
         </form>
-        {/*         <form action="/uploadphoto" enctype="multipart/form-data" method="post">
-          <input type="file" name="photo" />
-          <input type="submit" value="Upload photo" />
-        </form> */}
       </div>
       <div className="form-group row justify-content-sm-center">
         <small id="fileHelp" className="form-text text-muted">

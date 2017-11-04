@@ -36,6 +36,9 @@ export const UPDATE_PASSWORD_FAILURE = 'UPDATE_PASSWORD_FAILURE';
 export const UPDATE_TODO_SUCCESS = 'UPDATE_TODO_SUCCESS';
 export const UPDATE_TODO_REQUEST = 'UPDATE_TODO_REQUEST';
 export const UPDATE_TODO_FAILURE = 'UPDATE_TODO_FAILURE';
+export const UPLOAD_PHOTO_SUCCESS = 'UPLOAD_PHOTO_SUCCESS';
+export const UPLOAD_PHOTO_REQUEST = 'UPLOAD_PHOTO_REQUEST';
+export const UPLOAD_PHOTO_FAILURE = 'UPLOAD_PHOTO_FAILURE';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_EMAIL_FAILURE = 'LOGIN_USER_EMAIL_FAILURE';
 export const LOGIN_USER_PASSWORD_FAILURE = 'LOGIN_USER_PASSWORD_FAILURE';
@@ -59,6 +62,32 @@ export const UPDATE_AUTHORIZED_USER_LIST_FAILURE =
 //       err => dispatch({ type: CREATE_LIST_FAILURE, err })
 //     );
 // }
+// export function updateTodoList(listName, todoList) {
+//   return dispatch => {
+//     dispatch({ type: UPDATE_LIST_REQUEST });
+//     return callJSON('PUT', `list/${listName}`, todoList)
+//       .then(res => res.json())
+//       .then(
+//         data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),
+//         err => dispatch({ type: UPDATE_LIST_FAILURE, err })
+//       );
+//   };
+// }
+export function uploadPhoto(formData, photoType, listName, todoList) {
+  return dispatch => {
+    dispatch({ type: UPLOAD_PHOTO_REQUEST });
+    return fetch(`http://localhost:5000/uploadPhoto?type=${photoType}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: UPLOAD_PHOTO_SUCCESS, data }),
+        err => dispatch({ type: UPLOAD_PHOTO_FAILURE, err })
+      );
+  };
+}
 
 export function createList(newList) {
   return dispatch => {
@@ -116,7 +145,7 @@ export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
         var contentType = res.headers.get('content-type');
         if (contentType && contentType.indexOf('application/json') !== -1) {
           return res.json().then(data => {
-              dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_SUCCESS, data });
+            dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_SUCCESS, data });
           });
         } else {
           return res.text().then(text => {
@@ -137,10 +166,10 @@ export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
   };
 }
 
-export function updateTodoList(listName, todoList, callback) {
+export function updateTodoList(listName, updatedTodoList) {
   return dispatch => {
     dispatch({ type: UPDATE_LIST_REQUEST });
-    return callJSON('PUT', `list/${listName}`, todoList)
+    return callJSON('PUT', `list/${listName}`, updatedTodoList)
       .then(res => res.json())
       .then(
         data => dispatch({ type: UPDATE_LIST_SUCCESS, data }),

@@ -86,24 +86,20 @@ class TodoListItemEdit extends Component {
       fileInput: event.target.files
     });
   };
- 
+
   onFileSubmit = event => {
     event.preventDefault();
+    if (this.state.fileInput === '') return alert('Please select a photo.');
     let data = new FormData();
-    console.log(this.state.fileInput[0])    
     data.append('photo', this.state.fileInput[0]);
-    data.append('name', 'testname');
+    data.append('name', this.state.fileInput[0].name);
     for (var key of data.entries()) {
       console.log(key[0] + ', ' + key[1]);
-  }
-    
-    //console.log(event.target.files[0]);
-    fetch(`http://localhost:5000/uploadphoto`, {
+    }
+    fetch(`http://localhost:5000/uploadPhoto`, {
       method: 'POST',
       body: data,
       credentials: 'include',
-      contentType: false,
-      
     });
     this.setState({
       fileInput: ''

@@ -14,7 +14,8 @@ const UserReducer = (
       email: '',
       password: '',
       userId: '',
-      userCustomTags: []
+      userCustomTags: [],
+      profilePictureLink: ''
     }
   },
   action
@@ -38,7 +39,8 @@ const UserReducer = (
           email: action.data.email,
           password: action.data.password,
           userId: action.data.userId,
-          userCustomTags: action.data.userCustomTags
+          userCustomTags: action.data.userCustomTags,
+          profilePictureLink: action.data.profilePictureLink
         }
       };
 

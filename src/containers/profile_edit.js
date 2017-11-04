@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ProfileEditView from '../presentational/profile_edit_view.js';
 import { callJSON } from '../ajax_utility.js';
-import { loadCurrentUser, updateUserProfile } from '../actions/index.js';
+import { loadCurrentUser, updateUserProfile,uploadPhoto } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -9,8 +9,9 @@ class ProfileEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameInputValue: this.props.initialNameInputValue, 
-      emailInputValue: this.props.initialEmailInputValue
+      nameInputValue: this.props.initialNameInputValue,
+      emailInputValue: this.props.initialEmailInputValue,
+      fileInput: ''
     };
   }
 
@@ -24,7 +25,7 @@ class ProfileEdit extends Component {
     }
     return this.setState({
       nameInputValue: nextProps.initialNameInputValue,
-      emailInputValue: nextProps.initialEmailInputValue,
+      emailInputValue: nextProps.initialEmailInputValue
     });
   }
 
@@ -55,6 +56,32 @@ class ProfileEdit extends Component {
     return this.setState({ emailInputValue: event.target.value });
   };
 
+  onFileChange = event => {
+    event.preventDefault();
+    // when file is changed, update state
+    this.setState({
+      fileInput: event.target.files
+    });
+  };
+
+  onFileSubmit = event => {
+    event.preventDefault();
+    if (this.state.fileInput === '') return alert('Please select a photo.');
+    let formData = new FormData();
+    formData.append('photo', this.state.fileInput[0]);
+    formData.append('name', this.state.fileInput[0].name);
+    for (var key of formData.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+    }
+
+    this.props.uploadPhoto(formData, 'profile');
+
+    this.setState({
+      fileInput: ''
+    });
+    
+  };
+
   render() {
     return (
       <ProfileEditView
@@ -65,6 +92,8 @@ class ProfileEdit extends Component {
         onEmailChange={this.onEmailChange}
         nameInputValue={this.state.nameInputValue}
         emailInputValue={this.state.emailInputValue}
+        onFileChange={this.onFileChange}
+        onFileSubmit={this.onFileSubmit}
       />
     );
   }
@@ -85,7 +114,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       loadCurrentUser: loadCurrentUser,
-      updateUserProfile:updateUserProfile,
+      updateUserProfile: updateUserProfile,
+      uploadPhoto: uploadPhoto
     },
     dispatch
   );

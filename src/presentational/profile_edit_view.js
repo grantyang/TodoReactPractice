@@ -43,7 +43,25 @@ const ProfileEditView = props => {
             />
           </form>
         </div>
-
+        <div className="row justify-content-sm-center mt-2">
+        <form
+          id="frmUploader"
+          encType="multipart/form-data"
+          onSubmit={event => props.onFileSubmit(event)}>
+          <input type="file" name="photo" onChange={props.onFileChange} />
+          <input
+            className="btn btn-success"
+            value="Upload Profile Picture"
+            type="submit"
+            onClick={event => props.onFileSubmit(event)}
+          />
+        </form>
+      </div>
+      <div className="form-group row justify-content-sm-center">
+        <small id="fileHelp" className="form-text text-muted">
+          Upload a photo above to be used as your profile picture.
+        </small>
+      </div>
         <div className="row justify-content-center">
           <button
             className="col-md-3 mx-md-2 mt-2 btn btn-success"
