@@ -14,16 +14,17 @@ const ListOfLists = props => {
           ) {
             return (
               <Link
-                key={list.name}
+                key={list.list_id}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
                 {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.todos.length}
+                  {list.count} 
                 </span>
               </Link>
             );
           }
+          return null;
         })}
       </div>
       <span className="col-sm-8">Shared Lists</span>
@@ -35,34 +36,41 @@ const ListOfLists = props => {
           ) {
             return (
               <Link
-                key={list.name}
+                key={list.list_id}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
                 {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.todos.length}
+                  {list.count}
                 </span>
               </Link>
             );
           }
+          return null;
+          
         })}
       </div>
       <span className="col-sm-8">Public Lists</span>
       <div className="col-md-8 list-group">
-        {props.listOfLists.map(list => {
+        {props.listOfLists.filter(l => l.privacy === 'public').map(list => {
+          console.log(list)
           if (list.privacy === 'public') {
+            console.log('hmm')
+            
             return (
               <Link
-                key={list.name}
+                key={list.list_id}
                 className={`list-group-item justify-content-between`}
                 to={`/list/${list.name}`}>
                 {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.todos.length}
+                  {list.count}
                 </span>
               </Link>
             );
           }
+          return null;
+          
         })}
       </div>
     </div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import LoginView from '../presentational/login_view.js';
-import { callJSON } from '../ajax_utility.js';
 import { loginUser , loadCurrentUser} from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

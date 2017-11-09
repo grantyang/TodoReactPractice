@@ -11,29 +11,15 @@ const TodoListReducer = (
       loading: true,
       updating: false
     },
-    model: {
-      // The actual data (model)
-      name: 'initial list DO NOT SHOW',
-      id: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
-      creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
-      privacy: 'private',
-      todos: [
-        {
-          text: 'initial todo item DO NOT SHOW',
-          completed: false,
-          tag: '',
-          dueDate: '',
-          location: {
-            lat: 0,
-            lng: 0
-          },
-          id: '60c31d60-b678-11e7-9684-ad5a4358b7ae'
-        }
-      ],
-      filter: 'ALL',
-      searchTerm: '',
-      authorizedUsers: [],      
-    }
+    model: [
+      {
+        // The actual data (model)
+        name: 'initial list DO NOT SHOW',
+        list_id: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
+        creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
+        privacy: 'private'
+      }
+    ]
   },
   action
 ) => {
@@ -41,6 +27,7 @@ const TodoListReducer = (
 
   switch (action.type) {
     case 'LOAD_LIST_SUCCESS':
+    console.log(action.data)
       return {
         ...state,
         meta: { ...state.meta, loading: false },
@@ -48,9 +35,45 @@ const TodoListReducer = (
       };
 
     case 'ADD_TODO_SUCCESS':
+      console.log(action.data);
       return {
         ...state,
-        model: { ...state.model, todos: [action.data, ...state.model.todos] }
+        model: [...state.model, action.data]
+      };
+
+    case 'DELETE_ALL_TODO_SUCCESS':
+      return {
+        ...state,
+        model: [
+          {
+            name: state.model[0].name,
+            list_id: state.model[0].list_id,
+            creator: state.model[0].creator,
+            privacy: state.model[0].privacy
+          }
+        ]
+      };
+
+    case 'DELETE_COMPLETED_TODO_SUCCESS':
+      const remainingList = state.model.filter(
+        item => item.completed === false
+      );
+      if (remainingList.length === 0) {
+        return {
+          ...state,
+          model: [
+            {
+              name: state.model[0].name,
+              list_id: state.model[0].list_id,
+              creator: state.model[0].creator,
+              privacy: state.model[0].privacy
+            }
+          ]
+        };
+      }
+      return {
+        ...state,
+        model: remainingList
       };
 
     case 'UPDATE_LIST_REQUEST':
@@ -67,19 +90,14 @@ const TodoListReducer = (
       return {
         ...state,
         meta: { ...state.meta, loading: true },
-        model: { todos: [] }
-      };
-
-    case 'DELETE_ALL_TODO_SUCCESS':
-      return { ...state, model: { ...state.model, todos: [] } };
-
-    case 'DELETE_COMPLETED_TODO_SUCCESS':
-      return {
-        ...state,
-        model: {
-          ...state.model,
-          todos: state.model.todos.filter(item => item.completed === false)
-        }
+        model: [
+          {
+            name: 'initial list DO NOT SHOW',
+            listId: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
+            creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
+            privacy: 'private'
+          }
+        ] 
       };
 
     case 'DELETE_FAILURE':

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SignUpView from '../presentational/signup_view.js';
-import {callJSON} from '../ajax_utility.js';
 import { createNewUser } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -57,6 +56,7 @@ class SignUp extends Component {
       name: nameInput,
       email: emailInput,
       password: passwordInput,
+      profilePictureLink: '',
       userCustomTags: []
     };
     this.props.createNewUser(newUser)

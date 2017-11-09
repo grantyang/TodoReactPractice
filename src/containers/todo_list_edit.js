@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App.css';
 import NavBar from './nav_bar.js';
 import TodoListEditView from '../presentational/todo_list_edit_view.js';
-import { callJSON } from '../ajax_utility.js';
 import {
   updateTodoList,
   deleteList,
@@ -21,13 +20,10 @@ class TodoListEdit extends Component {
   }
   
   componentDidMount() {
-    console.log('componentDidMount');
     this.props.loadTodoListData(this.props.match.params.listName);
   }
 
   componentWillReceiveProps(nextProps) {
-    //Ask CW why this isn't called after mapStateToProps in this component but is in todo_list_item_edit
-    console.log('componentWillReceiveProps');
     //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
     if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/list/${nextProps.initialListName}`); //redirect to new name list if just updated
@@ -74,7 +70,6 @@ class TodoListEdit extends Component {
   };
 
   render() {
-    console.log('render');
     if (this.props.updating === true) {
       return <b>Please wait, updating...</b>;
     }
@@ -98,11 +93,10 @@ class TodoListEdit extends Component {
 
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
-  console.log('mapStateToProps');
   return {
     updating: state.todoList.meta.updating,
-    initialListName: state.todoList.model.name,
-    initialPrivacyInput: state.todoList.model.privacy
+    initialListName: state.todoList.model[0].name,
+    initialPrivacyInput: state.todoList.model[0].privacy
   };
 }
 

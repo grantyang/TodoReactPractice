@@ -5,8 +5,6 @@ import NavBar from './nav_bar.js';
 import Footer from '../presentational/footer.js';
 import TodoListView from '../presentational/todo_list_view.js';
 import SearchBar from '../presentational/search_bar.js';
-import { Link } from 'react-router-dom';
-import { callJSON } from '../ajax_utility.js';
 import {
   addTodo,
   loadTodoListData,
@@ -18,7 +16,6 @@ import {
 } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import RichTextEditor from 'react-rte';
 
 class TodoList extends Component {
   constructor(props) {
@@ -36,6 +33,14 @@ class TodoList extends Component {
     this.props.loadTodoListData(this.props.match.params.listName); 
     this.props.loadCurrentUser(); // remember, if using THUNK, to call store.dispatch, not just loadCurrentUser().
     this.props.loadAllTodoLists();
+  }
+
+  componentWillReceiveProps(){
+    this.setState({
+      filter: 'ALL',
+      searchTerm:'',
+      loading: true      
+    })
   }
 
   // componentDidMount() { //THUNK no redux-router connect mapDispatchToProps
@@ -75,7 +80,7 @@ class TodoList extends Component {
       return alert('Please input a value');
     }
     //if there is a duplicate
-    if (
+    if (this.props.todos[0].todo_id &&
       this.props.todos.find(
         item => item.text.toLowerCase() === todoText.toLowerCase()
       )
@@ -84,11 +89,13 @@ class TodoList extends Component {
     } else {
       const todoObj = {
         //create new object
+        ownerId: this.props.currentListId,
         text: todoText,
         completed: false,
         tag: '',
-        dueDate: '',
-        location: { lat: 52.5200066, lng: 13.404954 },
+        dueDate: null,
+        latitude:52.5200066,
+        longitude:13.404954,
         richTextComment:'',
         pictureLinks: []
       };
@@ -150,7 +157,7 @@ class TodoList extends Component {
     //searches for searchterm
     return this.props.todos.filter(todo => {
       if (this.state.searchTerm === '') return todo;
-      if (todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+      if (todo.text && todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
         return todo;
       return null;
     });
@@ -212,12 +219,13 @@ class TodoList extends Component {
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of this component
   return {
-    listName: state.todoList.model.name,
-    todos: state.todoList.model.todos,
+    listName: state.todoList.model[0].name,
+    todos: state.todoList.model,
     loading: state.todoList.meta.loading,
     otherAuthoredLists: state.listOfLists.model.filter(
       list => list.creator === state.user.model.userId
-    )
+    ),
+    currentListId: state.todoList.model[0].list_id
   };
 }
 
@@ -231,7 +239,7 @@ function mapDispatchToProps(dispatch) {
       addTodo: addTodo,
       deleteAllTodos:deleteAllTodos,
       deleteCompletedTodos:deleteCompletedTodos,
-      updateAuthorizedUserList:updateAuthorizedUserList
+      updateAuthorizedUserList:updateAuthorizedUserList,
     },
     dispatch
   );

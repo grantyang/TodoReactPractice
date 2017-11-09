@@ -2,6 +2,8 @@ import React from 'react';
 import RichTextEditor from 'react-rte';
 
 const TodoListItemEditView = props => {
+  let dateFix = ''
+  if (props.dateInput) dateFix = props.dateInput.substring(0,10)
   return (
     <div>
       <div className="row justify-content-sm-center">
@@ -22,7 +24,7 @@ const TodoListItemEditView = props => {
           className="form-control col-3 mt-2"
           id="date"
           type="date"
-          value={props.dateInput}
+          value={dateFix}
           onChange={props.onDateChange}
         />
         <span className="input-group-addon mt-2" id="basic-addon2">

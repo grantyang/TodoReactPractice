@@ -14,24 +14,9 @@ const ListsReducer = (
       {
         // The actual data (model)
         name: 'initial list DO NOT SHOW',
-        id: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
+        listId: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
         creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
-        privacy: 'private',
-        todos: [
-          {
-            text: 'initial todo item DO NOT SHOW',
-            completed: false,
-            tag: '',
-            dueDate: '',
-            location: {
-              lat: 0,
-              lng: 0
-            },
-            id: '60c31d60-b678-11e7-9684-ad5a4358b7ae'
-          }
-        ],
-        filter: 'ALL',
-        searchTerm: ''
+        privacy: 'private'
       }
     ]
   },

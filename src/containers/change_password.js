@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ChangePasswordView from '../presentational/change_password_view.js';
 import { loadCurrentUser, updateUserPassword } from '../actions/index.js';
-import { callJSON } from '../ajax_utility.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 

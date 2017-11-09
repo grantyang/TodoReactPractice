@@ -1,5 +1,3 @@
-import RichTextEditor from 'react-rte';
-
 //The reducer is a pure function that takes the previous state and an action, and returns the next state.
 
 //Things you should never do inside a reducer:
@@ -14,17 +12,16 @@ const ItemReducer = (
       updating: false
     },
     model: {
+      todoId: '60c31d60-b678-11e7-9684-ad5a4351b7ae',
+      ownerId: '60c31d60-b678-11e7-9684-ad5a4351b7ae',
       text: 'initial item',
       completed: false,
       tag: '',
       dueDate: '',
       richTextComment: '<p>initial RTC</p>',
       pictureLinks: [],
-      location: {
-        lat: 0,
-        lng: 0
-      },
-      id: '60c31d60-b678-11e7-9684-ad5a4351b7ae'
+      latitude: 0,
+      longitude: 0
     }
   },
   action
@@ -34,7 +31,18 @@ const ItemReducer = (
       return {
         ...state,
         meta: { ...state.meta, loading: false },
-        model: action.data
+        model: {
+          todoId: action.data.todo_id,
+          ownerId: action.data.owner_id,
+          text: action.data.text,
+          completed: action.data.completed,
+          tag: action.data.tag,
+          dueDate: action.data.due_date,
+          richTextComment: action.data.rich_text_comment,
+          latitude: action.data.latitude,
+          longitude: action.data.longitude,
+          pictureLinks: []// to be removed
+        }
       };
 
     case 'LOAD_LIST_SUCCESS':
@@ -54,7 +62,18 @@ const ItemReducer = (
       return {
         ...state,
         meta: { ...state.meta, updating: false },
-        model: action.data
+        model: {
+          todoId: action.data.todo_id,
+          ownerId: action.data.owner_id,
+          text: action.data.text,
+          completed: action.data.completed,
+          tag: action.data.tag,
+          dueDate: action.data.due_date,
+          richTextComment: action.data.rich_text_comment,
+          latitude: action.data.latitude,
+          longitude: action.data.longitude,
+          pictureLinks: []// to be removed
+        }
       };
 
     case 'DELETE_ITEM_SUCCESS':

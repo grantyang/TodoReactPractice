@@ -21,7 +21,7 @@ const Profile = ({ name, email, loading, profilePictureLink }) => {
           {profilePictureLink && (
             <img
               src={profilePictureLink}
-              alt="Profile Picture"
+              alt="Profile Pic"
               className="profile-picture img-thumbnail"
             />
           )}

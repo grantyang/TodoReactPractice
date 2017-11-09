@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { callJSON } from '../ajax_utility.js';
 import { Route, Redirect } from 'react-router-dom';
 import { loadCurrentUser } from '../actions/index.js';
 import { connect } from 'react-redux';

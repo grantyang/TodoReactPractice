@@ -16,6 +16,8 @@ export const LOAD_ITEM_SUCCESS = 'LOAD_ITEM_SUCCESS';
 export const LOAD_ITEM_FAILURE = 'LOAD_ITEM_FAILURE';
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS';
 export const LOAD_LIST_FAILURE = 'LOAD_LIST_FAILURE';
+export const LOAD_LIST_TODOS_SUCCESS = 'LOAD_LIST_TODOS_SUCCESS';
+export const LOAD_LIST_TODOS_FAILURE = 'LOAD_LIST_TODOS_FAILURE';
 export const LOAD_ALL_LISTS_SUCCESS = 'LOAD_ALL_LISTS_SUCCESS';
 export const LOAD_ALL_LISTS_FAILURE = 'LOAD_ALL_LISTS_FAILURE';
 export const DELETE_LIST_SUCCESS = 'DELETE_LIST_SUCCESS';
@@ -137,8 +139,8 @@ export function createNewUser(newUser) {
 export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
   return dispatch => {
     return callJSON(
-      'PUT',
-      `list/${listName}?authorizedusers=true`,
+      'POST',
+      `listpermissions/${listName}`,
       newAuthorizedUserEmail
     )
       .then(res => {
@@ -161,7 +163,7 @@ export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
         }
       })
       .catch(err => {
-        err => dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE, err });
+        return err => dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE, err });
       });
   };
 }
@@ -279,6 +281,17 @@ export function loadTodoListData(listName) {
       .then(
         data => dispatch({ type: LOAD_LIST_SUCCESS, data }),
         err => dispatch({ type: LOAD_LIST_FAILURE, err })
+      );
+  };
+}
+
+export function loadListTodos(listName) {
+  return dispatch => {
+    return callJSON('GET', `list/${listName}/todos`)
+      .then(res => res.json())
+      .then(
+        data => dispatch({ type: LOAD_LIST_TODOS_SUCCESS, data }),
+        err => dispatch({ type: LOAD_LIST_TODOS_FAILURE, err })
       );
   };
 }

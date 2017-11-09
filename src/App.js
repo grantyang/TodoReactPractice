@@ -3,14 +3,11 @@ import './App.css';
 import NavBar from './containers/nav_bar.js';
 import Input from './presentational/input.js';
 import ListOfLists from './presentational/list_of_lists.js';
-import { callJSON } from './ajax_utility.js';
 import { connect } from 'react-redux';
 import {
   loadAllTodoLists,
-  loadCurrentUser,
   createList
 } from './actions/index.js';
-import store from './redux_create_store.js';
 import { bindActionCreators } from 'redux';
 
 class App extends Component {
@@ -30,11 +27,7 @@ class App extends Component {
     const newList = {
       name: newName,
       creator: this.props.currentUser.userId,
-      privacy: 'private',
-      todos: [],
-      authorizedUsers: [],
-      filter: 'ALL',
-      searchTerm: ''
+      privacy: 'private'
     };
     return this.props.createList(newList);
   };

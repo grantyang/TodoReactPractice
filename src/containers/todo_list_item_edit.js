@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from './nav_bar.js';
 import TodoListItemEditView from '../presentational/todo_list_item_edit_view';
-import { callJSON } from '../ajax_utility.js';
 import {
   loadItemData,
   updateTodo,
@@ -31,8 +30,6 @@ class TodoListItemEdit extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.initialRichTextValue);
-
     //async actions to populate redux state from server
     //also defaults component state for UI
     const listName = this.props.match.params.listName;
@@ -43,7 +40,6 @@ class TodoListItemEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     //if you do not use nextprops to here, state will be old props since mapStateToProps does complete fire yet
-    console.log('componentWillReceiveProps');
     if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/list/${this.getListName()}`);
     }
@@ -156,15 +152,17 @@ class TodoListItemEdit extends Component {
     // when input is submitted, add to database
     event.preventDefault();
     const newText = this.state.textInputValue;
-    const newDate = this.state.dateInput;
+    let newDate = this.state.dateInput;
+    if (this.state.dateInput && this.state.dateInput.length < 11) newDate = `${this.state.dateInput}T22:00:00.000Z`
     const newTag = this.state.tagInput;
     const newRichTextValue = this.state.richTextValue.toString('html');
-    this.props.updateTodo(this.getListName(), this.props.todoId, {
+    const updatedTodo = Object.assign({}, this.props.todo, {
       text: newText,
       dueDate: newDate,
       tag: newTag,
       richTextComment: newRichTextValue
     });
+    this.props.updateTodo(this.getListName(), this.props.todoId, updatedTodo);
   };
 
   delete = event => {
@@ -204,14 +202,14 @@ class TodoListItemEdit extends Component {
 
 function mapStateToProps(state) {
   //Whatever is returned will show up as props inside of the component
-  console.log('mapStateToProps');
   return {
+    todo: state.item.model,
     loading: state.item.meta.loading,
     updating: state.item.meta.updating,
     initialTextInputValue: state.item.model.text,
     initialDateInput: state.item.model.dueDate,
     initialTagInput: state.item.model.tag,
-    todoId: state.item.model.id,
+    todoId: state.item.model.todoId,
     userCustomTags: state.user.model.userCustomTags,
     userUpdating: state.user.meta.updating,
     initialRichTextValue: state.item.model.richTextComment

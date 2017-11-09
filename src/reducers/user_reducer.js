@@ -38,9 +38,9 @@ const UserReducer = (
           name: action.data.name,
           email: action.data.email,
           password: action.data.password,
-          userId: action.data.userId,
-          userCustomTags: action.data.userCustomTags,
-          profilePictureLink: action.data.profilePictureLink
+          userId: action.data.user_id,
+          userCustomTags: action.data.user_custom_tags,
+          profilePictureLink: action.data.profile_picture_link
         }
       };
 
@@ -52,7 +52,7 @@ const UserReducer = (
       return state;
 
     case 'LOGIN_USER_PASSWORD_FAILURE':
-      alert('Incorrect Email');
+      alert('Incorrect Password');
       return state;
 
     case 'LOGIN_USER_FAILURE':

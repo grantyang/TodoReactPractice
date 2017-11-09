@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import TodoListItemView from '../presentational/todo_list_item_view';
 import NavBar from './nav_bar.js';
-import { callJSON } from '../ajax_utility.js';
 import {
   loadItemData,
   loadAllTodoLists,
@@ -16,20 +15,25 @@ class TodoListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      richTextValue: RichTextEditor.createValueFromString(this.props.initialRichTextValue, 'html')
+      richTextValue: RichTextEditor.createValueFromString(
+        this.props.initialRichTextValue,
+        'html'
+      )
     };
   }
 
   componentDidMount() {
     const itemId = this.props.match.params.itemId;
     const listName = this.props.match.params.listName;
-    this.props.loadAllTodoLists();
     this.props.loadItemData(listName, itemId);
   }
 
   componentWillReceiveProps(nextProps) {
     return this.setState({
-      richTextValue: RichTextEditor.createValueFromString(nextProps.initialRichTextValue, 'html')
+      richTextValue: RichTextEditor.createValueFromString(
+        nextProps.initialRichTextValue,
+        'html'
+      )
     });
   }
 
@@ -38,21 +42,31 @@ class TodoListItem extends Component {
   };
 
   toggleCompleted = todo => {
-    this.props.updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
-      ...todo,
+    const updatedTodo = Object.assign({}, todo, {
       completed: !todo.completed
     });
+    this.props.updateTodoNoRedirect(
+      this.getListName(),
+      this.props.todo.todoId,
+      updatedTodo
+    );
   };
 
   saveLocation = location => {
-    this.props.updateTodoNoRedirect(this.getListName(), this.props.todo.id, {
-      location
+    const updatedTodo = Object.assign({}, this.props.todo, {
+      latitude: location.lat(),
+      longitude: location.lng()
     });
+    this.props.updateTodoNoRedirect(
+      this.getListName(),
+      this.props.todo.todoId,
+      updatedTodo
+    );
   };
 
   delete = () => {
     this.props.history.push(`/list/${this.getListName()}`);
-    return this.props.deleteItem(this.getListName(), this.props.todo.id);
+    return this.props.deleteItem(this.getListName(), this.props.todo.todoId);
   };
 
   render() {
@@ -65,9 +79,11 @@ class TodoListItem extends Component {
           listName={this.props.match.params.listName}
           toggleCompleted={this.toggleCompleted}
           delete={this.delete}
-          location={this.props.todo.location}
+          location={{
+            lat: this.props.todo.latitude,
+            lng: this.props.todo.longitude
+          }}
           saveLocation={this.saveLocation}
-          otherAuthoredLists={this.props.otherAuthoredLists}
           richTextValue={this.state.richTextValue}
         />
       </div>
@@ -81,9 +97,6 @@ function mapStateToProps(state) {
     todo: state.item.model,
     loading: state.item.meta.loading,
     initialRichTextValue: state.item.model.richTextComment, //set app state (this.state.RTV) to redux state (this.props.RTV) in didMount/willRecProps
-    otherAuthoredLists: state.listOfLists.model.filter(
-      list => list.creator === state.user.model.userId
-    )
   };
 }
 

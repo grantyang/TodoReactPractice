@@ -31,7 +31,7 @@ const TodoListItemView = props => {
       <div className="row justify-content-sm-center">
         <Link
           className="col-md-2 btn btn-item btn-warning"
-          to={`/list/${props.listName}/todo/${todo.id}/edit`}>
+          to={`/list/${props.listName}/todo/${todo.todoId}/edit`}>
           Edit
         </Link>
 
@@ -62,13 +62,13 @@ const TodoListItemView = props => {
       </div>
 
       <div className="justify-content-center row mt-2 ">
-        {props.todo.pictureLinks.length > 0 &&
-          props.todo.pictureLinks.map(pictureLink => {
+        {todo.pictureLinks.length > 0 &&
+          todo.pictureLinks.map(pictureLink => {
             return (
               <img
                 key={pictureLink}
                 src={pictureLink}
-                alt="Attached Picture"
+                alt="Attached"
                 className="profile-picture img-thumbnail"
               />
             );

@@ -10,6 +10,7 @@ const TodoListView = ({
   refreshTodoListData
 }) => {
   //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
+
   return (
     <div>
       <div className="row justify-content-center">
@@ -23,7 +24,7 @@ const TodoListView = ({
               <Link
                 key={list.name}
                 className={`list-group-item`}
-                onClick={(event) => refreshTodoListData(event, list.name)}
+                onClick={event => refreshTodoListData(event, list.name)}
                 to={`/list/${list.name}`}>
                 {list.name}
               </Link>
@@ -33,17 +34,21 @@ const TodoListView = ({
         <div className="col-md-6 list-group">
           List Items
           {todos.map(todo => {
-            return (
-              <Link
-                key={todo.id}
-                className={`list-group-item `}
-                style={{
-                  textDecoration: todo.completed ? 'line-through' : 'none'
-                }}
-                to={`/list/${listName}/todo/${todo.id}`}>
-                {todo.text} {todo.dueDate && `Due: ${todo.dueDate}`}
-              </Link>
-            );
+            if (todo.todo_id)
+              return (
+                <Link
+                  key={todo.todo_id}
+                  className={`list-group-item `}
+                  style={{
+                    textDecoration: todo.completed ? 'line-through' : 'none'
+                  }}
+                  to={`/list/${listName}/todo/${todo.todo_id}`}>
+                  {todo.text}{' '}
+                  {todo.due_date &&
+                    `Due: ${new Date(todo.due_date).toDateString()}`}
+                </Link>
+              );
+            return null;
           })}
         </div>
       </div>
