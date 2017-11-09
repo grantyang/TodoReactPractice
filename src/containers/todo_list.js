@@ -30,21 +30,21 @@ class TodoList extends Component {
 
   componentDidMount() {
     //async actions to populate redux state from server
-    this.props.loadTodoListData(this.props.match.params.listName); 
+    this.props.loadTodoListData(this.props.match.params.listName);
     this.props.loadCurrentUser(); // remember, if using THUNK, to call store.dispatch, not just loadCurrentUser().
     this.props.loadAllTodoLists();
   }
 
-  componentWillReceiveProps(){
+  componentWillReceiveProps() {
     this.setState({
       filter: 'ALL',
-      searchTerm:'',
-      loading: true      
-    })
+      searchTerm: '',
+      loading: true
+    });
   }
 
   // componentDidMount() { //THUNK no redux-router connect mapDispatchToProps
-  //   store.dispatch(loadTodoListData(this.props.match.params.listName)); 
+  //   store.dispatch(loadTodoListData(this.props.match.params.listName));
   //   store.dispatch(loadCurrentUser()); // remember, if using THUNK to call store.dispatch, not just loadCurrentUser().
   //   store.dispatch(loadAllTodoLists());
   // }
@@ -58,17 +58,17 @@ class TodoList extends Component {
   // }
   // updateComponentState = () => {
   //   //why don't we always getState? CW
-  //   //situation where this method is setting the state after redux state is updated 
+  //   //situation where this method is setting the state after redux state is updated
   //   //but before mapPropsToState maps redux store to this.props.
   //   //whe to use getState and when to use this.props.____?
   //   // console.log('updating here')
   //   // console.log(store.getState().todoList.model.name)
   //   // console.log(this.props.listName)
   //   return this.setState({
-  //     loading: this.props.loading, 
+  //     loading: this.props.loading,
   //   });
   // };
-  
+
   refreshTodoListData = (event, targetName) => {
     //fetches and loads data for new todoList from server into redux state when user clicks a new one
     this.props.loadTodoListData(targetName);
@@ -80,7 +80,8 @@ class TodoList extends Component {
       return alert('Please input a value');
     }
     //if there is a duplicate
-    if (this.props.todos[0].todo_id &&
+    if (
+      this.props.todos[0].todo_id &&
       this.props.todos.find(
         item => item.text.toLowerCase() === todoText.toLowerCase()
       )
@@ -94,9 +95,9 @@ class TodoList extends Component {
         completed: false,
         tag: '',
         dueDate: null,
-        latitude:52.5200066,
-        longitude:13.404954,
-        richTextComment:'',
+        latitude: 52.5200066,
+        longitude: 13.404954,
+        richTextComment: '',
         pictureLinks: []
       };
       return this.props.addTodo(this.props.listName, todoObj);
@@ -157,7 +158,10 @@ class TodoList extends Component {
     //searches for searchterm
     return this.props.todos.filter(todo => {
       if (this.state.searchTerm === '') return todo;
-      if (todo.text && todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+      if (
+        todo.text &&
+        todo.text.toLowerCase().includes(this.state.searchTerm.toLowerCase())
+      )
         return todo;
       return null;
     });
@@ -170,11 +174,13 @@ class TodoList extends Component {
   };
 
   onAuthorizedUserInputSubmit = event => {
-    //see if user exists. if so, and not a duplicate, add to authed users for this list   
-    event.preventDefault();    
-    this.props.updateAuthorizedUserList(this.props.listName, {email: this.state.authorizedUserInput});
+    //see if user exists. if so, and not a duplicate, add to authed users for this list
+    event.preventDefault();
+    this.props.updateAuthorizedUserList(this.props.listName, {
+      email: this.state.authorizedUserInput
+    });
     this.setState({
-      authorizedUserInput:''
+      authorizedUserInput: ''
     });
   };
 
@@ -210,7 +216,6 @@ class TodoList extends Component {
           onAuthorizedUserInputChange={this.onAuthorizedUserInputChange}
           onAuthorizedUserInputSubmit={this.onAuthorizedUserInputSubmit}
         />
-
       </div>
     );
   }
@@ -235,11 +240,11 @@ function mapDispatchToProps(dispatch) {
     {
       loadTodoListData: loadTodoListData,
       loadAllTodoLists: loadAllTodoLists,
-      loadCurrentUser:loadCurrentUser,
+      loadCurrentUser: loadCurrentUser,
       addTodo: addTodo,
-      deleteAllTodos:deleteAllTodos,
-      deleteCompletedTodos:deleteCompletedTodos,
-      updateAuthorizedUserList:updateAuthorizedUserList,
+      deleteAllTodos: deleteAllTodos,
+      deleteCompletedTodos: deleteCompletedTodos,
+      updateAuthorizedUserList: updateAuthorizedUserList
     },
     dispatch
   );

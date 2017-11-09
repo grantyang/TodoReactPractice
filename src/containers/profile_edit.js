@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import ProfileEditView from '../presentational/profile_edit_view.js';
-import { loadCurrentUser, updateUserProfile,uploadPhoto } from '../actions/index.js';
+import {
+  loadCurrentUser,
+  updateUserProfile,
+  uploadPhoto
+} from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -75,7 +79,6 @@ class ProfileEdit extends Component {
     this.setState({
       fileInput: ''
     });
-    
   };
 
   render() {

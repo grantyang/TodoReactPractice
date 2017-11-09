@@ -134,14 +134,14 @@ class TodoListItemEdit extends Component {
     //set it as the value for the tagInput
     event.preventDefault();
     if (
-      this.props.userCustomTags.find(
-        tag => tag.text === this.state.customTagInput
-      )
+      this.props.userCustomTags.find(tag => tag === this.state.customTagInput)
     )
       return alert('Tag already exists');
-    const newCustomTag = { text: this.state.customTagInput };
     this.props.updateUserProfile({
-      userCustomTags: [...this.props.userCustomTags, newCustomTag]
+      user_custom_tags: [
+        ...this.props.userCustomTags,
+        this.state.customTagInput
+      ]
     });
     return this.setState({
       tagInput: this.state.customTagInput
@@ -153,7 +153,8 @@ class TodoListItemEdit extends Component {
     event.preventDefault();
     const newText = this.state.textInputValue;
     let newDate = this.state.dateInput;
-    if (this.state.dateInput && this.state.dateInput.length < 11) newDate = `${this.state.dateInput}T22:00:00.000Z`
+    if (this.state.dateInput && this.state.dateInput.length < 11)
+      newDate = `${this.state.dateInput}T22:00:00.000Z`;
     const newTag = this.state.tagInput;
     const newRichTextValue = this.state.richTextValue.toString('html');
     const updatedTodo = Object.assign({}, this.props.todo, {

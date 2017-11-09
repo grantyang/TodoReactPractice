@@ -27,7 +27,6 @@ const TodoListReducer = (
 
   switch (action.type) {
     case 'LOAD_LIST_SUCCESS':
-    console.log(action.data)
       return {
         ...state,
         meta: { ...state.meta, loading: false },
@@ -35,7 +34,6 @@ const TodoListReducer = (
       };
 
     case 'ADD_TODO_SUCCESS':
-      console.log(action.data);
       return {
         ...state,
         model: [...state.model, action.data]

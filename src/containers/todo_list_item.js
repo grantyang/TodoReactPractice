@@ -96,7 +96,7 @@ function mapStateToProps(state) {
   return {
     todo: state.item.model,
     loading: state.item.meta.loading,
-    initialRichTextValue: state.item.model.richTextComment, //set app state (this.state.RTV) to redux state (this.props.RTV) in didMount/willRecProps
+    initialRichTextValue: state.item.model.richTextComment //set app state (this.state.RTV) to redux state (this.props.RTV) in didMount/willRecProps
   };
 }
 

@@ -9,8 +9,6 @@ const TodoListView = ({
   location,
   refreshTodoListData
 }) => {
-  //  <pre>{JSON.stringify({  location}, null, 4 )}</pre> debugging
-
   return (
     <div>
       <div className="row justify-content-center">

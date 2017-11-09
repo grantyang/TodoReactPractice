@@ -65,7 +65,7 @@ class GoogleMap extends Component {
           })
         );
 
-        //send location to parent component to save 
+        //send location to parent component to save
         saveLocation(place.geometry.location);
 
         if (place.geometry.viewport) {

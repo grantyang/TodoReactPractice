@@ -18,7 +18,7 @@ class TodoListEdit extends Component {
       privacyInput: this.props.initialPrivacyInput
     };
   }
-  
+
   componentDidMount() {
     this.props.loadTodoListData(this.props.match.params.listName);
   }

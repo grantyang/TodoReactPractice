@@ -32,14 +32,15 @@ const UserReducer = (
       return state;
 
     case 'GET_PROFILE_SUCCESS':
+      let tags = action.data.user_custom_tags;
+      if (!action.data.user_custom_tags) tags = [];
       return {
         meta: { ...state.meta, loading: false, activeSession: true },
         model: {
           name: action.data.name,
           email: action.data.email,
-          password: action.data.password,
           userId: action.data.user_id,
-          userCustomTags: action.data.user_custom_tags,
+          userCustomTags: tags,
           profilePictureLink: action.data.profile_picture_link
         }
       };
@@ -65,7 +66,16 @@ const UserReducer = (
 
     case 'UPDATE_PASSWORD_SUCCESS':
     case 'UPDATE_PROFILE_SUCCESS':
-      return { meta: { ...state.meta, updating: false }, model: action.data };
+      return {
+        meta: { ...state.meta, updating: false },
+        model: {
+          name: action.data.name,
+          email: action.data.email,
+          userId: action.data.user_id,
+          userCustomTags: action.data.user_custom_tags,
+          profilePictureLink: action.data.profile_picture_link
+        }
+      };
 
     case 'UPDATE_PASSWORD_FAILURE':
       alert('Incorrect Current Password');

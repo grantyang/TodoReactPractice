@@ -2,8 +2,8 @@ import React from 'react';
 import RichTextEditor from 'react-rte';
 
 const TodoListItemEditView = props => {
-  let dateFix = ''
-  if (props.dateInput) dateFix = props.dateInput.substring(0,10)
+  let dateFix = '';
+  if (props.dateInput) dateFix = props.dateInput.substring(0, 10);
   return (
     <div>
       <div className="row justify-content-sm-center">
@@ -43,8 +43,8 @@ const TodoListItemEditView = props => {
           <option value="Home">Home</option>
           {props.userCustomTags.map(tag => {
             return (
-              <option key={tag.text} value={tag.text}>
-                {tag.text}
+              <option key={tag} value={tag}>
+                {tag}
               </option>
             );
           })}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LoginView from '../presentational/login_view.js';
-import { loginUser , loadCurrentUser} from '../actions/index.js';
+import { loginUser, loadCurrentUser } from '../actions/index.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -9,7 +9,7 @@ class Login extends Component {
     super(props);
     this.state = {
       emailInput: '',
-      passwordInput: '',
+      passwordInput: ''
     };
   }
 
@@ -17,11 +17,8 @@ class Login extends Component {
     this.props.loadCurrentUser();
   }
 
-  componentWillReceiveProps(nextProps){
-    if (
-      !this.props.activeSession &&
-      nextProps.activeSession === true
-    ) {
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.activeSession && nextProps.activeSession === true) {
       return this.props.history.push(`/`);
     }
   }
@@ -40,7 +37,7 @@ class Login extends Component {
     });
   };
 
-  login = (event) => {
+  login = event => {
     event.preventDefault();
     const emailInput = this.state.emailInput;
     const passwordInput = this.state.passwordInput;
@@ -78,10 +75,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       loadCurrentUser: loadCurrentUser,
-      loginUser:loginUser
+      loginUser: loginUser
     },
     dispatch
   );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
-

@@ -78,11 +78,14 @@ export const UPDATE_AUTHORIZED_USER_LIST_FAILURE =
 export function uploadPhoto(formData, photoType, listName, todoId) {
   return dispatch => {
     dispatch({ type: UPLOAD_PHOTO_REQUEST });
-    return fetch(`http://localhost:5000/uploadPhoto?type=${photoType}&listname=${listName}&todoid=${todoId}`, {
-      method: 'POST',
-      body: formData,
-      credentials: 'include'
-    })
+    return fetch(
+      `http://localhost:5000/uploadPhoto?type=${photoType}&listname=${listName}&todoid=${todoId}`,
+      {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      }
+    )
       .then(res => res.json())
       .then(
         data => dispatch({ type: UPLOAD_PHOTO_SUCCESS, data }),
@@ -163,7 +166,8 @@ export function updateAuthorizedUserList(listName, newAuthorizedUserEmail) {
         }
       })
       .catch(err => {
-        return err => dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE, err });
+        return err =>
+          dispatch({ type: UPDATE_AUTHORIZED_USER_LIST_FAILURE, err });
       });
   };
 }

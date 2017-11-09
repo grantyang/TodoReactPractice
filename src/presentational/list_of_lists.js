@@ -19,7 +19,7 @@ const ListOfLists = props => {
                 to={`/list/${list.name}`}>
                 {list.name}{' '}
                 <span className="badge badge-primary badge-pill">
-                  {list.count} 
+                  {list.count || 0}
                 </span>
               </Link>
             );
@@ -47,16 +47,12 @@ const ListOfLists = props => {
             );
           }
           return null;
-          
         })}
       </div>
       <span className="col-sm-8">Public Lists</span>
       <div className="col-md-8 list-group">
         {props.listOfLists.filter(l => l.privacy === 'public').map(list => {
-          console.log(list)
           if (list.privacy === 'public') {
-            console.log('hmm')
-            
             return (
               <Link
                 key={list.list_id}
@@ -70,7 +66,6 @@ const ListOfLists = props => {
             );
           }
           return null;
-          
         })}
       </div>
     </div>

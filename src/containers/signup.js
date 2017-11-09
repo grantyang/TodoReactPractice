@@ -10,7 +10,7 @@ class SignUp extends Component {
     this.state = {
       nameInput: '',
       emailInput: '',
-      passwordInput: '',
+      passwordInput: ''
     };
   }
 
@@ -26,8 +26,8 @@ class SignUp extends Component {
     this.setState({
       emailInput: date.target.value
     });
-  };  
-  
+  };
+
   onPasswordChange = event => {
     //when password is changed, update state
     this.setState({
@@ -59,20 +59,20 @@ class SignUp extends Component {
       profilePictureLink: '',
       userCustomTags: []
     };
-    this.props.createNewUser(newUser)
+    this.props.createNewUser(newUser);
     return this.props.history.push(`/login`);
   };
 
   render() {
     return (
       <SignUpView
-      nameInput={this.state.nameInput}
-      emailInput={this.state.emailInput}
-      passwordInput={this.state.passwordInput}
-      onNameChange={this.onNameChange}
-      onEmailChange={this.onEmailChange}
-      onPasswordChange={this.onPasswordChange}
-      createUser={this.createUser}
+        nameInput={this.state.nameInput}
+        emailInput={this.state.emailInput}
+        passwordInput={this.state.passwordInput}
+        onNameChange={this.onNameChange}
+        onEmailChange={this.onEmailChange}
+        onPasswordChange={this.onPasswordChange}
+        createUser={this.createUser}
       />
     );
   }
@@ -82,7 +82,7 @@ function mapDispatchToProps(dispatch) {
   //Whatever is returned will show up as props inside of the component
   return bindActionCreators(
     {
-      createNewUser: createNewUser,
+      createNewUser: createNewUser
     },
     dispatch
   );

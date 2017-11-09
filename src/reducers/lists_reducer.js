@@ -14,7 +14,7 @@ const ListsReducer = (
       {
         // The actual data (model)
         name: 'initial list DO NOT SHOW',
-        listId: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
+        list_id: '10c31d60-b678-11e7-9684-ad5a4358b7aa',
         creator: '5c0183a0-b5e9-11e7-a130-53144cf6874d',
         privacy: 'private'
       }

@@ -17,7 +17,7 @@ class PrivateRoute extends Component {
           render={props => <Component {...props} store={this.props.store} />}
         />
       );
-    } else {     
+    } else {
       return (
         <Route
           {...rest}

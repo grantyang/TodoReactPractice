@@ -9,7 +9,7 @@ class ChangePassword extends Component {
     super(props);
     this.state = {
       oldPasswordInput: '',
-      newPasswordInput: '',
+      newPasswordInput: ''
     };
   }
 
@@ -17,7 +17,7 @@ class ChangePassword extends Component {
     this.props.loadCurrentUser();
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = nextProps => {
     if (this.props.updating && nextProps.updating === false) {
       return this.props.history.push(`/profile`); //redirect back to profile
     }
@@ -77,7 +77,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       loadCurrentUser: loadCurrentUser,
-      updateUserPassword:updateUserPassword
+      updateUserPassword: updateUserPassword
     },
     dispatch
   );
