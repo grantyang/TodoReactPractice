@@ -62,12 +62,12 @@ const TodoListItemView = props => {
       </div>
 
       <div className="justify-content-center row mt-2 ">
-        {todo.pictureLinks.length > 0 &&
-          todo.pictureLinks.map(pictureLink => {
+        {todo.photo_links.length > 0 &&
+          todo.photo_links.map(link => {
             return (
               <img
-                key={pictureLink}
-                src={pictureLink}
+                key={link}
+                src={link}
                 alt="Attached"
                 className="profile-picture img-thumbnail"
               />

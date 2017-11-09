@@ -19,7 +19,7 @@ const ItemReducer = (
       tag: '',
       dueDate: '',
       richTextComment: '<p>initial RTC</p>',
-      pictureLinks: [],
+      photo_links: [],
       latitude: 0,
       longitude: 0
     }
@@ -41,7 +41,7 @@ const ItemReducer = (
           richTextComment: action.data.rich_text_comment,
           latitude: action.data.latitude,
           longitude: action.data.longitude,
-          pictureLinks: []// to be removed
+          photo_links: action.data.photo_links
         }
       };
 
@@ -63,8 +63,7 @@ const ItemReducer = (
         ...state,
         meta: { ...state.meta, updating: false },
         model: {
-          todoId: action.data.todo_id,
-          ownerId: action.data.owner_id,
+          ...state.model,
           text: action.data.text,
           completed: action.data.completed,
           tag: action.data.tag,
@@ -72,7 +71,6 @@ const ItemReducer = (
           richTextComment: action.data.rich_text_comment,
           latitude: action.data.latitude,
           longitude: action.data.longitude,
-          pictureLinks: []// to be removed
         }
       };
 
